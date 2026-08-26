@@ -1,0 +1,1339 @@
+openapi: 3.0.3
+info:
+  title: Learning Platform Go API
+  version: 1.0.0
+  description: API for the Go Platform Service (Frontend -> Go)
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+        email:
+          type: string
+        role:
+          type: string
+        status:
+          type: string
+    LearnerProfile:
+      type: object
+      properties:
+        time_availability:
+          type: string
+        format_preference:
+          type: string
+        prior_experience:
+          type: string
+    Goal:
+      type: object
+      properties:
+        id:
+          type: string
+        goal_text:
+          type: string
+        knowledge_structure_id:
+          type: string
+        status:
+          type: string
+        achieved_at:
+          type: string
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+        message:
+          type: string
+security:
+  - bearerAuth: []
+paths:
+  /auth/signup:
+    post:
+      summary: Register new learner
+      operationId: post_auth_signup
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                  user:
+                    $ref: '#/components/schemas/User'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      security: []
+  /auth/login:
+    post:
+      summary: Login
+      operationId: post_auth_login
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                  user:
+                    $ref: '#/components/schemas/User'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      security: []
+  /auth/refresh:
+    post:
+      summary: Refresh token
+      operationId: post_auth_refresh
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                refresh_token:
+                  type: string
+      security: []
+  /auth/logout:
+    post:
+      summary: Logout
+      operationId: post_auth_logout
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+  /auth/me:
+    get:
+      summary: Get current user
+      operationId: get_auth_me
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user:
+                    $ref: '#/components/schemas/User'
+                  profile:
+                    $ref: '#/components/schemas/LearnerProfile'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+  /auth/change-password:
+    post:
+      summary: Change password
+      operationId: post_auth_change-password
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                old_password:
+                  type: string
+                new_password:
+                  type: string
+  /domains:
+    get:
+      summary: Get all domains
+      operationId: get_domains
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  domains:
+                    type: array
+                    items:
+                      type: object
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+  /goals:
+    post:
+      summary: Create new goal
+      operationId: post_goals
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Goal'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                goal_text:
+                  type: string
+                domain_id:
+                  type: string
+  /goals/current:
+    get:
+      summary: Get current goal
+      operationId: get_goals_current
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Goal'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+  /profile/preferences:
+    patch:
+      summary: Update preferences
+      operationId: patch_profile_preferences
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LearnerProfile'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LearnerProfile'
+  /profile/settings:
+    patch:
+      summary: Update settings
+      operationId: patch_profile_settings
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+  /profile/account:
+    delete:
+      summary: Delete account
+      operationId: delete_profile_account
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+  /diagnostics/start:
+    post:
+      summary: Start diagnostic assessment
+      operationId: post_diagnostics_start
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sessionId:
+                    type: string
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                goal_id:
+                  type: string
+  /diagnostics/{sessionId}/answer:
+    post:
+      summary: Submit answer
+      operationId: post_diagnostics_{sessionId}_answer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  next_item:
+                    type: object
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                item_id:
+                  type: string
+                answer:
+                  type: string
+  /diagnostics/{sessionId}/results:
+    get:
+      summary: Get diagnostic results
+      operationId: get_diagnostics_{sessionId}_results
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  gaps:
+                    type: array
+                    items:
+                      type: string
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+  /roadmap:
+    get:
+      summary: Get active roadmap
+      operationId: get_roadmap
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  path_items:
+                    type: array
+                    items:
+                      type: object
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+  /roadmap/concepts/{conceptId}/why:
+    get:
+      summary: Explanation for concept
+      operationId: get_roadmap_concepts_{conceptId}_why
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  explanation:
+                    type: string
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+  /roadmap/regenerate:
+    post:
+      summary: Regenerate roadmap
+      operationId: post_roadmap_regenerate
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  path_items:
+                    type: array
+                    items:
+                      type: object
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+  /concepts/{id}:
+    get:
+      summary: Get concept details
+      operationId: get_concepts_{id}
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+  /concepts/{id}/resources/alternate:
+    get:
+      summary: Get alternate resources
+      operationId: get_concepts_{id}_resources_alternate
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+  /concepts/{id}/resources/{resourceId}/why:
+    get:
+      summary: Explanation for resource
+      operationId: get_concepts_{id}_resources_{resourceId}_why
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+  /concepts/{id}/engagement:
+    post:
+      summary: Record engagement
+      operationId: post_concepts_{id}_engagement
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                event_type:
+                  type: string
+  /resources/{resourceId}/feedback:
+    post:
+      summary: Submit feedback
+      operationId: post_resources_{resourceId}_feedback
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                rating:
+                  type: number
+                comment:
+                  type: string
+  /concepts/{id}/assessment:
+    get:
+      summary: Get assessment
+      operationId: get_concepts_{id}_assessment
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+  /concepts/{id}/assessment/submit:
+    post:
+      summary: Submit assessment
+      operationId: post_concepts_{id}_assessment_submit
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+  /concepts/{id}/project:
+    get:
+      summary: Get project
+      operationId: get_concepts_{id}_project
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+  /concepts/{id}/project/submit:
+    post:
+      summary: Submit project
+      operationId: post_concepts_{id}_project_submit
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+  /concepts/{id}/project/status:
+    get:
+      summary: Project status
+      operationId: get_concepts_{id}_project_status
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+  /progress/summary:
+    get:
+      summary: Progress summary
+      operationId: get_progress_summary
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+  /competency/detail:
+    get:
+      summary: Competency details
+      operationId: get_competency_detail
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+  /competency/{conceptId}/history:
+    get:
+      summary: Competency history
+      operationId: get_competency_{conceptId}_history
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+  /goals/current/completion-summary:
+    get:
+      summary: Goal completion summary
+      operationId: get_goals_current_completion-summary
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+  /notifications:
+    get:
+      summary: Get notifications
+      operationId: get_notifications
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+  /notifications/{id}/read:
+    patch:
+      summary: Mark read
+      operationId: patch_notifications_{id}_read
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+  /curator/knowledge-structures:
+    get:
+      summary: List KS
+      operationId: get_curator_knowledge-structures
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+    post:
+      summary: Create KS
+      operationId: post_curator_knowledge-structures
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+    patch:
+      summary: Update KS
+      operationId: patch_curator_knowledge-structures
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+  /curator/knowledge-structures/validate:
+    post:
+      summary: Validate KS
+      operationId: post_curator_knowledge-structures_validate
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+  /curator/resources:
+    get:
+      summary: List resources
+      operationId: get_curator_resources
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+    post:
+      summary: Create resource
+      operationId: post_curator_resources
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+    patch:
+      summary: Update resource
+      operationId: patch_curator_resources
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+  /curator/resources/{id}/feedback-signals:
+    get:
+      summary: Get signals
+      operationId: get_curator_resources_{id}_feedback-signals
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+  /admin/users:
+    get:
+      summary: List users
+      operationId: get_admin_users
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+    patch:
+      summary: Update user
+      operationId: patch_admin_users
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+  /admin/audit-log:
+    get:
+      summary: Get audit log
+      operationId: get_admin_audit-log
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+  /health:
+    get:
+      summary: Health check
+      operationId: get_health
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+      security: []
+  /ready:
+    get:
+      summary: Readiness check
+      operationId: get_ready
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+      security: []
+  /storage/upload-url:
+    get:
+      summary: Get S3 upload URL
+      operationId: get_storage_upload-url
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+  /search:
+    get:
+      summary: Search
+      operationId: get_search
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+  /telemetry/events:
+    post:
+      summary: Record telemetry
+      operationId: post_telemetry_events
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+  /metrics:
+    get:
+      summary: Get metrics
+      operationId: get_metrics
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+      security: []
