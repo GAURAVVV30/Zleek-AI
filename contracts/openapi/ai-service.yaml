@@ -1,0 +1,163 @@
+openapi: 3.0.3
+info:
+  title: Learning Platform AI Service
+  version: 1.0.0
+  description: API for the FastAPI Intelligence Service (Go -> FastAPI)
+paths:
+  /v1/semantic-mapping:
+    post:
+      summary: Goal/Skill Semantic Mapping
+      operationId: post_v1_semantic-mapping
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                goal_text:
+                  type: string
+  /v1/gap-analysis:
+    post:
+      summary: Skill-Gap Analysis
+      operationId: post_v1_gap-analysis
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+  /v1/resource-ranking:
+    post:
+      summary: Resource Ranking / RAG
+      operationId: post_v1_resource-ranking
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+  /v1/assessment/generate:
+    post:
+      summary: Assessment Generation
+      operationId: post_v1_assessment_generate
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                concept_id:
+                  type: string
+  /v1/evaluate:
+    post:
+      summary: Evaluation Engine
+      operationId: post_v1_evaluate
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+  /v1/competency-estimate:
+    post:
+      summary: Competency Estimation
+      operationId: post_v1_competency-estimate
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+  /v1/adaptive-decision:
+    post:
+      summary: Adaptive Decision Logic
+      operationId: post_v1_adaptive-decision
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+  /v1/remediation/generate:
+    post:
+      summary: Remediation Generation
+      operationId: post_v1_remediation_generate
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+  /v1/health:
+    get:
+      summary: Health check endpoint
+      operationId: get_v1_health
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
