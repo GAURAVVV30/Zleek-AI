@@ -25,7 +25,7 @@ func NewHandler(knowledgeService *application.KnowledgeService) *Handler {
 
 func (h *Handler) RegisterRoutes(mux *http.ServeMux) {
 	mux.HandleFunc("GET /domains", h.handleListDomains)
-	mux.HandleFunc("GET /concepts/", h.handleGetConcept) // GET /concepts/{id}
+	mux.HandleFunc("GET /knowledge/concepts/", h.handleGetConcept) // GET /knowledge/concepts/{id}
 	mux.HandleFunc("GET /curator/knowledge-structures", h.handleListKnowledgeStructures)
 	mux.HandleFunc("POST /curator/knowledge-structures", h.handleCreateKnowledgeStructure)
 	mux.HandleFunc("PATCH /curator/knowledge-structures", h.handleUpdateKnowledgeStructure)
@@ -43,11 +43,11 @@ func (h *Handler) handleListDomains(w http.ResponseWriter, r *http.Request) {
 
 func (h *Handler) handleGetConcept(w http.ResponseWriter, r *http.Request) {
 	parts := strings.Split(r.URL.Path, "/")
-	if len(parts) != 3 {
+	if len(parts) != 4 {
 		http.NotFound(w, r)
 		return
 	}
-	id := parts[2]
+	id := parts[3]
 
 	concept, err := h.knowledgeService.GetConcept(r.Context(), id)
 	if err != nil {
