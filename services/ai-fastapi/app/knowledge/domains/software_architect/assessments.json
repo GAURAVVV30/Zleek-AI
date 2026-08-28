@@ -1,0 +1,15 @@
+{
+  "domain": "software_architect",
+  "assessments": [
+    {
+      "id": "arch-basics",
+      "question": "What are the key trade-offs between scalability and simplicity in a distributed system?",
+      "difficulty": "medium"
+    },
+    {
+      "id": "security-design",
+      "question": "How would you secure a public-facing API with layered protections?",
+      "difficulty": "hard"
+    }
+  ]
+}
