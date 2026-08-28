@@ -1,0 +1,21 @@
+{
+  "domain": "software_architect",
+  "resources": [
+    {
+      "id": "sys-design-primer",
+      "title": "System Design Primer",
+      "type": "tutorial",
+      "url": "https://github.com/donnemartin/system-design-primer",
+      "tags": ["system design", "scalability", "architecture"],
+      "summary": "A comprehensive overview of scalable system design, distributed systems, and architectural trade-offs."
+    },
+    {
+      "id": "microservices-guide",
+      "title": "Microservices Patterns",
+      "type": "guide",
+      "url": "https://microservices.io/",
+      "tags": ["microservices", "architecture", "integration"],
+      "summary": "Patterns and principles for designing resilient service-oriented architectures."
+    }
+  ]
+}
