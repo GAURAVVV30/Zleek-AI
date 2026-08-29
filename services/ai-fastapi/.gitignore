@@ -1,0 +1,9 @@
+__pycache__/
+*.pyc
+.env
+raw_data/
+app/knowledge/raw_pdfs/
+app/knowledge/domains/*/*.json
+!app/knowledge/domains/software_architect/skill_graph.json
+!app/knowledge/domains/software_architect/resources_rag.json
+!app/knowledge/domains/software_architect/assessments.json

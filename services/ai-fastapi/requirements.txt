@@ -1,0 +1,13 @@
+fastapi
+uvicorn[standard]
+pydantic
+python-dotenv
+requests
+httpx
+groq
+networkx
+chromadb
+
+# Optional helper libs for PDFs/embeddings later
+pypdf
+sentence-transformers
