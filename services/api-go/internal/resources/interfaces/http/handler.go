@@ -167,11 +167,11 @@ func (h *Handler) GetFeedbackSignals(w http.ResponseWriter, r *http.Request) {
 
 func (h *Handler) GetAlternateResources(w http.ResponseWriter, r *http.Request) {
 	parts := strings.Split(r.URL.Path, "/")
-	if len(parts) != 5 || parts[1] != "concepts" || parts[3] != "resources" || parts[4] != "alternate" {
+	if len(parts) != 6 || parts[1] != "resources" || parts[2] != "concepts" || parts[4] != "resources" || parts[5] != "alternate" {
 		http.NotFound(w, r)
 		return
 	}
-	conceptID := parts[2]
+	conceptID := parts[3]
 
 	resources, err := h.alternateUseCase.Execute(r.Context(), conceptID)
 	if err != nil {
@@ -185,12 +185,12 @@ func (h *Handler) GetAlternateResources(w http.ResponseWriter, r *http.Request) 
 
 func (h *Handler) ExplainResourceRelevance(w http.ResponseWriter, r *http.Request) {
 	parts := strings.Split(r.URL.Path, "/")
-	if len(parts) != 6 || parts[1] != "concepts" || parts[3] != "resources" || parts[5] != "why" {
+	if len(parts) != 7 || parts[1] != "resources" || parts[2] != "concepts" || parts[4] != "resources" || parts[6] != "why" {
 		http.NotFound(w, r)
 		return
 	}
-	conceptID := parts[2]
-	resourceID := parts[4]
+	conceptID := parts[3]
+	resourceID := parts[5]
 
 	explanation, err := h.explainUseCase.Execute(r.Context(), conceptID, resourceID)
 	if err != nil {
@@ -208,7 +208,7 @@ func (h *Handler) RegisterRoutes(mux *http.ServeMux) {
 	mux.HandleFunc("PATCH /curator/resources", requireCurator(h.UpdateResource))
 	mux.HandleFunc("GET /curator/resources/{id}/feedback-signals", requireCurator(h.GetFeedbackSignals))
 	// These are learning endpoints
-	mux.HandleFunc("GET /concepts/", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("GET /resources/concepts/", func(w http.ResponseWriter, r *http.Request) {
 		// Demux based on path
 		if strings.HasSuffix(r.URL.Path, "/alternate") {
 			h.GetAlternateResources(w, r)
