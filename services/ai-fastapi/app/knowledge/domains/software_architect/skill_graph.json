@@ -1,0 +1,16 @@
+{
+  "domain": "software_architect",
+  "nodes": [
+    {"id": "intro", "label": "Introduction to Software Architecture", "type": "concept"},
+    {"id": "requirements", "label": "Requirements & Trade-offs", "type": "concept"},
+    {"id": "design", "label": "System Design", "type": "concept"},
+    {"id": "scalability", "label": "Scalability Patterns", "type": "concept"},
+    {"id": "security", "label": "Security Architecture", "type": "concept"}
+  ],
+  "edges": [
+    {"source": "intro", "target": "requirements"},
+    {"source": "requirements", "target": "design"},
+    {"source": "design", "target": "scalability"},
+    {"source": "design", "target": "security"}
+  ]
+}
