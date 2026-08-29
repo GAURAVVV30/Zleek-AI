@@ -1,0 +1,171 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "SkillNode",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "name",
+    "domain",
+    "category",
+    "tier",
+    "difficulty_level",
+    "estimated_hours",
+    "prerequisites",
+    "transferable_to",
+    "core_concepts",
+    "resources",
+    "assessment_rubric",
+    "version",
+    "keywords",
+    "active"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique skill node identifier"
+    },
+    "name": {
+      "type": "string",
+      "description": "Human-readable name of the skill node"
+    },
+    "domain": {
+      "type": "string",
+      "description": "Learning domain this node belongs to"
+    },
+    "category": {
+      "type": "string",
+      "description": "Broad category or cluster within the domain"
+    },
+    "tier": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 4,
+      "description": "1: Foundation, 2: Core, 3: Advanced, 4: Specialization"
+    },
+    "difficulty_level": {
+      "type": "string",
+      "enum": ["zero", "basic", "intermediate", "advanced"],
+      "description": "Difficulty classification for the node"
+    },
+    "estimated_hours": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Estimated effort in hours to master the skill"
+    },
+    "prerequisites": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["hard", "soft"],
+      "properties": {
+        "hard": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Mandatory prerequisite skill IDs"
+        },
+        "soft": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Optional or recommended prerequisite skill IDs"
+        }
+      }
+    },
+    "transferable_to": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Other career domains or roles that can use this skill node"
+    },
+    "core_concepts": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Key concepts the learner should understand"
+    },
+    "resources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["type", "title", "url", "provider", "authority_score"],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": ["article", "documentation", "video", "interactive", "diagram", "course"]
+          },
+          "title": { "type": "string" },
+          "url": { "type": "string", "format": "uri" },
+          "provider": { "type": "string" },
+          "authority_score": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1,
+            "description": "Trust or authority score for relevance ranking"
+          }
+        }
+      }
+    },
+    "assessment_rubric": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "diagnostic_question",
+        "socratic_prompt",
+        "key_evaluation_criteria",
+        "remediation_hint"
+      ],
+      "properties": {
+        "diagnostic_question": {
+          "type": "string",
+          "description": "A diagnostic question to gauge understanding"
+        },
+        "socratic_prompt": {
+          "type": "string",
+          "description": "A reflective, inquiry-driven prompt for deeper learning"
+        },
+        "key_evaluation_criteria": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Checklist of important concepts or expected competencies"
+        },
+        "remediation_hint": {
+          "type": "string",
+          "description": "Supportive guidance when the learner is not yet proficient"
+        }
+      }
+    },
+    "version": {
+      "type": "string",
+      "description": "Schema or data version, e.g. 1.0"
+    },
+    "keywords": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Terms used for semantic/vector indexing and search matching"
+    },
+    "active": {
+      "type": "boolean",
+      "default": true,
+      "description": "Whether this skill node is currently active in the learning platform"
+    }
+  },
+  "definitions": {
+    "resourceObject": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "title", "url", "provider", "authority_score"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["article", "documentation", "video", "interactive", "diagram", "course"]
+        },
+        "title": { "type": "string" },
+        "url": { "type": "string", "format": "uri" },
+        "provider": { "type": "string" },
+        "authority_score": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      }
+    }
+  }
+}
