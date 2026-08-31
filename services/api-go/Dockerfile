@@ -22,8 +22,7 @@ WORKDIR /root/
 COPY --from=builder /app/bin/api-server .
 COPY --from=builder /app/bin/worker-server .
 COPY --from=builder /app/bin/migrate-runner .
-# We would also copy migrations/ here, but it's empty for now
-# COPY --from=builder /app/migrations ./migrations
+COPY --from=builder /app/migrations ./migrations
 
 EXPOSE 8080
 

@@ -48,7 +48,7 @@ services:
 
   ai-fastapi:
     build:
-      context: "../../services/ai-fastapi"
+      context: ./services/ai-fastapi
       dockerfile: Dockerfile
     image: wtfwizz30/amplified-ai-fastapi:latest
     container_name: amplified_ai_fastapi
@@ -67,7 +67,7 @@ services:
 
   api-go:
     build:
-      context: "../../services/api-go"
+      context: ./services/api-go
       dockerfile: Dockerfile
     image: wtfwizz30/amplified-api-go:latest
     container_name: amplified_api_go
@@ -101,7 +101,7 @@ services:
 
   web:
     build:
-      context: "../../apps/web"
+      context: ./apps/web
       dockerfile: Dockerfile
     image: wtfwizz30/amplified-web:latest
     container_name: amplified_web
