@@ -1,0 +1,847 @@
+{
+  "domain_id": "backend_engineer",
+  "domain_name": "Backend Engineer",
+  "total_nodes": 12,
+  "nodes": [
+    {
+      "id": "be_01_programming_fundamentals",
+      "name": "Programming Fundamentals and Clean Code",
+      "domain": "backend_engineer",
+      "category": "Programming",
+      "tier": 1,
+      "difficulty_level": "basic",
+      "estimated_hours": 12,
+      "prerequisites": {
+        "hard": [],
+        "soft": []
+      },
+      "transferable_to": [
+        "software_architect",
+        "fullstack_developer",
+        "ai_engineer",
+        "devops_engineer"
+      ],
+      "core_concepts": [
+        "Variables, functions, control flow",
+        "Data structures and abstractions",
+        "OOP and modular design",
+        "Error handling and testing basics",
+        "Writing maintainable code",
+        "Debugging workflows"
+      ],
+      "resources": [
+        {
+          "type": "documentation",
+          "title": "Python Official Docs",
+          "url": "https://docs.python.org/3/",
+          "provider": "Python Software Foundation",
+          "authority_score": 0.99
+        },
+        {
+          "type": "video",
+          "title": "Clean Code Fundamentals",
+          "url": "https://www.youtube.com/results?search_query=clean+code+fundamentals",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        },
+        {
+          "type": "article",
+          "title": "Code Quality Practices",
+          "url": "https://refactoring.guru/",
+          "provider": "Refactoring Guru",
+          "authority_score": 0.9
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "How would you refactor a small business logic script that has duplicated validation and poor error handling into a clean, testable implementation?",
+        "socratic_prompt": "Why do functions with too many responsibilities become harder to reason about and harder to change safely?",
+        "key_evaluation_criteria": [
+          "Produces readable and modular code",
+          "Handles edge cases intentionally",
+          "Demonstrates maintainability principles"
+        ],
+        "remediation_hint": "Break logic into smaller responsibilities, isolate validation, and test edge cases before refactoring further."
+      },
+      "version": "1.0",
+      "keywords": [
+        "programming",
+        "clean-code",
+        "debugging",
+        "functions",
+        "maintainability",
+        "testing"
+      ],
+      "active": true
+    },
+    {
+      "id": "be_02_data_structures_and_algorithms",
+      "name": "Data Structures and Algorithms",
+      "domain": "backend_engineer",
+      "category": "Computer Science",
+      "tier": 1,
+      "difficulty_level": "basic",
+      "estimated_hours": 16,
+      "prerequisites": {
+        "hard": ["be_01_programming_fundamentals"],
+        "soft": []
+      },
+      "transferable_to": [
+        "software_architect",
+        "ai_engineer",
+        "systems_engineer",
+        "fullstack_developer"
+      ],
+      "core_concepts": [
+        "Arrays, lists, sets, maps, stacks, and queues",
+        "Trees, graphs, and heaps",
+        "Recursion and iteration",
+        "Sorting and searching",
+        "Big-O analysis",
+        "Hashing and indexing"
+      ],
+      "resources": [
+        {
+          "type": "article",
+          "title": "Big O Cheat Sheet",
+          "url": "https://www.bigocheatsheet.com/",
+          "provider": "Big O Cheat Sheet",
+          "authority_score": 0.91
+        },
+        {
+          "type": "documentation",
+          "title": "Python Data Structures Guide",
+          "url": "https://docs.python.org/3/library/collections.html",
+          "provider": "Python Docs",
+          "authority_score": 0.95
+        },
+        {
+          "type": "video",
+          "title": "Data Structures and Algorithms Overview",
+          "url": "https://www.youtube.com/results?search_query=data+structures+and+algorithms+for+beginners",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "How would you choose between a hash map and a sorted structure to implement a high-throughput lookup system, and which trade-offs affect memory and performance?",
+        "socratic_prompt": "If a service must perform frequent insertions and lookups while preserving order, what data structure is most appropriate and why?",
+        "key_evaluation_criteria": [
+          "Understands algorithmic complexity and performance trade-offs",
+          "Chooses data structures based on access patterns",
+          "Can explain correctness and range constraints"
+        ],
+        "remediation_hint": "Practice comparing algorithms by workload, then validate assumptions with time and memory reasoning rather than intuition alone."
+      },
+      "version": "1.0",
+      "keywords": [
+        "algorithms",
+        "data-structures",
+        "time-complexity",
+        "hashing",
+        "graphs",
+        "big-o"
+      ],
+      "active": true
+    },
+    {
+      "id": "be_03_oop_and_design_patterns",
+      "name": "Object-Oriented Design and Design Patterns",
+      "domain": "backend_engineer",
+      "category": "Software Design",
+      "tier": 1,
+      "difficulty_level": "basic",
+      "estimated_hours": 12,
+      "prerequisites": {
+        "hard": ["be_01_programming_fundamentals"],
+        "soft": ["be_02_data_structures_and_algorithms"]
+      },
+      "transferable_to": [
+        "software_architect",
+        "fullstack_developer",
+        "mobile_engineer",
+        "game_developer"
+      ],
+      "core_concepts": [
+        "Encapsulation, inheritance, and polymorphism",
+        "Interfaces and abstractions",
+        "SOLID principles",
+        "Factory, strategy, observer, and adapter patterns",
+        "Dependency injection",
+        "Code cohesion and coupling"
+      ],
+      "resources": [
+        {
+          "type": "article",
+          "title": "SOLID Principles Explained",
+          "url": "https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html",
+          "provider": "Robert C. Martin",
+          "authority_score": 0.98
+        },
+        {
+          "type": "video",
+          "title": "Design Patterns in Practice",
+          "url": "https://www.youtube.com/results?search_query=design+patterns+software+engineering",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        },
+        {
+          "type": "documentation",
+          "title": "Refactoring Guru Design Patterns",
+          "url": "https://refactoring.guru/design-patterns",
+          "provider": "Refactoring Guru",
+          "authority_score": 0.92
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "A payment service must support multiple providers with different pricing and validation behaviors. Explain how you would model the system to keep it extensible without rewriting business logic.",
+        "socratic_prompt": "When a new provider requires a new integration, which design pattern best prevents modifying central switch logic and why?",
+        "key_evaluation_criteria": [
+          "Identifies appropriate abstraction and extension mechanisms",
+          "Explains decoupling and interface-driven design",
+          "Knows when patterns reduce complexity instead of adding it"
+        ],
+        "remediation_hint": "Think in terms of interfaces and delegation rather than branching on provider type inside a central service."
+      },
+      "version": "1.0",
+      "keywords": [
+        "oop",
+        "solid",
+        "design-patterns",
+        "dependency-injection",
+        "abstraction",
+        "coupling"
+      ],
+      "active": true
+    },
+    {
+      "id": "be_04_database_design_and_sql",
+      "name": "Databases, SQL, and Relational Modeling",
+      "domain": "backend_engineer",
+      "category": "Data Management",
+      "tier": 2,
+      "difficulty_level": "basic",
+      "estimated_hours": 14,
+      "prerequisites": {
+        "hard": ["be_03_oop_and_design_patterns"],
+        "soft": ["be_02_data_structures_and_algorithms"]
+      },
+      "transferable_to": [
+        "data_engineer",
+        "software_architect",
+        "fullstack_developer",
+        "platform_engineer"
+      ],
+      "core_concepts": [
+        "Relational modeling and normalization",
+        "Primary and foreign keys",
+        "Transactions and isolation",
+        "Indexes and query optimization",
+        "SQL joins and aggregate queries",
+        "Transactions and consistency"
+      ],
+      "resources": [
+        {
+          "type": "documentation",
+          "title": "PostgreSQL Documentation",
+          "url": "https://www.postgresql.org/docs/current/",
+          "provider": "PostgreSQL",
+          "authority_score": 0.99
+        },
+        {
+          "type": "article",
+          "title": "SQL Join Fundamentals",
+          "url": "https://www.w3schools.com/sql/sql_join.asp",
+          "provider": "W3Schools",
+          "authority_score": 0.85
+        },
+        {
+          "type": "video",
+          "title": "SQL Performance Tuning",
+          "url": "https://www.youtube.com/results?search_query=sql+query+optimization",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Design a relational schema for an order system that tracks customers, products, orders, and payments, and explain how you would enforce integrity and handle concurrency safely.",
+        "socratic_prompt": "Why is a table with duplicated order lines and repeated customer data harder to maintain, and how does normalization help without hurting read performance?",
+        "key_evaluation_criteria": [
+          "Understands data normalization and key relationships",
+          "Knows query and transactional trade-offs",
+          "Designs consistent and maintainable persistence models"
+        ],
+        "remediation_hint": "Model entities and relationships first, then decide which repeated fields are genuinely necessary based on access patterns and consistency requirements."
+      },
+      "version": "1.0",
+      "keywords": [
+        "sql",
+        "database",
+        "normalization",
+        "transactions",
+        "indexing",
+        "joins"
+      ],
+      "active": true
+    },
+    {
+      "id": "be_05_backend_frameworks_and_apis",
+      "name": "Backend Frameworks and API Design",
+      "domain": "backend_engineer",
+      "category": "Application Layer",
+      "tier": 2,
+      "difficulty_level": "intermediate",
+      "estimated_hours": 16,
+      "prerequisites": {
+        "hard": ["be_04_database_design_and_sql", "be_03_oop_and_design_patterns"],
+        "soft": ["be_01_programming_fundamentals"]
+      },
+      "transferable_to": [
+        "fullstack_developer",
+        "ai_engineer",
+        "platform_engineer",
+        "software_architect"
+      ],
+      "core_concepts": [
+        "HTTP, REST, and API contracts",
+        "Routing, middleware, and validation",
+        "Authentication and authorization",
+        "Rate limiting and idempotency",
+        "OpenAPI and documentation",
+        "Versioning and error handling"
+      ],
+      "resources": [
+        {
+          "type": "documentation",
+          "title": "FastAPI Documentation",
+          "url": "https://fastapi.tiangolo.com/",
+          "provider": "FastAPI",
+          "authority_score": 0.97
+        },
+        {
+          "type": "article",
+          "title": "REST API Design Best Practices",
+          "url": "https://stackoverflow.blog/2020/03/02/best-practices-for-rest-api-design/",
+          "provider": "Stack Overflow",
+          "authority_score": 0.9
+        },
+        {
+          "type": "video",
+          "title": "REST APIs with FastAPI",
+          "url": "https://www.youtube.com/results?search_query=fastapi+rest+api+tutorial",
+          "provider": "YouTube",
+          "authority_score": 0.82
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Design a secure REST API for a user management service that supports role-based access, pagination, filter queries, and retry-safe actions for high-risk operations.",
+        "socratic_prompt": "Why is idempotency crucial for operations like payment submission or order creation, and how would you enforce it without harming user experience?",
+        "key_evaluation_criteria": [
+          "Defines clean contract and proper status semantics",
+          "Explains authorization and validation boundaries",
+          "Handles retries and safe API behavior"
+        ],
+        "remediation_hint": "Review HTTP semantics, API gateways, and the appropriate use of request IDs or idempotency keys in critical operations."
+      },
+      "version": "1.0",
+      "keywords": [
+        "api",
+        "rest",
+        "framework",
+        "fastapi",
+        "authentication",
+        "authorization"
+      ],
+      "active": true
+    },
+    {
+      "id": "be_06_system_design_and_scalability",
+      "name": "Distributed Systems and Scalability Patterns",
+      "domain": "backend_engineer",
+      "category": "System Design",
+      "tier": 2,
+      "difficulty_level": "intermediate",
+      "estimated_hours": 18,
+      "prerequisites": {
+        "hard": ["be_05_backend_frameworks_and_apis", "be_04_database_design_and_sql"],
+        "soft": ["be_02_data_structures_and_algorithms"]
+      },
+      "transferable_to": [
+        "software_architect",
+        "cloud_engineer",
+        "platform_engineer",
+        "site_reliability_engineer"
+      ],
+      "core_concepts": [
+        "CAP theorem and distributed consistency",
+        "Load balancing and stateless services",
+        "Caching and invalidation",
+        "Partitioning, sharding, and replication",
+        "Queueing and asynchronous processing",
+        "Horizontal scaling and bottlenecks"
+      ],
+      "resources": [
+        {
+          "type": "article",
+          "title": "System Design Primer",
+          "url": "https://github.com/donnemartin/system-design-primer",
+          "provider": "Donne Martin",
+          "authority_score": 0.99
+        },
+        {
+          "type": "documentation",
+          "title": "Redis Documentation",
+          "url": "https://redis.io/docs/",
+          "provider": "Redis",
+          "authority_score": 0.97
+        },
+        {
+          "type": "video",
+          "title": "System Design Fundamentals",
+          "url": "https://www.youtube.com/results?search_query=distributed+systems+system+design",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Describe how you would scale a read-heavy product listing service from a single database to an architecture that supports millions of requests per day while preserving correctness and latency budgets.",
+        "socratic_prompt": "Why do distributed systems often sacrifice strict consistency to maintain availability and what trade-offs need to be documented early?",
+        "key_evaluation_criteria": [
+          "Understands scalability bottlenecks and trade-offs",
+          "Explains caching, load balancing, and replication choices",
+          "Links design decisions to workload characteristics"
+        ],
+        "remediation_hint": "Model the workload first, identify the bottleneck, and then choose between replication, sharding, caching, and async processing based on actual access patterns."
+      },
+      "version": "1.0",
+      "keywords": [
+        "system-design",
+        "scalability",
+        "distributed-systems",
+        "cache",
+        "cap",
+        "load-balancing"
+      ],
+      "active": true
+    },
+    {
+      "id": "be_07_asynchronous_processing_and_messaging",
+      "name": "Async Processing and Message-Driven Architecture",
+      "domain": "backend_engineer",
+      "category": "Integration",
+      "tier": 3,
+      "difficulty_level": "intermediate",
+      "estimated_hours": 14,
+      "prerequisites": {
+        "hard": ["be_06_system_design_and_scalability"],
+        "soft": ["be_05_backend_frameworks_and_apis"]
+      },
+      "transferable_to": [
+        "software_architect",
+        "data_engineer",
+        "integration_engineer",
+        "platform_engineer"
+      ],
+      "core_concepts": [
+        "Queues and brokers",
+        "Consumer patterns and retry logic",
+        "Saga orchestration and choreography",
+        "Outbox and inbox patterns",
+        "Event-driven design",
+        "Backpressure and dead-letter queues"
+      ],
+      "resources": [
+        {
+          "type": "article",
+          "title": "Transactional Outbox Pattern",
+          "url": "https://microservices.io/patterns/data/transactional-outbox.html",
+          "provider": "Microservices.io",
+          "authority_score": 0.98
+        },
+        {
+          "type": "documentation",
+          "title": "RabbitMQ Tutorials",
+          "url": "https://www.rabbitmq.com/tutorials.html",
+          "provider": "RabbitMQ",
+          "authority_score": 0.96
+        },
+        {
+          "type": "video",
+          "title": "Kafka vs RabbitMQ",
+          "url": "https://www.youtube.com/results?search_query=kafka+vs+rabbitmq+architecture",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Design an order processing workflow where the order is stored and an event is emitted without risking duplicate or missing processing when the broker is unavailable.",
+        "socratic_prompt": "Why can a simple database write followed by a broker publish create inconsistent state, and what architectural pattern should be used instead?",
+        "key_evaluation_criteria": [
+          "Understands asynchronous reliability and failure mode handling",
+          "Knows how to preserve state consistency across systems",
+          "Explains eventual consistency and orchestration trade-offs"
+        ],
+        "remediation_hint": "Use an outbox pattern or equivalent transaction boundary to guarantee that state changes and emitted events remain consistent when the system fails."
+      },
+      "version": "1.0",
+      "keywords": [
+        "messaging",
+        "queues",
+        "kafka",
+        "rabbitmq",
+        "async",
+        "event-driven"
+      ],
+      "active": true
+    },
+    {
+      "id": "be_08_security_auth_and_identity",
+      "name": "Security, Authentication, and Identity",
+      "domain": "backend_engineer",
+      "category": "Security",
+      "tier": 3,
+      "difficulty_level": "intermediate",
+      "estimated_hours": 14,
+      "prerequisites": {
+        "hard": ["be_05_backend_frameworks_and_apis", "be_06_system_design_and_scalability"],
+        "soft": []
+      },
+      "transferable_to": [
+        "cybersecurity_analyst",
+        "platform_engineer",
+        "software_architect",
+        "ai_engineer"
+      ],
+      "core_concepts": [
+        "Authentication and authorization",
+        "JWT, OAuth2, and OIDC",
+        "Password hashing and secret management",
+        "OWASP top risks",
+        "Rate limiting and abuse prevention",
+        "TLS and secure transport"
+      ],
+      "resources": [
+        {
+          "type": "documentation",
+          "title": "OWASP Top 10",
+          "url": "https://owasp.org/www-project-top-ten/",
+          "provider": "OWASP",
+          "authority_score": 0.99
+        },
+        {
+          "type": "article",
+          "title": "JWT Introduction",
+          "url": "https://jwt.io/introduction",
+          "provider": "JWT.io",
+          "authority_score": 0.95
+        },
+        {
+          "type": "video",
+          "title": "OAuth2 and JWT Explained",
+          "url": "https://www.youtube.com/results?search_query=oauth2+jwt+explained",
+          "provider": "YouTube",
+          "authority_score": 0.82
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Explain how to secure a multi-tenant backend API using short-lived access tokens, refresh tokens, and role-based authorization without leaving the service vulnerable to token abuse or privilege escalation.",
+        "socratic_prompt": "Why are JWTs alone not enough to enforce authorization across distributed services, and what additional security context is often required?",
+        "key_evaluation_criteria": [
+          "Understands auth flows and trust boundaries",
+          "Can reason about token lifecycle and authorization model",
+          "Identifies common vulnerabilities and secure defaults"
+        ],
+        "remediation_hint": "Separate identity verification from access control, validate claims carefully, and enforce least privilege at every layer."
+      },
+      "version": "1.0",
+      "keywords": [
+        "security",
+        "oauth",
+        "jwt",
+        "authentication",
+        "authorization",
+        "owasp"
+      ],
+      "active": true
+    },
+    {
+      "id": "be_09_containerization_and_infrastructure",
+      "name": "Containers, Deployment, and Infrastructure Basics",
+      "domain": "backend_engineer",
+      "category": "DevOps & Deployment",
+      "tier": 3,
+      "difficulty_level": "intermediate",
+      "estimated_hours": 16,
+      "prerequisites": {
+        "hard": ["be_05_backend_frameworks_and_apis", "be_06_system_design_and_scalability"],
+        "soft": ["be_08_security_auth_and_identity"]
+      },
+      "transferable_to": [
+        "devops_engineer",
+        "platform_engineer",
+        "cloud_engineer",
+        "backend_engineer"
+      ],
+      "core_concepts": [
+        "Docker and container images",
+        "Linux basics and process isolation",
+        "Kubernetes primitives and deployment patterns",
+        "Environment configuration and secrets",
+        "Infrastructure as code",
+        "Scaling and health checks"
+      ],
+      "resources": [
+        {
+          "type": "documentation",
+          "title": "Docker Documentation",
+          "url": "https://docs.docker.com/",
+          "provider": "Docker",
+          "authority_score": 0.97
+        },
+        {
+          "type": "documentation",
+          "title": "Kubernetes Documentation",
+          "url": "https://kubernetes.io/docs/home/",
+          "provider": "Kubernetes",
+          "authority_score": 0.99
+        },
+        {
+          "type": "video",
+          "title": "Docker and Kubernetes Overview",
+          "url": "https://www.youtube.com/results?search_query=docker+kubernetes+overview",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Explain how you would package and deploy a backend service in a containerized environment with health checks, secrets management, and a rolling deployment strategy.",
+        "socratic_prompt": "Why are health probes and graceful shutdown behavior critical in production, and how do they reduce service disruption during rollout?",
+        "key_evaluation_criteria": [
+          "Understands container runtime and deployment concepts",
+          "Can reason about resilience and rollout strategy",
+          "Knows how to externalize secrets and configuration safely"
+        ],
+        "remediation_hint": "Study container lifecycle events, readiness probes, and immutable deployment patterns before operationalizing services at scale."
+      },
+      "version": "1.0",
+      "keywords": [
+        "docker",
+        "kubernetes",
+        "containers",
+        "deployment",
+        "health-checks",
+        "secrets"
+      ],
+      "active": true
+    },
+    {
+      "id": "be_10_resilience_and_observability",
+      "name": "Reliability, Resilience, and Observability",
+      "domain": "backend_engineer",
+      "category": "Operations & Reliability",
+      "tier": 4,
+      "difficulty_level": "advanced",
+      "estimated_hours": 16,
+      "prerequisites": {
+        "hard": ["be_07_asynchronous_processing_and_messaging", "be_09_containerization_and_infrastructure"],
+        "soft": ["be_08_security_auth_and_identity"]
+      },
+      "transferable_to": [
+        "site_reliability_engineer",
+        "platform_engineer",
+        "software_architect",
+        "devops_engineer"
+      ],
+      "core_concepts": [
+        "Circuit breakers and retries",
+        "Monitoring, tracing, and logs",
+        "SLOs and error budgets",
+        "Graceful degradation",
+        "Service health and incident response",
+        "Failure isolation and blast radius control"
+      ],
+      "resources": [
+        {
+          "type": "documentation",
+          "title": "Google SRE Book",
+          "url": "https://sre.google/sre-book/",
+          "provider": "Google SRE",
+          "authority_score": 0.99
+        },
+        {
+          "type": "article",
+          "title": "Circuit Breaker Pattern",
+          "url": "https://martinfowler.com/bliki/CircuitBreaker.html",
+          "provider": "Martin Fowler",
+          "authority_score": 0.98
+        },
+        {
+          "type": "video",
+          "title": "Observability for Distributed Systems",
+          "url": "https://www.youtube.com/results?search_query=observability+distributed+systems",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Explain how you would design a backend service to degrade gracefully under downstream dependency failures while protecting user experience and keeping operational metrics actionable.",
+        "socratic_prompt": "When latency spikes across a dependency chain, why can unbounded retries cause more harm than benefit and what resilience patterns help?",
+        "key_evaluation_criteria": [
+          "Understands resilience patterns and operational trade-offs",
+          "Uses monitoring and error budgets to decide on action",
+          "Can isolate failures and protect user experience"
+        ],
+        "remediation_hint": "Build explicit timeout, retry, and circuit-breaker policies and pair them with telemetry that distinguishes dependency failures from application defects."
+      },
+      "version": "1.0",
+      "keywords": [
+        "resilience",
+        "observability",
+        "sre",
+        "circuit-breaker",
+        "monitoring",
+        "reliability"
+      ],
+      "active": true
+    },
+    {
+      "id": "be_11_microservices_and_architecture_patterns",
+      "name": "Microservices and Backend Architecture Patterns",
+      "domain": "backend_engineer",
+      "category": "Architecture",
+      "tier": 4,
+      "difficulty_level": "advanced",
+      "estimated_hours": 18,
+      "prerequisites": {
+        "hard": ["be_07_asynchronous_processing_and_messaging", "be_09_containerization_and_infrastructure", "be_10_resilience_and_observability"],
+        "soft": ["be_08_security_auth_and_identity"]
+      },
+      "transferable_to": [
+        "software_architect",
+        "solutions_architect",
+        "platform_engineer",
+        "engineering_manager"
+      ],
+      "core_concepts": [
+        "Bounded context and domain decomposition",
+        "API gateways and service discovery",
+        "CQRS, event sourcing, and eventual consistency",
+        "Service ownership and contracts",
+        "Deployment independence and governance",
+        "Operational complexity and trade-offs"
+      ],
+      "resources": [
+        {
+          "type": "article",
+          "title": "Microservices Patterns",
+          "url": "https://microservices.io/",
+          "provider": "Chris Richardson",
+          "authority_score": 0.98
+        },
+        {
+          "type": "documentation",
+          "title": "Domain-Driven Design Reference",
+          "url": "https://domainlanguage.com/ddd/reference/",
+          "provider": "Domain Language",
+          "authority_score": 0.97
+        },
+        {
+          "type": "video",
+          "title": "Microservices Design Patterns Overview",
+          "url": "https://www.youtube.com/results?search_query=microservices+design+patterns",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Describe how you would decompose a monolithic payments system into services while keeping operational risk manageable, preserving consistency, and maintaining a coherent user experience.",
+        "socratic_prompt": "When a business process spans multiple services, why is distributed orchestration not always the right choice and when would choreography be preferable?",
+        "key_evaluation_criteria": [
+          "Understands service boundaries and domain ownership",
+          "Can reason about consistency and communication patterns",
+          "Recognizes complexity and trade-offs of microservice adoption"
+        ],
+        "remediation_hint": "Start with domain boundaries and data ownership, then identify which business workflows truly need distributed coordination versus local efficiency."
+      },
+      "version": "1.0",
+      "keywords": [
+        "microservices",
+        "architecture",
+        "ddd",
+        "cqrs",
+        "event-sourcing",
+        "bounded-context"
+      ],
+      "active": true
+    },
+    {
+      "id": "be_12_backend_strategy_and_technical_leadership",
+      "name": "Backend Strategy, Governance, and Technical Leadership",
+      "domain": "backend_engineer",
+      "category": "Leadership & Strategy",
+      "tier": 4,
+      "difficulty_level": "advanced",
+      "estimated_hours": 12,
+      "prerequisites": {
+        "hard": ["be_11_microservices_and_architecture_patterns", "be_10_resilience_and_observability"],
+        "soft": ["be_08_security_auth_and_identity"]
+      },
+      "transferable_to": [
+        "engineering_manager",
+        "principal_engineer",
+        "software_architect",
+        "solutions_architect"
+      ],
+      "core_concepts": [
+        "Architecture decision records",
+        "Technical debt management",
+        "Platform standards and governance",
+        "Prioritization and roadmap shaping",
+        "Developer productivity and velocity",
+        "Cross-cutting reliability and quality standards"
+      ],
+      "resources": [
+        {
+          "type": "documentation",
+          "title": "Architecture Decision Records",
+          "url": "https://adr.github.io/",
+          "provider": "ADR GitHub",
+          "authority_score": 0.95
+        },
+        {
+          "type": "article",
+          "title": "Technical Debt and Platform Strategy",
+          "url": "https://martinfowler.com/articles/is-quality-worth-cost.html",
+          "provider": "Martin Fowler",
+          "authority_score": 0.94
+        },
+        {
+          "type": "video",
+          "title": "Engineering Leadership Themes",
+          "url": "https://www.youtube.com/results?search_query=engineering+leadership+roadmap",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Describe how you would lead a backend modernization initiative that balances feature delivery, platform reliability, and long-term engineering velocity without causing broad disruption.",
+        "socratic_prompt": "When teams push for speed over architecture quality, how do you turn trade-offs into clear decisions that are visible to both engineering and business stakeholders?",
+        "key_evaluation_criteria": [
+          "Links technical decisions to business and platform outcomes",
+          "Manages risk, trade-offs, and execution planning",
+          "Communicates standards and governance with clarity"
+        ],
+        "remediation_hint": "Create actionable architecture records, align standards to outcomes, and make technical debt visible through explicit cost and risk framing."
+      },
+      "version": "1.0",
+      "keywords": [
+        "leadership",
+        "strategy",
+        "governance",
+        "technical-debt",
+        "architecture-decisions",
+        "platform"
+      ],
+      "active": true
+    }
+  ]
+}

@@ -22,7 +22,10 @@ func Auth(jwtSecret string) func(http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			// Some paths shouldn't be authenticated, e.g., /auth/login, /auth/signup, /health, /ready
 			path := r.URL.Path
-			if strings.HasPrefix(path, "/auth/login") || strings.HasPrefix(path, "/auth/signup") ||
+			// AI intelligence endpoints are mirror-ported from the unauthenticated
+			// FastAPI service (goal/roadmap/mastery/adaptive/evaluate/voice/guardrails).
+			// They are registered at /api/v1/* with no auth, matching FastAPI's behavior.
+			if strings.HasPrefix(path, "/api/v1") || strings.HasPrefix(path, "/auth/login") || strings.HasPrefix(path, "/auth/signup") ||
 				strings.HasPrefix(path, "/auth/refresh") || path == "/health" || path == "/ready" {
 				next.ServeHTTP(w, r)
 				return
@@ -76,9 +79,11 @@ func Auth(jwtSecret string) func(http.Handler) http.Handler {
 			ctx := context.WithValue(r.Context(), UserIDKey, userID)
 			ctx = context.WithValue(ctx, UserRoleKey, role)
 
-			// Also mutate the request headers to keep compatibility with existing handlers that read X-User-*
+			// Also mutate the request headers to keep compatibility with existing
+			// handlers that read X-User-* / X-Learner-ID.
 			r.Header.Set("X-User-ID", userID)
 			r.Header.Set("X-User-Role", role)
+			r.Header.Set("X-Learner-ID", userID)
 
 			next.ServeHTTP(w, r.WithContext(ctx))
 		})

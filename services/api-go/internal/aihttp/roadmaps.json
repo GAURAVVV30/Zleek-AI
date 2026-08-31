@@ -1,0 +1,76 @@
+{
+  "ml_engineer": {
+    "domain": "ML engineer",
+    "edges": [
+      {
+        "source": "intro",
+        "target": "python_data"
+      },
+      {
+        "source": "python_data",
+        "target": "data_prep"
+      },
+      {
+        "source": "data_prep",
+        "target": "modeling"
+      },
+      {
+        "source": "modeling",
+        "target": "training"
+      },
+      {
+        "source": "training",
+        "target": "deployment"
+      },
+      {
+        "source": "deployment",
+        "target": "monitoring"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "intro",
+        "label": "Intro to ML \u0026 Tooling"
+      },
+      {
+        "id": "python_data",
+        "label": "Python for Data (pandas, numpy)"
+      },
+      {
+        "id": "data_prep",
+        "label": "Data Cleaning \u0026 Feature Engineering"
+      },
+      {
+        "id": "modeling",
+        "label": "Modeling \u0026 Algorithms"
+      },
+      {
+        "id": "training",
+        "label": "Training at Scale"
+      },
+      {
+        "id": "deployment",
+        "label": "Model Serving \u0026 APIs"
+      },
+      {
+        "id": "monitoring",
+        "label": "Monitoring \u0026 Drift Detection"
+      }
+    ]
+  },
+  "my_domain": {
+    "domain": "my_domain",
+    "edges": [
+      {
+        "source": "a",
+        "target": "b"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "a",
+        "label": "A"
+      }
+    ]
+  }
+}

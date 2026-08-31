@@ -2,6 +2,7 @@ package application
 
 import (
 	"context"
+	"strings"
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
@@ -9,16 +10,19 @@ import (
 	"golang.org/x/crypto/bcrypt"
 
 	"github.com/hcl-backend/services/api-go/internal/identity/domain"
+	"github.com/hcl-backend/services/api-go/internal/platform/auditlog"
 )
 
 type AuthService struct {
 	repo      UserRepository
+	audit     auditlog.Writer
 	jwtSecret []byte
 }
 
-func NewAuthService(repo UserRepository, secret string) *AuthService {
+func NewAuthService(repo UserRepository, secret string, audit auditlog.Writer) *AuthService {
 	return &AuthService{
 		repo:      repo,
+		audit:     audit,
 		jwtSecret: []byte(secret),
 	}
 }
@@ -29,7 +33,15 @@ type AuthResponse struct {
 	User         domain.User
 }
 
-func (s *AuthService) Signup(ctx context.Context, email, password string, role domain.UserRole) (*AuthResponse, error) {
+func (s *AuthService) Signup(ctx context.Context, email, password, fullName string) (*AuthResponse, error) {
+	email = strings.ToLower(strings.TrimSpace(email))
+	if !domain.ValidateGmail(email) {
+		return nil, domain.ErrInvalidEmail
+	}
+	if !domain.ValidatePassword(password) {
+		return nil, domain.ErrWeakPassword
+	}
+
 	_, err := s.repo.GetByEmail(ctx, email)
 	if err == nil {
 		return nil, domain.ErrUserAlreadyExists
@@ -43,33 +55,44 @@ func (s *AuthService) Signup(ctx context.Context, email, password string, role d
 		return nil, err
 	}
 
+	now := time.Now().UTC()
 	user := &domain.User{
 		ID:           uuid.New().String(),
 		Email:        email,
 		PasswordHash: string(hashedPassword),
-		Role:         role,
+		Role:         domain.RoleLearner,
 		Status:       domain.StatusActive,
-		CreatedAt:    time.Now().UTC(),
-		UpdatedAt:    time.Now().UTC(),
+		FullName:     strings.TrimSpace(fullName),
+		Timezone:     "UTC",
+		Theme:        "default",
+		CreatedAt:    now,
+		UpdatedAt:    now,
 	}
 
 	if err := s.repo.Create(ctx, user); err != nil {
 		return nil, err
 	}
 
+	s.auditLoginEvent(ctx, user, "auth.signup", user)
 	return s.generateTokens(user)
 }
 
 func (s *AuthService) Login(ctx context.Context, email, password string) (*AuthResponse, error) {
+	email = strings.ToLower(strings.TrimSpace(email))
 	user, err := s.repo.GetByEmail(ctx, email)
 	if err != nil {
 		return nil, domain.ErrInvalidCredentials
 	}
 
-	if err := bcrypt.CompareHashAndPassword([]byte(user.PasswordHash), []byte(password)); err != nil {
+	if bcrypt.CompareHashAndPassword([]byte(user.PasswordHash), []byte(password)) != nil {
 		return nil, domain.ErrInvalidCredentials
 	}
 
+	if user.Status == domain.StatusSuspended {
+		return nil, domain.ErrInvalidCredentials
+	}
+
+	s.auditLoginEvent(ctx, user, "auth.login", user)
 	return s.generateTokens(user)
 }
 
@@ -77,7 +100,6 @@ func (s *AuthService) Refresh(ctx context.Context, refreshToken string) (*AuthRe
 	token, err := jwt.Parse(refreshToken, func(token *jwt.Token) (interface{}, error) {
 		return s.jwtSecret, nil
 	})
-
 	if err != nil || !token.Valid {
 		return nil, domain.ErrInvalidCredentials
 	}
@@ -97,7 +119,44 @@ func (s *AuthService) Refresh(ctx context.Context, refreshToken string) (*AuthRe
 		return nil, domain.ErrInvalidCredentials
 	}
 
+	s.auditLoginEvent(ctx, user, "auth.refresh", user)
 	return s.generateTokens(user)
+}
+
+func (s *AuthService) Logout(ctx context.Context, actorID string) error {
+	if s.audit == nil {
+		return nil
+	}
+	return s.audit.Write(ctx, auditlog.Record{
+		ActorID:          actorID,
+		Action:           "auth.logout",
+		TargetEntityType: "user",
+		TargetEntityID:   actorID,
+	})
+}
+
+func (s *AuthService) ChangePassword(ctx context.Context, userID, current, newPassword string) error {
+	if !domain.ValidatePassword(newPassword) {
+		return domain.ErrWeakPassword
+	}
+	user, err := s.repo.GetByID(ctx, userID)
+	if err != nil {
+		return err
+	}
+	if bcrypt.CompareHashAndPassword([]byte(user.PasswordHash), []byte(current)) != nil {
+		return domain.ErrInvalidCredentials
+	}
+	hashed, err := bcrypt.GenerateFromPassword([]byte(newPassword), bcrypt.DefaultCost)
+	if err != nil {
+		return err
+	}
+	user.PasswordHash = string(hashed)
+	user.UpdatedAt = time.Now().UTC()
+	if err := s.repo.Update(ctx, user); err != nil {
+		return err
+	}
+	s.auditLoginEvent(ctx, user, "auth.change_password", user)
+	return nil
 }
 
 func (s *AuthService) GetUser(ctx context.Context, id string) (*domain.User, error) {
@@ -108,38 +167,65 @@ func (s *AuthService) ListUsers(ctx context.Context) ([]domain.User, error) {
 	return s.repo.List(ctx)
 }
 
-func (s *AuthService) UpdateUser(ctx context.Context, id string, role *string, status *string) (*domain.User, error) {
+func (s *AuthService) UpdateUser(ctx context.Context, id string, role *string, status *string, fullName, timezone, theme *string) (*domain.User, error) {
 	user, err := s.repo.GetByID(ctx, id)
 	if err != nil {
 		return nil, err
 	}
+	before := map[string]any{"role": user.Role, "status": user.Status}
 	if role != nil {
 		user.Role = domain.UserRole(*role)
 	}
 	if status != nil {
 		user.Status = domain.UserStatus(*status)
 	}
+	if fullName != nil {
+		user.FullName = *fullName
+	}
+	if timezone != nil {
+		user.Timezone = *timezone
+	}
+	if theme != nil {
+		user.Theme = *theme
+	}
 	user.UpdatedAt = time.Now().UTC()
 	if err := s.repo.Update(ctx, user); err != nil {
 		return nil, err
 	}
+	after := map[string]any{"role": user.Role, "status": user.Status}
+	s.auditLoginEvent(ctx, user, "admin.update_user", map[string]any{"before": before, "after": after})
 	return user, nil
 }
 
+func (s *AuthService) Initialize(ctx context.Context, user *domain.User) error {
+	return s.repo.Create(ctx, user)
+}
+
+func (s *AuthService) auditLoginEvent(ctx context.Context, user *domain.User, action string, after any) {
+	if s.audit == nil {
+		return
+	}
+	_ = s.audit.Write(ctx, auditlog.Record{
+		ActorID:          user.ID,
+		Action:           action,
+		TargetEntityType: "user",
+		TargetEntityID:   user.ID,
+		AfterState:       after,
+	})
+}
+
 func (s *AuthService) generateTokens(user *domain.User) (*AuthResponse, error) {
-	// Access Token
 	accessToken := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"sub":  user.ID,
 		"role": user.Role,
 		"type": "access",
-		"exp":  time.Now().Add(15 * time.Minute).Unix(),
+		"exp":  time.Now().Add(7 * time.Hour).Unix(),
 	})
 	accessTokenString, err := accessToken.SignedString(s.jwtSecret)
 	if err != nil {
 		return nil, err
 	}
 
-	// Refresh Token
 	refreshToken := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"sub":  user.ID,
 		"type": "refresh",

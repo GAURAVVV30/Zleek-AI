@@ -31,16 +31,22 @@ func (m *mockAIClient) ProposeGoalMapping(ctx context.Context, goalText string) 
 	if goalText == "invalid" {
 		return "", domain.ErrAIProposalInvalid
 	}
-	return "mock-ks-id", nil
+	return "machine_learning", nil
 }
 
 type mockKnowledgeService struct{}
 
-func (m *mockKnowledgeService) ValidateStructure(ctx context.Context, structureID string) error {
-	if structureID != "mock-ks-id" {
-		return domain.ErrKnowledgeUnpublished
+func (m *mockKnowledgeService) ResolveStructure(ctx context.Context, ref string) (*application.ResolvedStructure, error) {
+	if ref != "machine_learning" {
+		return nil, domain.ErrGoalNotFound
 	}
-	return nil
+	return &application.ResolvedStructure{
+		ID:          "ks-ml-1",
+		DomainSlug:  "machine_learning",
+		DomainName:  "Machine Learning",
+		Confidence:  0.94,
+		IsPublished: true,
+	}, nil
 }
 
 func TestCreateGoalUseCase_Success(t *testing.T) {
@@ -49,21 +55,24 @@ func TestCreateGoalUseCase_Success(t *testing.T) {
 	knowledge := &mockKnowledgeService{}
 	uc := application.NewCreateGoalUseCase(repo, aiClient, knowledge)
 
-	goal, err := uc.Execute(context.Background(), "learner-1", "Learn Go")
+	res, err := uc.Execute(context.Background(), "learner-1", "I want to become an ML engineer")
 	if err != nil {
 		t.Fatalf("expected no error, got %v", err)
 	}
-	if goal == nil {
-		t.Fatal("expected goal to be returned")
+	if res == nil {
+		t.Fatal("expected mapping result to be returned")
 	}
-	if goal.GoalText != "Learn Go" {
-		t.Errorf("expected goal text 'Learn Go', got %s", goal.GoalText)
+	if res.DomainID != "machine_learning" {
+		t.Errorf("expected domain machine_learning, got %s", res.DomainID)
 	}
-	if goal.KnowledgeStructureID != "mock-ks-id" {
-		t.Errorf("expected KS ID 'mock-ks-id', got %s", goal.KnowledgeStructureID)
+	if res.KnowledgeStructureID != "ks-ml-1" {
+		t.Errorf("expected KS ID 'ks-ml-1', got %s", res.KnowledgeStructureID)
 	}
 	if repo.createdGoal == nil {
 		t.Fatal("expected goal to be persisted")
+	}
+	if repo.createdGoal.KnowledgeStructureID != "ks-ml-1" {
+		t.Errorf("expected stored KS 'ks-ml-1', got %s", repo.createdGoal.KnowledgeStructureID)
 	}
 }
 

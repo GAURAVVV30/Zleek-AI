@@ -20,8 +20,8 @@ func New(port int, handler http.Handler, log *logger.Logger) *Server {
 		httpServer: &http.Server{
 			Addr:         fmt.Sprintf(":%d", port),
 			Handler:      handler,
-			ReadTimeout:  5 * time.Second,
-			WriteTimeout: 10 * time.Second,
+			ReadTimeout:  30 * time.Second,
+			WriteTimeout: 60 * time.Second,
 			IdleTimeout:  120 * time.Second,
 		},
 		logger: log,

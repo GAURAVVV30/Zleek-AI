@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+
 	"github.com/hcl-backend/services/api-go/internal/goals/domain"
 )
 
@@ -22,38 +23,63 @@ func NewCreateGoalUseCase(repo GoalRepository, aiClient AIClient, knowledge Know
 	}
 }
 
-func (uc *CreateGoalUseCase) Execute(ctx context.Context, learnerID, goalText string) (*domain.Goal, error) {
-	// 1. Ask FastAPI (AI) to propose a knowledge structure ID based on the text.
-	proposedKSID, err := uc.aiClient.ProposeGoalMapping(ctx, goalText)
+// Execute maps the learner goal text onto a roadmap.sh domain, resolves the
+// published knowledge structure for it, persists the goal, and returns the
+// handler-facing mapping result.
+func (uc *CreateGoalUseCase) Execute(ctx context.Context, learnerID, goalText string) (*MappingResult, error) {
+	mappedDomainID, err := uc.aiClient.ProposeGoalMapping(ctx, goalText)
 	if err != nil {
 		return nil, domain.ErrAIProposalInvalid
 	}
 
-	// 2. Validate the proposed structure exists in Go.
-	if err := uc.knowledge.ValidateStructure(ctx, proposedKSID); err != nil {
+	resolved, err := uc.knowledge.ResolveStructure(ctx, mappedDomainID)
+	if err != nil {
 		return nil, err
 	}
 
-	// 3. Mark existing active goal as abandoned (if any).
 	existing, err := uc.repo.GetActiveByLearnerID(ctx, learnerID)
 	if err == nil && existing != nil {
 		existing.Status = domain.StatusAbandoned
 		_ = uc.repo.Update(ctx, existing)
 	}
 
-	// 4. Create and persist the new goal.
 	newGoal := &domain.Goal{
 		ID:                   uuid.New().String(),
 		LearnerID:            learnerID,
 		GoalText:             goalText,
-		KnowledgeStructureID: proposedKSID,
+		KnowledgeStructureID: resolved.ID,
 		Status:               domain.StatusActive,
-		CreatedAt:            time.Now(),
+		CreatedAt:            time.Now().UTC(),
 	}
-
 	if err := uc.repo.Create(ctx, newGoal); err != nil {
 		return nil, err
 	}
 
-	return newGoal, nil
+	return &MappingResult{
+		GoalID:               newGoal.ID,
+		DomainID:             resolved.DomainSlug,
+		DomainName:           resolved.DomainName,
+		Confidence:           resolved.Confidence,
+		IsSupported:          true,
+		GoalText:             goalText,
+		KnowledgeStructureID: resolved.ID,
+		Status:               string(newGoal.Status),
+		CreatedAt:            newGoal.CreatedAt,
+	}, nil
+}
+
+type MappingResult struct {
+	GoalID               string    `json:"goalId"`
+	GoalText             string    `json:"goalText"`
+	DomainID             string    `json:"domainId"`
+	DomainName           string    `json:"domainName"`
+	KnowledgeStructureID string    `json:"knowledgeStructureId"`
+	Confidence           float64   `json:"confidence"`
+	IsSupported          bool      `json:"isSupported"`
+	Status               string    `json:"status"`
+	CreatedAt            time.Time `json:"createdAt"`
+}
+
+func (uc *CreateGoalUseCase) ResolveStructure(ctx context.Context, ref string) (*ResolvedStructure, error) {
+	return uc.knowledge.ResolveStructure(ctx, ref)
 }

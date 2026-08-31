@@ -1,0 +1,861 @@
+{
+  "domain_id": "software_architecture",
+  "domain_name": "Software Architect",
+  "total_nodes": 12,
+  "nodes": [
+    {
+      "id": "arch_01_networking_fundamentals",
+      "name": "Networking Foundations and Protocol Design",
+      "domain": "software_architecture",
+      "category": "Networking & Communication",
+      "tier": 1,
+      "difficulty_level": "basic",
+      "estimated_hours": 10,
+      "prerequisites": {
+        "hard": [],
+        "soft": []
+      },
+      "transferable_to": [
+        "backend_developer",
+        "devops_engineer",
+        "cloud_engineer",
+        "cybersecurity_analyst",
+        "site_reliability_engineer"
+      ],
+      "core_concepts": [
+        "OSI and TCP/IP models",
+        "TCP handshake and UDP behavior",
+        "HTTP, HTTPS, DNS, TLS",
+        "Forward and reverse proxies",
+        "Load balancing and traffic routing",
+        "Connection multiplexing and latency trade-offs"
+      ],
+      "resources": [
+        {
+          "type": "documentation",
+          "title": "Cloudflare Learning: What is DNS?",
+          "url": "https://www.cloudflare.com/learning/dns/what-is-dns/",
+          "provider": "Cloudflare",
+          "authority_score": 0.98
+        },
+        {
+          "type": "video",
+          "title": "HTTP/1 to HTTP/2 to HTTP/3 Explained",
+          "url": "https://www.youtube.com/watch?v=a-sBfyiXysI",
+          "provider": "Hussein Nasser",
+          "authority_score": 0.95
+        },
+        {
+          "type": "article",
+          "title": "Forward Proxy vs Reverse Proxy",
+          "url": "https://www.geeksforgeeks.org/difference-between-forward-proxy-and-reverse-proxy/",
+          "provider": "GeeksforGeeks",
+          "authority_score": 0.9
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Describe the sequence of network events when a client opens a secure HTTPS connection to a service behind a reverse proxy, including how DNS, TCP, TLS, and HTTP fit together.",
+        "socratic_prompt": "If HTTP/2 suffers head-of-line blocking under packet loss, why would QUIC/HTTP/3 improve multiplexing and perceived latency in a global application?",
+        "key_evaluation_criteria": [
+          "Accurately explains DNS resolution and TCP connection establishment",
+          "Distinguishes TLS termination and upstream request forwarding at the proxy",
+          "Compares HTTP/1.1, HTTP/2, and HTTP/3 trade-offs"
+        ],
+        "remediation_hint": "Review packet flow, proxy roles, and protocol differences in connection setup, multiplexing, and congestion handling."
+      },
+      "version": "1.0",
+      "keywords": [
+        "networking",
+        "tcp",
+        "http",
+        "dns",
+        "tls",
+        "proxy",
+        "latency",
+        "architecture"
+      ],
+      "active": true
+    },
+    {
+      "id": "arch_02_oop_solid_principles",
+      "name": "Object-Oriented Design and SOLID Principles",
+      "domain": "software_architecture",
+      "category": "Design Principles",
+      "tier": 1,
+      "difficulty_level": "basic",
+      "estimated_hours": 12,
+      "prerequisites": {
+        "hard": [],
+        "soft": []
+      },
+      "transferable_to": [
+        "backend_developer",
+        "frontend_developer",
+        "mobile_app_developer",
+        "fullstack_developer",
+        "solution_architect"
+      ],
+      "core_concepts": [
+        "Encapsulation and cohesion",
+        "Abstraction and polymorphism",
+        "SRP, OCP, LSP, ISP, DIP",
+        "Interface-driven design",
+        "Dependency inversion for flexibility",
+        "Design trade-offs and maintainability"
+      ],
+      "resources": [
+        {
+          "type": "article",
+          "title": "SOLID Principles with Practical Examples",
+          "url": "https://martinfowler.com/articles/dipInTheWild.html",
+          "provider": "Martin Fowler",
+          "authority_score": 0.99
+        },
+        {
+          "type": "video",
+          "title": "SOLID Principles: The Software Architecture Foundation",
+          "url": "https://www.youtube.com/watch?v=kF7rQmSRlq0",
+          "provider": "FreeCodeCamp",
+          "authority_score": 0.92
+        },
+        {
+          "type": "course",
+          "title": "Clean Architecture Foundations",
+          "url": "https://www.pluralsight.com/courses/clean-architecture",
+          "provider": "Pluralsight",
+          "authority_score": 0.88
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "When a new payment provider is added to a system, how do the SOLID principles help avoid frequent edits to existing business logic and reduce regression risk?",
+        "socratic_prompt": "If an existing class is forced to change every time a new feature is added, which SOLID principle is being violated and what refactoring pattern would you choose?",
+        "key_evaluation_criteria": [
+          "Explains abstraction and dependency direction clearly",
+          "Identifies the violated principle and a valid structural fix",
+          "Shows how modularity reduces change propagation"
+        ],
+        "remediation_hint": "Practice identifying design smells such as shotgun surgery and rigid dependencies before refactoring toward interfaces and policy boundaries."
+      },
+      "version": "1.0",
+      "keywords": [
+        "solid",
+        "oop",
+        "design",
+        "maintainability",
+        "abstraction",
+        "polymorphism"
+      ],
+      "active": true
+    },
+    {
+      "id": "arch_03_relational_data_modeling",
+      "name": "Relational Data Modeling and ACID Transactions",
+      "domain": "software_architecture",
+      "category": "Data Architecture",
+      "tier": 1,
+      "difficulty_level": "basic",
+      "estimated_hours": 14,
+      "prerequisites": {
+        "hard": [],
+        "soft": ["arch_02_oop_solid_principles"]
+      },
+      "transferable_to": [
+        "backend_developer",
+        "data_engineer",
+        "database_administrator",
+        "data_analyst",
+        "platform_engineer"
+      ],
+      "core_concepts": [
+        "Entity relationship modeling",
+        "Normalization and denormalization",
+        "Primary and foreign keys",
+        "ACID guarantees",
+        "Isolation levels and anomalies",
+        "Indexing and query planning"
+      ],
+      "resources": [
+        {
+          "type": "documentation",
+          "title": "PostgreSQL Transaction Isolation",
+          "url": "https://www.postgresql.org/docs/current/transaction-iso.html",
+          "provider": "PostgreSQL Docs",
+          "authority_score": 0.99
+        },
+        {
+          "type": "article",
+          "title": "Use The Index, Luke",
+          "url": "https://use-the-index-luke.com/",
+          "provider": "Use The Index, Luke",
+          "authority_score": 0.96
+        },
+        {
+          "type": "video",
+          "title": "Database Normalization and ACID",
+          "url": "https://www.youtube.com/watch?v=5mMDe0wH8wM",
+          "provider": "Hussein Nasser",
+          "authority_score": 0.94
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Explain how an online banking system can preserve accuracy under concurrent transfers while keeping transaction throughput acceptable, and compare isolation choices for that workload.",
+        "socratic_prompt": "If two transactions both read a balance of $100 and subtract $80, why can a race condition occur under weaker isolation, and what consistency guarantee would you choose in a ledger?",
+        "key_evaluation_criteria": [
+          "Understands ACID semantics and transactional boundaries",
+          "Explains dirty reads, phantom reads, and lost updates",
+          "Recognizes when normalization and indexes improve correctness and performance"
+        ],
+        "remediation_hint": "Compare database locking and MVCC strategies, and analyze which isolation level best fits financial systems."
+      },
+      "version": "1.0",
+      "keywords": [
+        "database",
+        "acid",
+        "sql",
+        "normalization",
+        "transactions",
+        "isolation"
+      ],
+      "active": true
+    },
+    {
+      "id": "arch_04_api_design_and_contracts",
+      "name": "API Design, Contracts, and Integration Patterns",
+      "domain": "software_architecture",
+      "category": "Integration & APIs",
+      "tier": 2,
+      "difficulty_level": "intermediate",
+      "estimated_hours": 12,
+      "prerequisites": {
+        "hard": ["arch_01_networking_fundamentals", "arch_02_oop_solid_principles"],
+        "soft": ["arch_03_relational_data_modeling"]
+      },
+      "transferable_to": [
+        "backend_developer",
+        "fullstack_developer",
+        "mobile_app_developer",
+        "integration_engineer",
+        "platform_engineer"
+      ],
+      "core_concepts": [
+        "RESTful constraints and HTTP semantics",
+        "Idempotency and retry-safe APIs",
+        "OpenAPI and schema evolution",
+        "GraphQL and gRPC trade-offs",
+        "Rate limiting and gateway policies",
+        "Authentication and authorization boundaries"
+      ],
+      "resources": [
+        {
+          "type": "article",
+          "title": "REST vs GraphQL vs gRPC",
+          "url": "https://aws.amazon.com/compare/the-difference-between-rest-graphql-grpc/",
+          "provider": "AWS Architecture Center",
+          "authority_score": 0.97
+        },
+        {
+          "type": "video",
+          "title": "gRPC vs REST: In-Depth Architecture",
+          "url": "https://www.youtube.com/watch?v=gn734pB9v6g",
+          "provider": "ByteByteGo",
+          "authority_score": 0.95
+        },
+        {
+          "type": "documentation",
+          "title": "OpenAPI Specification",
+          "url": "https://spec.openapis.org/oas/latest.html",
+          "provider": "OpenAPI Initiative",
+          "authority_score": 0.96
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "When should an organization prefer gRPC for internal services while still exposing REST APIs to external clients, and how do you avoid contract drift across teams?",
+        "socratic_prompt": "Why is idempotency essential for payment APIs, and how would you design a POST contract that safely retries without double-charging the customer?",
+        "key_evaluation_criteria": [
+          "Balances protocol choice with compatibility and operational needs",
+          "Defines stable contracts, versioning, and error semantics",
+          "Explains idempotency and safe retry design in distributed systems"
+        ],
+        "remediation_hint": "Review API versioning strategies, gateway throttling patterns, and the use of idempotency keys in payment workflows."
+      },
+      "version": "1.0",
+      "keywords": [
+        "api",
+        "rest",
+        "graphql",
+        "grpc",
+        "contract",
+        "gateway"
+      ],
+      "active": true
+    },
+    {
+      "id": "arch_05_distributed_data_systems",
+      "name": "Distributed Data Systems and CAP Trade-offs",
+      "domain": "software_architecture",
+      "category": "Distributed Systems",
+      "tier": 2,
+      "difficulty_level": "intermediate",
+      "estimated_hours": 16,
+      "prerequisites": {
+        "hard": ["arch_03_relational_data_modeling"],
+        "soft": ["arch_01_networking_fundamentals"]
+      },
+      "transferable_to": [
+        "backend_developer",
+        "data_engineer",
+        "cloud_engineer",
+        "platform_engineer",
+        "systems_architect"
+      ],
+      "core_concepts": [
+        "CAP theorem and PACELC",
+        "Partition tolerance and quorum reads/writes",
+        "Sharding and consistent hashing",
+        "Replica sets and leader election",
+        "NoSQL storage patterns",
+        "Eventual consistency and conflict resolution"
+      ],
+      "resources": [
+        {
+          "type": "article",
+          "title": "Please Stop Calling Databases CP or AP",
+          "url": "https://martin.kleppmann.com/2015/05/11/please-stop-calling-databases-cp-or-ap.html",
+          "provider": "Martin Kleppmann",
+          "authority_score": 0.99
+        },
+        {
+          "type": "documentation",
+          "title": "Cassandra Architecture and Dynamo-style Design",
+          "url": "https://cassandra.apache.org/doc/latest/cassandra/architecture/dynamo.html",
+          "provider": "Apache Cassandra",
+          "authority_score": 0.96
+        },
+        {
+          "type": "video",
+          "title": "Distributed Systems in 100 Seconds",
+          "url": "https://www.youtube.com/watch?v=Y6Ev8GIlRoc",
+          "provider": "Fireship",
+          "authority_score": 0.9
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Under a partition event, explain why a distributed system cannot simultaneously guarantee strong consistency and availability, and identify the design trade-off you would make for a global inventory service.",
+        "socratic_prompt": "When a database cluster partitions, how do you decide whether to favor stale reads or write stops and what patterns help reconcile eventual consistency safely?",
+        "key_evaluation_criteria": [
+          "Correctly uses CAP and quorum reasoning",
+          "Explains partition and consistency trade-offs",
+          "Applies eventual consistency and replication concepts to a real scenario"
+        ],
+        "remediation_hint": "Review the formal CAP proof and compare AP, CP, and hybrid designs for global-scale use cases."
+      },
+      "version": "1.0",
+      "keywords": [
+        "cap",
+        "distributed",
+        "nosql",
+        "consistency",
+        "sharding",
+        "replication"
+      ],
+      "active": true
+    },
+    {
+      "id": "arch_06_event_driven_messaging",
+      "name": "Event-Driven Architecture and Messaging Systems",
+      "domain": "software_architecture",
+      "category": "Integration & Messaging",
+      "tier": 3,
+      "difficulty_level": "intermediate",
+      "estimated_hours": 14,
+      "prerequisites": {
+        "hard": ["arch_04_api_design_and_contracts", "arch_05_distributed_data_systems"],
+        "soft": ["arch_03_relational_data_modeling"]
+      },
+      "transferable_to": [
+        "backend_developer",
+        "data_engineer",
+        "platform_engineer",
+        "integration_specialist",
+        "systems_architect"
+      ],
+      "core_concepts": [
+        "Publish/subscribe and point-to-point messaging",
+        "Kafka vs RabbitMQ trade-offs",
+        "Sagas and choreography",
+        "Transactional outbox and inbox patterns",
+        "Dead-letter queues and retry semantics",
+        "Idempotent consumers and ordering guarantees"
+      ],
+      "resources": [
+        {
+          "type": "article",
+          "title": "Transactional Outbox Pattern",
+          "url": "https://microservices.io/patterns/data/transactional-outbox.html",
+          "provider": "Microservices.io",
+          "authority_score": 0.98
+        },
+        {
+          "type": "video",
+          "title": "Kafka Architecture and Internal Log Storage",
+          "url": "https://www.youtube.com/watch?v=UNUz1-msbOM",
+          "provider": "ByteByteGo",
+          "authority_score": 0.95
+        },
+        {
+          "type": "documentation",
+          "title": "Kafka Concepts",
+          "url": "https://kafka.apache.org/documentation/",
+          "provider": "Apache Kafka",
+          "authority_score": 0.97
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "How would you design a reliable order-processing pipeline so an order is saved and the downstream event is published without risking duplicate or missing processing?",
+        "socratic_prompt": "Why can a distributed dual-write fail even when each local write succeeds, and how does an outbox pattern avoid inconsistent state across the database and broker?",
+        "key_evaluation_criteria": [
+          "Explains transactional boundaries and message durability",
+          "Recognizes idempotency and replay concerns",
+          "Describes event ordering, retries, and DLQ handling"
+        ],
+        "remediation_hint": "Study local atomicity, outbox relay, and replay strategies for ensuring exactly-once-ish semantics in practice."
+      },
+      "version": "1.0",
+      "keywords": [
+        "event-driven",
+        "kafka",
+        "rabbitmq",
+        "message",
+        "outbox",
+        "saga"
+      ],
+      "active": true
+    },
+    {
+      "id": "arch_07_data_caching_and_scalability",
+      "name": "Caching, Performance Tuning, and Scalability Patterns",
+      "domain": "software_architecture",
+      "category": "Performance Engineering",
+      "tier": 3,
+      "difficulty_level": "intermediate",
+      "estimated_hours": 13,
+      "prerequisites": {
+        "hard": ["arch_03_relational_data_modeling", "arch_05_distributed_data_systems"],
+        "soft": ["arch_04_api_design_and_contracts"]
+      },
+      "transferable_to": [
+        "backend_developer",
+        "devops_engineer",
+        "fullstack_developer",
+        "platform_engineer",
+        "performance_engineer"
+      ],
+      "core_concepts": [
+        "Cache-aside and write-through patterns",
+        "TTL, eviction policy, and invalidation",
+        "Hot keys and cache stampede",
+        "Redis data structures and concurrency",
+        "Bloom filters and CDN acceleration",
+        "Backpressure and rate shaping"
+      ],
+      "resources": [
+        {
+          "type": "article",
+          "title": "System Design Primer: Caching",
+          "url": "https://github.com/donnemartin/system-design-primer#caching",
+          "provider": "System Design Primer",
+          "authority_score": 0.99
+        },
+        {
+          "type": "video",
+          "title": "Preventing Cache Stampede and Avalanche",
+          "url": "https://www.youtube.com/watch?v=d_kX8yH_l8M",
+          "provider": "Hussein Nasser",
+          "authority_score": 0.93
+        },
+        {
+          "type": "documentation",
+          "title": "Redis Data Types and Patterns",
+          "url": "https://redis.io/docs/data-types/",
+          "provider": "Redis",
+          "authority_score": 0.96
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Design a caching strategy for a read-heavy product catalog whose traffic spikes unpredictably; explain how you handle hot keys, stale data, and backend pressure.",
+        "socratic_prompt": "If a suddenly expired cache key triggers 50,000 concurrent reads, what failure mode is likely and how do you prevent high read amplification from the database?",
+        "key_evaluation_criteria": [
+          "Explains cache invalidation and freshness trade-offs",
+          "Recognizes stampede, avalanche, and single-flight remedies",
+          "Connects performance issues to backend capacity and queueing"
+        ],
+        "remediation_hint": "Think in terms of cache consistency windows, lock coordination, and the role of TTL and distributed lock patterns in reducing load storms."
+      },
+      "version": "1.0",
+      "keywords": [
+        "caching",
+        "redis",
+        "ttl",
+        "performance",
+        "scaling",
+        "read-heavy"
+      ],
+      "active": true
+    },
+    {
+      "id": "arch_08_microservices_and_cqrs",
+      "name": "Microservices Decomposition, CQRS, and Event Sourcing",
+      "domain": "software_architecture",
+      "category": "Architecture Patterns",
+      "tier": 3,
+      "difficulty_level": "advanced",
+      "estimated_hours": 18,
+      "prerequisites": {
+        "hard": ["arch_02_oop_solid_principles", "arch_04_api_design_and_contracts", "arch_06_event_driven_messaging"],
+        "soft": ["arch_07_data_caching_and_scalability"]
+      },
+      "transferable_to": [
+        "backend_developer",
+        "systems_architect",
+        "cloud_architect",
+        "engineering_manager",
+        "solution_architect"
+      ],
+      "core_concepts": [
+        "Bounded contexts and domain decomposition",
+        "Strangler fig and migration patterns",
+        "CQRS and separate read/write models",
+        "Event sourcing and immutable event streams",
+        "Distributed tracing and observability context",
+        "Cross-service data ownership and consistency"
+      ],
+      "resources": [
+        {
+          "type": "article",
+          "title": "CQRS and Event Sourcing",
+          "url": "https://martinfowler.com/bliki/CQRS.html",
+          "provider": "Martin Fowler",
+          "authority_score": 0.99
+        },
+        {
+          "type": "documentation",
+          "title": "Domain-Driven Design Reference",
+          "url": "https://domainlanguage.com/ddd/reference/",
+          "provider": "Domain Language",
+          "authority_score": 0.98
+        },
+        {
+          "type": "video",
+          "title": "Microservices Design Patterns Explained",
+          "url": "https://www.youtube.com/watch?v=8Z3aW7WfGls",
+          "provider": "TechWorld with Nana",
+          "authority_score": 0.9
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Explain how you would split a monolithic commerce platform into bounded contexts while preserving query performance, auditability, and correct business behavior across services.",
+        "socratic_prompt": "When a read model requires data from several domain services, why is API composition or materialized views often preferable to a distributed join, and where does CQRS help?",
+        "key_evaluation_criteria": [
+          "Uses bounded context decomposition appropriately",
+          "Explains read/write separation and event-powered synchronization",
+          "Recognizes operational complexity and trade-offs of microservice ownership"
+        ],
+        "remediation_hint": "Review decomposition patterns, event modeling, and the difference between transactional consistency and query optimization."
+      },
+      "version": "1.0",
+      "keywords": [
+        "microservices",
+        "cqrs",
+        "event-sourcing",
+        "ddd",
+        "bounded-context",
+        "tracing"
+      ],
+      "active": true
+    },
+    {
+      "id": "arch_09_containerization_and_kubernetes",
+      "name": "Containerization, Kubernetes, and Cloud Runtime Design",
+      "domain": "software_architecture",
+      "category": "Operations & Infrastructure",
+      "tier": 3,
+      "difficulty_level": "intermediate",
+      "estimated_hours": 16,
+      "prerequisites": {
+        "hard": ["arch_01_networking_fundamentals", "arch_04_api_design_and_contracts"],
+        "soft": ["arch_08_microservices_and_cqrs"]
+      },
+      "transferable_to": [
+        "devops_engineer",
+        "cloud_engineer",
+        "site_reliability_engineer",
+        "platform_engineer",
+        "systems_architect"
+      ],
+      "core_concepts": [
+        "Container isolation and runtime semantics",
+        "Kubernetes control plane and worker nodes",
+        "Pods, deployments, services, ingress, and autoscaling",
+        "Resource requests, limits, and node scheduling",
+        "Multi-region and availability-zone design",
+        "Infrastructure as code and declarative deployment"
+      ],
+      "resources": [
+        {
+          "type": "documentation",
+          "title": "Kubernetes Components",
+          "url": "https://kubernetes.io/docs/concepts/overview/components/",
+          "provider": "Kubernetes",
+          "authority_score": 0.99
+        },
+        {
+          "type": "video",
+          "title": "Kubernetes in 100 Seconds",
+          "url": "https://www.youtube.com/watch?v=P4f_mE5pIHY",
+          "provider": "Fireship",
+          "authority_score": 0.91
+        },
+        {
+          "type": "article",
+          "title": "Docker Container Fundamentals",
+          "url": "https://docs.docker.com/get-started/overview/",
+          "provider": "Docker Docs",
+          "authority_score": 0.95
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Explain how Kubernetes schedules a workload across nodes, what role etcd plays in the control plane, and how you would tune resource limits to prevent noisy neighbor issues.",
+        "socratic_prompt": "If a workload is unstable because of memory pressure, what is the difference between requests, limits, and eviction behavior, and how do you prevent a node from starving other critical services?",
+        "key_evaluation_criteria": [
+          "Describes control-plane and worker-node responsibilities",
+          "Explains scheduling, persistence, and healthy pod behavior",
+          "Understands resource constraints and cluster resilience"
+        ],
+        "remediation_hint": "Review cluster topology, node resource management, and the role of cgroups and the OOM killer in pod stability."
+      },
+      "version": "1.0",
+      "keywords": [
+        "kubernetes",
+        "containers",
+        "docker",
+        "cloud",
+        "deployment",
+        "infrastructure"
+      ],
+      "active": true
+    },
+    {
+      "id": "arch_10_application_security_and_identity",
+      "name": "Application Security, Cryptography, and Identity",
+      "domain": "software_architecture",
+      "category": "Security",
+      "tier": 3,
+      "difficulty_level": "intermediate",
+      "estimated_hours": 15,
+      "prerequisites": {
+        "hard": ["arch_01_networking_fundamentals", "arch_04_api_design_and_contracts"],
+        "soft": ["arch_09_containerization_and_kubernetes"]
+      },
+      "transferable_to": [
+        "backend_developer",
+        "cybersecurity_analyst",
+        "fullstack_developer",
+        "platform_engineer",
+        "solution_architect"
+      ],
+      "core_concepts": [
+        "OWASP Top 10 and secure-by-default design",
+        "JWT, OAuth 2.0, and OIDC",
+        "Symmetric and asymmetric encryption",
+        "Mutual TLS and zero-trust networking",
+        "Authorization models and least privilege",
+        "Secrets rotation and key management"
+      ],
+      "resources": [
+        {
+          "type": "documentation",
+          "title": "OWASP Top 10",
+          "url": "https://owasp.org/www-project-top-ten/",
+          "provider": "OWASP Foundation",
+          "authority_score": 0.99
+        },
+        {
+          "type": "article",
+          "title": "OAuth 2.0 and OpenID Connect",
+          "url": "https://auth0.com/intro-to-iam/what-is-oauth-2",
+          "provider": "Auth0",
+          "authority_score": 0.96
+        },
+        {
+          "type": "video",
+          "title": "How JWT Works Under the Hood",
+          "url": "https://www.youtube.com/watch?v=7Q17ubqLfaM",
+          "provider": "ByteByteGo",
+          "authority_score": 0.93
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Explain how OAuth 2.0 and OIDC should be applied in a microservices ecosystem to secure both browser users and service-to-service calls without compromising auditability.",
+        "socratic_prompt": "If a JWT is stateless, how do you revoke a token immediately in a system with many distributed services while still keeping identity checks efficient?",
+        "key_evaluation_criteria": [
+          "Distinguishes authentication from authorization",
+          "Understands asymmetric signing, token lifetimes, and revocation",
+          "Can identify common vulnerabilities and secure transport patterns"
+        ],
+        "remediation_hint": "Think about short-lived access tokens, rotateable refresh flows, key distribution via JWKS, and strict validation of upstream trust boundaries."
+      },
+      "version": "1.0",
+      "keywords": [
+        "security",
+        "oauth",
+        "jwt",
+        "identity",
+        "encryption",
+        "owasp"
+      ],
+      "active": true
+    },
+    {
+      "id": "arch_11_system_resilience_and_observability",
+      "name": "System Resilience, Reliability Engineering, and Observability",
+      "domain": "software_architecture",
+      "category": "Reliability & Operations",
+      "tier": 4,
+      "difficulty_level": "advanced",
+      "estimated_hours": 18,
+      "prerequisites": {
+        "hard": ["arch_06_event_driven_messaging", "arch_07_data_caching_and_scalability", "arch_09_containerization_and_kubernetes"],
+        "soft": ["arch_10_application_security_and_identity"]
+      },
+      "transferable_to": [
+        "site_reliability_engineer",
+        "devops_engineer",
+        "cloud_architect",
+        "platform_engineer",
+        "operations_lead"
+      ],
+      "core_concepts": [
+        "Circuit breakers and retries",
+        "Bulkheads and graceful degradation",
+        "SLOs, SLAs, and error budgets",
+        "Chaos engineering and fault injection",
+        "Distributed tracing and correlation IDs",
+        "MTTR, RTO, RPO, and service health modeling"
+      ],
+      "resources": [
+        {
+          "type": "article",
+          "title": "Circuit Breaker Pattern",
+          "url": "https://martinfowler.com/bliki/CircuitBreaker.html",
+          "provider": "Martin Fowler",
+          "authority_score": 0.99
+        },
+        {
+          "type": "documentation",
+          "title": "Google SRE Book: Embracing Risk",
+          "url": "https://sre.google/sre-book/embracing-risk/",
+          "provider": "Google SRE",
+          "authority_score": 0.99
+        },
+        {
+          "type": "video",
+          "title": "What is Observability?",
+          "url": "https://www.youtube.com/watch?v=3Xf4K4hJ0UI",
+          "provider": "Google Cloud Tech",
+          "authority_score": 0.92
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "During a dependency outage, explain how you protect upstream services using circuit breakers, retries, rate limiting, and degradation strategies while preserving a healthy SLO.",
+        "socratic_prompt": "If downstream latency spikes from 50ms to 5s, why does thread-pool exhaustion happen and how do bulkheads or queue backpressure prevent cascading failure?",
+        "key_evaluation_criteria": [
+          "Identifies failure isolation and recovery states",
+          "Understands SLOs, SLAs, and error budgets",
+          "Explains observability signals for diagnosis and improvement"
+        ],
+        "remediation_hint": "Explore how resilience metrics, OpenTelemetry traces, and controlled failure injection reveal hidden dependencies and service saturation points."
+      },
+      "version": "1.0",
+      "keywords": [
+        "reliability",
+        "resilience",
+        "observability",
+        "slo",
+        "circuit-breaker",
+        "chaos"
+      ],
+      "active": true
+    },
+    {
+      "id": "arch_12_enterprise_architecture_and_governance",
+      "name": "Enterprise Architecture, Governance, and Technical Strategy",
+      "domain": "software_architecture",
+      "category": "Enterprise Architecture",
+      "tier": 4,
+      "difficulty_level": "advanced",
+      "estimated_hours": 14,
+      "prerequisites": {
+        "hard": ["arch_08_microservices_and_cqrs", "arch_11_system_resilience_and_observability", "arch_10_application_security_and_identity"],
+        "soft": ["arch_09_containerization_and_kubernetes"]
+      },
+      "transferable_to": [
+        "engineering_manager",
+        "solution_architect",
+        "chief_technology_officer",
+        "enterprise_architect",
+        "program_manager"
+      ],
+      "core_concepts": [
+        "Architecture decision records (ADRs)",
+        "C4 model and technical communication",
+        "TOGAF-inspired enterprise thinking",
+        "Technical debt and modernization strategy",
+        "Trade-off analysis and decision quality",
+        "Platform governance and standards"
+      ],
+      "resources": [
+        {
+          "type": "article",
+          "title": "C4 Model for Visualizing Software Architecture",
+          "url": "https://c4model.com/",
+          "provider": "Simon Brown",
+          "authority_score": 0.98
+        },
+        {
+          "type": "documentation",
+          "title": "Architecture Decision Records",
+          "url": "https://adr.github.io/",
+          "provider": "ADR GitHub",
+          "authority_score": 0.95
+        },
+        {
+          "type": "article",
+          "title": "ThoughtWorks Tech Radar",
+          "url": "https://www.thoughtworks.com/radar",
+          "provider": "Thoughtworks",
+          "authority_score": 0.93
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Draft an architecture decision record for a large-scale migration from a monolithic system to a hybrid cloud-native platform, including the business context, trade-offs, risks, and governance model.",
+        "socratic_prompt": "When stakeholders prioritize speed over robustness, how do you express the engineering cost of technical debt and align architectural decisions with long-term platform health?",
+        "key_evaluation_criteria": [
+          "Communicates trade-offs clearly and concretely",
+          "Uses governance, architecture, and documentation frameworks appropriately",
+          "Links decisions to risk, cost, and delivery outcomes"
+        ],
+        "remediation_hint": "Use ADRs, C4 diagrams, and risk-based decision matrices to communicate architecture quality and organizational alignment."
+      },
+      "version": "1.0",
+      "keywords": [
+        "enterprise-architecture",
+        "governance",
+        "adr",
+        "strategy",
+        "technical-debt",
+        "platform"
+      ],
+      "active": true
+    }
+  ]
+}

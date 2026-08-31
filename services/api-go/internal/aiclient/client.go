@@ -3,7 +3,7 @@ package aiclient
 import (
 	"context"
 	"encoding/json"
-	
+
 	"github.com/hcl-backend/services/api-go/internal/assessment/domain"
 )
 

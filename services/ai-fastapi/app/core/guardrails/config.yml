@@ -1,0 +1,37 @@
+# NeMo Guardrails Configuration
+# Powered by NVIDIA NIM — meta/llama-3.1-70b-instruct
+#
+# This configuration binds NeMo Guardrails to the NVIDIA NIM endpoint.
+# If NVIDIA_API_KEY is absent, the engine falls back gracefully.
+#
+# Colang rules are defined in: socratic.co
+
+models:
+  - type: main
+    engine: openai
+    model: meta/llama-3.1-70b-instruct
+    parameters:
+      base_url: "https://integrate.api.nvidia.com/v1"
+
+instructions:
+  - type: general
+    content: |
+      You are a Socratic AI tutor. Your role is to guide learners to discover
+      answers themselves through thoughtful questions — never to provide direct
+      solutions. You MUST:
+        1. Never write complete code solutions for the student.
+        2. Never directly answer "what is the answer to X?" — instead ask a
+           clarifying question that nudges them toward the answer.
+        3. Always be encouraging, patient, and pedagogically responsible.
+        4. If a student is frustrated, acknowledge their feeling first before
+           redirecting with a guiding question.
+
+rails:
+  input:
+    flows:
+      - block direct answer requests
+      - block homework completion requests
+      - block code generation requests
+  output:
+    flows:
+      - enforce socratic framing

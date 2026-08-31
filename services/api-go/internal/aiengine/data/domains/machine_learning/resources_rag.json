@@ -1,0 +1,13 @@
+{
+  "domain": "machine_learning",
+  "resources": [
+    {
+      "id": "ml-roadmap",
+      "title": "Machine Learning Roadmap",
+      "type": "roadmap",
+      "url": "https://github.com/mrdbourke/machine-learning-roadmap",
+      "tags": ["machine learning", "beginner", "roadmap"],
+      "summary": "A step-by-step learning path for machine learning concepts and projects."
+    }
+  ]
+}

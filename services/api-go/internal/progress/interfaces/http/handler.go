@@ -1,96 +1,106 @@
 package http
 
 import (
+	"context"
 	"encoding/json"
 	"net/http"
 
+	"github.com/hcl-backend/services/api-go/internal/platform/httpx"
 	"github.com/hcl-backend/services/api-go/internal/progress/application"
+	"github.com/hcl-backend/services/api-go/internal/progress/domain"
 )
 
 type Handler struct {
-	getSummaryUseCase               *application.GetProgressSummaryUseCase
-	getGoalCompletionSummaryUseCase *application.GetGoalCompletionSummaryUseCase
-	recordEngagementUseCase         *application.RecordEngagementUseCase
+	recordEvidence   UseCase
+	recordEngagement *application.RecordEngagementUseCase
+	getSummary       *application.GetProgressSummaryUseCase
+	getGoalSummary   *application.GetGoalCompletionSummaryUseCase
+}
+
+type UseCase interface {
+	RecordEvidence(ctx context.Context, evidence *domain.Evidence) (string, error)
 }
 
 func NewHandler(
+	recordEvidence UseCase,
+	recordEngagement *application.RecordEngagementUseCase,
 	getSummary *application.GetProgressSummaryUseCase,
 	getGoalSummary *application.GetGoalCompletionSummaryUseCase,
-	recordEngagement *application.RecordEngagementUseCase,
 ) *Handler {
 	return &Handler{
-		getSummaryUseCase:               getSummary,
-		getGoalCompletionSummaryUseCase: getGoalSummary,
-		recordEngagementUseCase:         recordEngagement,
+		recordEvidence:   recordEvidence,
+		recordEngagement: recordEngagement,
+		getSummary:       getSummary,
+		getGoalSummary:   getGoalSummary,
 	}
 }
 
-func (h *Handler) GetProgressSummary(w http.ResponseWriter, r *http.Request) {
-	learnerID := r.Header.Get("X-Learner-ID")
-	if learnerID == "" {
-		learnerID = "default-learner-id"
-	}
-
-	summary, err := h.getSummaryUseCase.Execute(r.Context(), learnerID)
-	if err != nil {
-		http.Error(w, `{"error": "`+err.Error()+`"}`, http.StatusInternalServerError)
-		return
-	}
-
-	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(summary)
-}
-
-func (h *Handler) GetGoalCompletionSummary(w http.ResponseWriter, r *http.Request) {
-	learnerID := r.Header.Get("X-Learner-ID")
-	if learnerID == "" {
-		learnerID = "default-learner-id"
-	}
-
-	summary, err := h.getGoalCompletionSummaryUseCase.Execute(r.Context(), learnerID)
-	if err != nil {
-		http.Error(w, `{"error": "`+err.Error()+`"}`, http.StatusInternalServerError)
-		return
-	}
-
-	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(summary)
+type engagementRequest struct {
+	ConceptID string `json:"conceptId"`
+	Action    string `json:"action"`
 }
 
 func (h *Handler) RecordEngagement(w http.ResponseWriter, r *http.Request) {
-	conceptID := r.PathValue("id")
-	if conceptID == "" {
-		http.Error(w, `{"error": "concept id required"}`, http.StatusBadRequest)
-		return
-	}
-
-	learnerID := r.Header.Get("X-Learner-ID")
+	learnerID := r.Header.Get("X-User-ID")
 	if learnerID == "" {
-		learnerID = "default-learner-id"
-	}
-
-	var payload struct {
-		EventType string `json:"event_type"`
-	}
-	if err := json.NewDecoder(r.Body).Decode(&payload); err != nil {
-		http.Error(w, `{"error": "bad request: invalid JSON payload"}`, http.StatusBadRequest)
+		httpx.Error(w, http.StatusUnauthorized, "Unauthorized")
 		return
 	}
-
-	// The frontend uses /concepts/{id}/engagement but we need pathItemID for the event.
-	// For now we map conceptID to pathItemID to satisfy the contract.
-	if err := h.recordEngagementUseCase.Execute(r.Context(), learnerID, conceptID, payload.EventType); err != nil {
-		http.Error(w, `{"error": "`+err.Error()+`"}`, http.StatusBadRequest)
+	conceptID := r.PathValue("conceptId")
+	var body engagementRequest
+	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+		body.Action = r.URL.Query().Get("action")
+	}
+	if conceptID == "" {
+		conceptID = body.ConceptID
+	}
+	if err := h.recordEngagement.RecordEngagement(r.Context(), learnerID, conceptID, body.Action); err != nil {
+		httpx.Error(w, http.StatusUnprocessableEntity, "Invalid engagement event")
 		return
 	}
+	httpx.Envelope(w, http.StatusCreated, map[string]any{"status": "recorded"})
+}
 
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(map[string]string{"status": "ok"})
+func (h *Handler) GetProgressSummary(w http.ResponseWriter, r *http.Request) {
+	learnerID := r.Header.Get("X-User-ID")
+	if learnerID == "" {
+		httpx.Error(w, http.StatusUnauthorized, "Unauthorized")
+		return
+	}
+	summary, err := h.getSummary.Execute(r.Context(), learnerID)
+	if err != nil {
+		if err == domain.ErrNoActivePath {
+			httpx.Envelope(w, http.StatusOK, &domain.Summary{
+				OverallCompletionPercentage: 0,
+				TotalConcepts:               0,
+				CompletedConcepts:           0,
+				ActiveRemediations:          0,
+				CompetencyBreakdown:         []domain.SummaryRow{},
+			})
+			return
+		}
+		httpx.Error(w, http.StatusInternalServerError, "Failed to load progress summary")
+		return
+	}
+	httpx.Envelope(w, http.StatusOK, summary)
+}
+
+func (h *Handler) GetGoalSummary(w http.ResponseWriter, r *http.Request) {
+	learnerID := r.Header.Get("X-User-ID")
+	if learnerID == "" {
+		httpx.Error(w, http.StatusUnauthorized, "Unauthorized")
+		return
+	}
+	summary, err := h.getGoalSummary.Execute(r.Context(), learnerID)
+	if err != nil {
+		httpx.Error(w, http.StatusInternalServerError, "Failed to load goal summary")
+		return
+	}
+	httpx.Envelope(w, http.StatusOK, summary)
 }
 
 func (h *Handler) RegisterRoutes(mux *http.ServeMux) {
+	mux.HandleFunc("POST /concepts/{conceptId}/engagement", h.RecordEngagement)
 	mux.HandleFunc("GET /progress/summary", h.GetProgressSummary)
-	mux.HandleFunc("GET /goals/current/completion-summary", h.GetGoalCompletionSummary)
-	mux.HandleFunc("POST /concepts/{id}/engagement", h.RecordEngagement)
+	mux.HandleFunc("GET /progress/goal-summary", h.GetGoalSummary)
 }

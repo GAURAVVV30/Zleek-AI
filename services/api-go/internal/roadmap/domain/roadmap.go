@@ -42,7 +42,7 @@ type Path struct {
 type PathItem struct {
 	ID            string
 	PathID        string
-	ConceptID     string
+	ConceptID     string // public roadmap node id
 	ResourceID    *string
 	SequenceOrder int
 	State         PathItemState
@@ -51,13 +51,49 @@ type PathItem struct {
 }
 
 type RemediationRecord struct {
-	ID                     string
-	LearnerID              string
-	ConceptID              string
-	TriggeredByEvidenceID  string
-	RemediationResourceID  *string
-	AttemptNumber          int
-	Status                 RemediationStatus
-	CreatedAt              time.Time
-	ResolvedAt             *time.Time
+	ID                    string
+	LearnerID             string
+	ConceptID             string
+	TriggeredByEvidenceID string
+	RemediationResourceID *string
+	AttemptNumber         int
+	Status                RemediationStatus
+	CreatedAt             time.Time
+	ResolvedAt            *time.Time
+}
+
+// RoadmapNode is the client-visible roadmap milestone shape.
+type RoadmapNode struct {
+	ID                string `json:"id"`
+	Title             string `json:"title"`
+	Description       string `json:"description"`
+	Domain            string `json:"domain"`
+	State             string `json:"state"`
+	Order             int    `json:"order"`
+	EstimatedMinutes  int    `json:"estimatedMinutes"`
+	IsRemediation     bool   `json:"isRemediation"`
+	UnlockRequirement string `json:"unlockRequirement,omitempty"`
+	NextSubConcept    string `json:"nextSubConcept,omitempty"`
+}
+
+// Roadmap is the GET /roadmap payload.
+type Roadmap struct {
+	GoalID             string        `json:"goalId"`
+	GoalTitle          string        `json:"goalTitle"`
+	ProgressPercentage int           `json:"progressPercentage"`
+	CurrentNodeID      string        `json:"currentNodeId"`
+	Nodes              []RoadmapNode `json:"nodes"`
+}
+
+type DailyTask struct {
+	ID        string `json:"id"`
+	Title     string `json:"title"`
+	Category  string `json:"category"`
+	Duration  int    `json:"duration"`
+	Completed bool   `json:"completed"`
+}
+
+type DailyTaskDay struct {
+	Date  time.Time   `json:"date"`
+	Tasks []DailyTask `json:"tasks"`
 }

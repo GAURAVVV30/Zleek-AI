@@ -2,11 +2,9 @@ from __future__ import annotations
 
 from typing import Any
 
+from app.core.graph_engine import GraphEngine
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
-
-from app.core.graph_engine import GraphEngine
-
 
 """Recommendation API endpoints for domain-specific personalized learning paths."""
 

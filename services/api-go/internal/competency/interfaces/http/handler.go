@@ -1,10 +1,10 @@
 package http
 
 import (
-	"encoding/json"
 	"net/http"
 
 	"github.com/hcl-backend/services/api-go/internal/competency/application"
+	"github.com/hcl-backend/services/api-go/internal/platform/httpx"
 )
 
 type Handler struct {
@@ -13,58 +13,43 @@ type Handler struct {
 }
 
 func NewHandler(getDetail *application.GetCompetencyDetailUseCase, getHistory *application.GetCompetencyHistoryUseCase) *Handler {
-	return &Handler{
-		getDetailUseCase:  getDetail,
-		getHistoryUseCase: getHistory,
-	}
+	return &Handler{getDetailUseCase: getDetail, getHistoryUseCase: getHistory}
 }
 
 func (h *Handler) GetCompetencyDetail(w http.ResponseWriter, r *http.Request) {
-	conceptID := r.URL.Query().Get("conceptId") // Temporary parse query, full spec may differ
-	if conceptID == "" {
-		http.Error(w, `{"error": "conceptId required"}`, http.StatusBadRequest)
-		return
-	}
-
-	learnerID := r.Header.Get("X-Learner-ID")
+	learnerID := r.Header.Get("X-User-ID")
 	if learnerID == "" {
-		learnerID = "default-learner-id"
-	}
-
-	record, err := h.getDetailUseCase.Execute(r.Context(), learnerID, conceptID)
-	if err != nil {
-		http.Error(w, `{"error": "`+err.Error()+`"}`, http.StatusBadRequest)
+		httpx.Error(w, http.StatusUnauthorized, "Unauthorized")
 		return
 	}
-
-	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(record)
+	records, err := h.getDetailUseCase.Execute(r.Context(), learnerID)
+	if err != nil {
+		httpx.Error(w, http.StatusInternalServerError, "Failed to load competency records")
+		return
+	}
+	httpx.Envelope(w, http.StatusOK, records)
 }
 
 func (h *Handler) GetCompetencyHistory(w http.ResponseWriter, r *http.Request) {
+	learnerID := r.Header.Get("X-User-ID")
+	if learnerID == "" {
+		httpx.Error(w, http.StatusUnauthorized, "Unauthorized")
+		return
+	}
 	conceptID := r.PathValue("conceptId")
 	if conceptID == "" {
-		http.Error(w, `{"error": "conceptId required"}`, http.StatusBadRequest)
+		httpx.Error(w, http.StatusBadRequest, "conceptId required")
 		return
 	}
-
-	learnerID := r.Header.Get("X-Learner-ID")
-	if learnerID == "" {
-		learnerID = "default-learner-id"
-	}
-
 	history, err := h.getHistoryUseCase.Execute(r.Context(), learnerID, conceptID)
 	if err != nil {
-		http.Error(w, `{"error": "`+err.Error()+`"}`, http.StatusBadRequest)
+		httpx.Error(w, http.StatusInternalServerError, "Failed to load competency history")
 		return
 	}
-
-	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(map[string]interface{}{"history": history})
+	httpx.Envelope(w, http.StatusOK, history)
 }
 
 func (h *Handler) RegisterRoutes(mux *http.ServeMux) {
-	// e.g. GET /competency/detail?conceptId=xxx
 	mux.HandleFunc("GET /competency/detail", h.GetCompetencyDetail)
 	mux.HandleFunc("GET /competency/{conceptId}/history", h.GetCompetencyHistory)
 }

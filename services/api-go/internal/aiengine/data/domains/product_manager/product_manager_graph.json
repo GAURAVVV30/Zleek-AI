@@ -1,0 +1,847 @@
+{
+  "domain_id": "product_manager",
+  "domain_name": "Product Manager",
+  "total_nodes": 12,
+  "nodes": [
+    {
+      "id": "pm_01_product_foundations",
+      "name": "Product Management Foundations",
+      "domain": "product_manager",
+      "category": "Product Fundamentals",
+      "tier": 1,
+      "difficulty_level": "basic",
+      "estimated_hours": 10,
+      "prerequisites": {
+        "hard": [],
+        "soft": []
+      },
+      "transferable_to": [
+        "product_engineer",
+        "software_architect",
+        "frontend_engineer",
+        "business_analyst"
+      ],
+      "core_concepts": [
+        "What product management is",
+        "Product vs project management",
+        "Lifecycle of a product",
+        "Roles and responsibilities",
+        "Key product skills",
+        "Value creation and prioritization"
+      ],
+      "resources": [
+        {
+          "type": "article",
+          "title": "What is Product Management?",
+          "url": "https://www.atlassian.com/agile/product-management/what-is-product-management",
+          "provider": "Atlassian",
+          "authority_score": 0.92
+        },
+        {
+          "type": "article",
+          "title": "Product Management Guide",
+          "url": "https://www.intercom.com/blog/product-management/",
+          "provider": "Intercom",
+          "authority_score": 0.88
+        },
+        {
+          "type": "video",
+          "title": "Introduction to Product Management",
+          "url": "https://www.youtube.com/results?search_query=introduction+to+product+management",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Explain the difference between product management and project management and describe how a PM creates value across the product lifecycle.",
+        "socratic_prompt": "Why is product thinking different from execution management when the goal is sustainable customer value?",
+        "key_evaluation_criteria": [
+          "Knows core PM roles and responsibilities",
+          "Understands product lifecycle",
+          "Can distinguish product value from project output"
+        ],
+        "remediation_hint": "Anchor each PM decision to customer value, business goals, and the product’s evolving context rather than just delivery tasks."
+      },
+      "version": "1.0",
+      "keywords": [
+        "product-management",
+        "value",
+        "roadmap",
+        "product-lifecycle",
+        "roles",
+        "prioritization"
+      ],
+      "active": true
+    },
+    {
+      "id": "pm_02_customer_research_and_market_analysis",
+      "name": "Customer Research and Market Analysis",
+      "domain": "product_manager",
+      "category": "Discovery",
+      "tier": 1,
+      "difficulty_level": "basic",
+      "estimated_hours": 14,
+      "prerequisites": {
+        "hard": ["pm_01_product_foundations"],
+        "soft": []
+      },
+      "transferable_to": [
+        "ux_researcher",
+        "business_analyst",
+        "marketing_manager",
+        "strategy_lead"
+      ],
+      "core_concepts": [
+        "Market analysis and positioning",
+        "User research methods",
+        "Interviews, surveys, ethnographic research",
+        "User personas and segmentation",
+        "Competitive analysis",
+        "Identifying product opportunities"
+      ],
+      "resources": [
+        {
+          "type": "article",
+          "title": "Market Research and Competitive Analysis",
+          "url": "https://www.coursera.org/articles/market-research",
+          "provider": "Coursera",
+          "authority_score": 0.9
+        },
+        {
+          "type": "article",
+          "title": "User Research Methods",
+          "url": "https://www.nngroup.com/articles/which-ux-research-methods/",
+          "provider": "NN/g",
+          "authority_score": 0.96
+        },
+        {
+          "type": "video",
+          "title": "User interviews and market research",
+          "url": "https://www.youtube.com/results?search_query=user+research+for+product+managers",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Design a research plan to validate whether an unmet user problem exists and explain how you would use interviews, segment analysis, and competitive review together.",
+        "socratic_prompt": "Why do product opportunities disappear when teams rely on assumptions instead of evidence from users and the market?",
+        "key_evaluation_criteria": [
+          "Can structure research and discovery",
+          "Understands user and market signals",
+          "Can identify real unmet needs"
+        ],
+        "remediation_hint": "Start with a sharp problem statement and let the evidence decide whether to pursue, pivot, or stop."
+      },
+      "version": "1.0",
+      "keywords": [
+        "customer-research",
+        "market-analysis",
+        "user-interviews",
+        "personas",
+        "competitive-analysis",
+        "segmentation"
+      ],
+      "active": true
+    },
+    {
+      "id": "pm_03_product_strategy_and_positioning",
+      "name": "Product Strategy, Positioning, and Value Proposition",
+      "domain": "product_manager",
+      "category": "Strategy",
+      "tier": 1,
+      "difficulty_level": "basic",
+      "estimated_hours": 14,
+      "prerequisites": {
+        "hard": ["pm_02_customer_research_and_market_analysis"],
+        "soft": []
+      },
+      "transferable_to": [
+        "strategy_manager",
+        "growth_manager",
+        "business_analyst",
+        "product_lead"
+      ],
+      "core_concepts": [
+        "Vision, mission, and positioning",
+        "Value proposition and USP",
+        "Goals, trends, and target segments",
+        "Strategic framing and constraints",
+        "Competitive strategy",
+        "Product proposition design"
+      ],
+      "resources": [
+        {
+          "type": "article",
+          "title": "Value Proposition Canvas",
+          "url": "https://www.strategyzer.com/canvas/value-proposition-canvas",
+          "provider": "Strategyzer",
+          "authority_score": 0.93
+        },
+        {
+          "type": "article",
+          "title": "Competitive Strategy Concepts",
+          "url": "https://www.investopedia.com/terms/f/five-forces.asp",
+          "provider": "Investopedia",
+          "authority_score": 0.88
+        },
+        {
+          "type": "video",
+          "title": "Value proposition and strategic positioning",
+          "url": "https://www.youtube.com/results?search_query=value+proposition+product+strategy",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Define a product vision and value proposition for a market segment, and explain how you would differentiate it against competitors without relying on feature volume alone.",
+        "socratic_prompt": "Why can a product strategy fail even when the team is shipping fast and the roadmap looks full?",
+        "key_evaluation_criteria": [
+          "Can articulate strategy and positioning",
+          "Understands value proposition design",
+          "Links strategy to product differentiation"
+        ],
+        "remediation_hint": "Define the target, the job-to-be-done, and the value gap before filling in the roadmap or release plan."
+      },
+      "version": "1.0",
+      "keywords": [
+        "strategy",
+        "value-proposition",
+        "positioning",
+        "vision",
+        "mission",
+        "competitors"
+      ],
+      "active": true
+    },
+    {
+      "id": "pm_04_prd_user_stories_and_roadmaps",
+      "name": "PRDs, User Stories, and Roadmaps",
+      "domain": "product_manager",
+      "category": "Planning",
+      "tier": 2,
+      "difficulty_level": "intermediate",
+      "estimated_hours": 16,
+      "prerequisites": {
+        "hard": ["pm_03_product_strategy_and_positioning"],
+        "soft": ["pm_02_customer_research_and_market_analysis"]
+      },
+      "transferable_to": [
+        "product_lead",
+        "business_analyst",
+        "project_manager",
+        "engineering_manager"
+      ],
+      "core_concepts": [
+        "Writing product requirements",
+        "PRDs and user stories",
+        "Job stories and roadmap creation",
+        "Feature prioritization",
+        "Outcome-based goal setting",
+        "Backlog hygiene and communication"
+      ],
+      "resources": [
+        {
+          "type": "article",
+          "title": "How to Write a PRD",
+          "url": "https://www.productschool.com/blog/product-management-101/how-to-write-prd",
+          "provider": "Product School",
+          "authority_score": 0.89
+        },
+        {
+          "type": "article",
+          "title": "Prioritization frameworks",
+          "url": "https://www.atlassian.com/agile/project-management/prioritization-frameworks",
+          "provider": "Atlassian",
+          "authority_score": 0.91
+        },
+        {
+          "type": "video",
+          "title": "Roadmaps and prioritization for PMs",
+          "url": "https://www.youtube.com/results?search_query=product+roadmap+prioritization+for+product+managers",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Write a lightweight PRD and roadmap for a feature set, and explain how you would prioritize it against other product opportunities.",
+        "socratic_prompt": "Why are clear requirements and a visible roadmap often more valuable than raw feature ideas in a growing product organization?",
+        "key_evaluation_criteria": [
+          "Can produce product requirements and planning artifacts",
+          "Understands prioritization and roadmap design",
+          "Communicates trade-offs clearly"
+        ],
+        "remediation_hint": "Tie every requirement to a user need, measurable outcome, and delivery trade-off so it remains actionable and debatable."
+      },
+      "version": "1.0",
+      "keywords": [
+        "prd",
+        "user-stories",
+        "roadmap",
+        "prioritization",
+        "backlog",
+        "planning"
+      ],
+      "active": true
+    },
+    {
+      "id": "pm_05_product_design_and_experimentation",
+      "name": "Product Design, UX, and Experimentation",
+      "domain": "product_manager",
+      "category": "Design & Validation",
+      "tier": 2,
+      "difficulty_level": "intermediate",
+      "estimated_hours": 15,
+      "prerequisites": {
+        "hard": ["pm_04_prd_user_stories_and_roadmaps"],
+        "soft": ["pm_02_customer_research_and_market_analysis"]
+      },
+      "transferable_to": [
+        "ux_researcher",
+        "product_designer",
+        "growth_manager",
+        "product_lead"
+      ],
+      "core_concepts": [
+        "UX/UI principles",
+        "Wireframing and prototyping",
+        "Design thinking and user testing",
+        "Interaction design and usability",
+        "A/B testing and experimentation",
+        "Feedback loops"
+      ],
+      "resources": [
+        {
+          "type": "article",
+          "title": "UX Design Principles",
+          "url": "https://www.nngroup.com/articles/ux-principles/",
+          "provider": "NN/g",
+          "authority_score": 0.96
+        },
+        {
+          "type": "article",
+          "title": "A/B Testing for Product Teams",
+          "url": "https://www.optimizely.com/optimization-glossary/ab-testing/",
+          "provider": "Optimizely",
+          "authority_score": 0.92
+        },
+        {
+          "type": "video",
+          "title": "UX design and product experimentation",
+          "url": "https://www.youtube.com/results?search_query=ux+design+product+experimentation",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Explain how you would validate a product concept through design, usability testing, and experimentation without over-investing before there is evidence of demand.",
+        "socratic_prompt": "Why do UX decisions and experimentation quality often determine whether a product is adopted or ignored?",
+        "key_evaluation_criteria": [
+          "Understands product design and validation methods",
+          "Can design user-centered experiments",
+          "Connects discovery and product iteration"
+        ],
+        "remediation_hint": "Prototype small enough to learn quickly, then test real behavior before committing major effort or investment."
+      },
+      "version": "1.0",
+      "keywords": [
+        "ux",
+        "ui",
+        "wireframing",
+        "usability",
+        "a/b-testing",
+        "prototyping"
+      ],
+      "active": true
+    },
+    {
+      "id": "pm_06_agile_and_execution",
+      "name": "Agile Delivery and Product Execution",
+      "domain": "product_manager",
+      "category": "Execution",
+      "tier": 2,
+      "difficulty_level": "intermediate",
+      "estimated_hours": 14,
+      "prerequisites": {
+        "hard": ["pm_04_prd_user_stories_and_roadmaps"],
+        "soft": ["pm_05_product_design_and_experimentation"]
+      },
+      "transferable_to": [
+        "project_manager",
+        "engineering_manager",
+        "delivery_manager",
+        "product_lead"
+      ],
+      "core_concepts": [
+        "Agile principles and scrum",
+        "Kanban and sprint planning",
+        "MVP and release strategy",
+        "Standups, retrospectives, and ceremonies",
+        "Working with engineering teams",
+        "Delivery and learning loops"
+      ],
+      "resources": [
+        {
+          "type": "article",
+          "title": "Scrum Guide",
+          "url": "https://scrumguides.org/scrum-guide.html",
+          "provider": "Scrum Guides",
+          "authority_score": 0.98
+        },
+        {
+          "type": "article",
+          "title": "Kanban Overview",
+          "url": "https://www.atlassian.com/agile/kanban",
+          "provider": "Atlassian",
+          "authority_score": 0.92
+        },
+        {
+          "type": "video",
+          "title": "Agile and Scrum explained",
+          "url": "https://www.youtube.com/results?search_query=agile+scrum+for+product+managers",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Explain how you would coordinate a product team through sprint planning, iteration, and launch while keeping scope, learning, and engineering constraints in balance.",
+        "socratic_prompt": "Why do strong product managers need a working model of delivery, not just strategic ideas?",
+        "key_evaluation_criteria": [
+          "Understands agile execution and planning",
+          "Can manage MVP and delivery trade-offs",
+          "Works effectively with engineering teams"
+        ],
+        "remediation_hint": "Keep planning grounded in learning loops and clear delivery commitments rather than broad wishes or vague scope."
+      },
+      "version": "1.0",
+      "keywords": [
+        "agile",
+        "scrum",
+        "kanban",
+        "mvp",
+        "delivery",
+        "sprint"
+      ],
+      "active": true
+    },
+    {
+      "id": "pm_07_growth_metrics_and_decision_making",
+      "name": "Growth Metrics, Analytics, and Data-Driven Decision Making",
+      "domain": "product_manager",
+      "category": "Analytics",
+      "tier": 2,
+      "difficulty_level": "intermediate",
+      "estimated_hours": 16,
+      "prerequisites": {
+        "hard": ["pm_06_agile_and_execution"],
+        "soft": ["pm_05_product_design_and_experimentation"]
+      },
+      "transferable_to": [
+        "data_analyst",
+        "growth_manager",
+        "product_lead",
+        "marketing_manager"
+      ],
+      "core_concepts": [
+        "DAU, MAU, conversion, retention, churn, LTV, CAC",
+        "North Star metric",
+        "Cohort analysis and funnel analysis",
+        "A/B testing and predictive analytics",
+        "Data-driven product decisions",
+        "Feedback loops"
+      ],
+      "resources": [
+        {
+          "type": "article",
+          "title": "Product Metrics and analytics basics",
+          "url": "https://www.productschool.com/blog/product-management-analytics",
+          "provider": "Product School",
+          "authority_score": 0.89
+        },
+        {
+          "type": "article",
+          "title": "North Star Metric",
+          "url": "https://www.growthunhinged.com/blog/north-star-metric",
+          "provider": "Growth Unhinged",
+          "authority_score": 0.86
+        },
+        {
+          "type": "video",
+          "title": "Product analytics and metrics for PMs",
+          "url": "https://www.youtube.com/results?search_query=product+analytics+metrics+for+product+managers",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Choose a set of product metrics for a growth challenge and explain how you would use funnels, retention, and experimentation to guide the next product decision.",
+        "socratic_prompt": "Why do product teams continuously misread success when they confuse output metrics with real user value?",
+        "key_evaluation_criteria": [
+          "Knows core product metrics",
+          "Understands experiments and analysis",
+          "Uses metrics to guide strategy rather than vanity reporting"
+        ],
+        "remediation_hint": "Define the true user outcome first, then select a small collection of metrics that measure progress toward it."
+      },
+      "version": "1.0",
+      "keywords": [
+        "analytics",
+        "growth",
+        "retention",
+        "lifecycle",
+        "north-star-metric",
+        "a/b-testing"
+      ],
+      "active": true
+    },
+    {
+      "id": "pm_08_stakeholder_management_and_communication",
+      "name": "Stakeholder Management and Communication",
+      "domain": "product_manager",
+      "category": "Leadership",
+      "tier": 2,
+      "difficulty_level": "intermediate",
+      "estimated_hours": 12,
+      "prerequisites": {
+        "hard": ["pm_07_growth_metrics_and_decision_making"],
+        "soft": ["pm_06_agile_and_execution"]
+      },
+      "transferable_to": [
+        "business_lead",
+        "engineering_manager",
+        "operations_lead",
+        "product_lead"
+      ],
+      "core_concepts": [
+        "Stakeholder mapping and engagement",
+        "Communication techniques",
+        "Listening, conflict, and alignment",
+        "Influencing without authority",
+        "Showing impact and buy-in",
+        "Managing remote stakeholders"
+      ],
+      "resources": [
+        {
+          "type": "article",
+          "title": "Stakeholder Management Guide",
+          "url": "https://www.coursera.org/articles/stakeholder-management",
+          "provider": "Coursera",
+          "authority_score": 0.9
+        },
+        {
+          "type": "article",
+          "title": "Communication and influence for PMs",
+          "url": "https://www.mindtools.com/pages/article/newLDR_81.htm",
+          "provider": "MindTools",
+          "authority_score": 0.87
+        },
+        {
+          "type": "video",
+          "title": "Stakeholder management and communication",
+          "url": "https://www.youtube.com/results?search_query=stakeholder+management+product+manager",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "How would you align engineering, sales, and leadership around a product decision that has trade-offs and uncertainty, while preserving trust and momentum?",
+        "socratic_prompt": "Why do stakeholder dynamics often decide whether a product strategy can survive implementation?",
+        "key_evaluation_criteria": [
+          "Understands stakeholder engagement",
+          "Can communicate with clarity and empathy",
+          "Influences without relying on authority alone"
+        ],
+        "remediation_hint": "Translate decisions into shared outcomes and make trade-offs visible so stakeholders can contribute productively to the decision."
+      },
+      "version": "1.0",
+      "keywords": [
+        "stakeholder-management",
+        "communication",
+        "influence",
+        "alignment",
+        "conflict-resolution",
+        "leadership"
+      ],
+      "active": true
+    },
+    {
+      "id": "pm_09_risk_management_and_tooling",
+      "name": "Risk Management, Tools, and Product Operations",
+      "domain": "product_manager",
+      "category": "Operations",
+      "tier": 3,
+      "difficulty_level": "intermediate",
+      "estimated_hours": 12,
+      "prerequisites": {
+        "hard": ["pm_08_stakeholder_management_and_communication"],
+        "soft": ["pm_04_prd_user_stories_and_roadmaps"]
+      },
+      "transferable_to": [
+        "program_manager",
+        "operations_lead",
+        "product_lead",
+        "engineering_manager"
+      ],
+      "core_concepts": [
+        "Risk identification and assessment",
+        "Risk register and mitigation",
+        "Roadmapping and project tools",
+        "Jira, Notion, Linear, Productboard, Aha",
+        "Operational discipline and monitoring",
+        "Contingency planning"
+      ],
+      "resources": [
+        {
+          "type": "article",
+          "title": "Risk Management Basics",
+          "url": "https://www.projectmanager.com/blog/risk-management-process",
+          "provider": "ProjectManager",
+          "authority_score": 0.87
+        },
+        {
+          "type": "article",
+          "title": "Product management tools overview",
+          "url": "https://www.productplan.com/glossary/product-management-tools/",
+          "provider": "ProductPlan",
+          "authority_score": 0.9
+        },
+        {
+          "type": "video",
+          "title": "Product tools and risk management",
+          "url": "https://www.youtube.com/results?search_query=product+management+tools+risk+management",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Explain how you would identify and mitigate product risks while keeping the roadmap actionable and stakeholders aligned on contingency plans.",
+        "socratic_prompt": "Why do the best PMs treat risk management as a strategic capability, not a paperwork exercise?",
+        "key_evaluation_criteria": [
+          "Understands risk processes and mitigation",
+          "Can use product tools appropriately",
+          "Keeps product execution disciplined and resilient"
+        ],
+        "remediation_hint": "Track strategic and delivery risks early, assign ownership, and build a contingency plan before execution pressure increases."
+      },
+      "version": "1.0",
+      "keywords": [
+        "risk-management",
+        "tools",
+        "roadmapping",
+        "risk-register",
+        "mitigation",
+        "operations"
+      ],
+      "active": true
+    },
+    {
+      "id": "pm_10_go_to_market_and_launch",
+      "name": "Go-to-Market Strategy and Launch Planning",
+      "domain": "product_manager",
+      "category": "Launch & Growth",
+      "tier": 3,
+      "difficulty_level": "intermediate",
+      "estimated_hours": 14,
+      "prerequisites": {
+        "hard": ["pm_09_risk_management_and_tooling"],
+        "soft": ["pm_07_growth_metrics_and_decision_making"]
+      },
+      "transferable_to": [
+        "growth_manager",
+        "marketing_manager",
+        "product_lead",
+        "business_lead"
+      ],
+      "core_concepts": [
+        "Launch planning and rollout strategies",
+        "Go-to-market design",
+        "Marketing and growth hacking",
+        "Feature flags and phased rollouts",
+        "Release readiness and feedback capture",
+        "Tracking early adoption"
+      ],
+      "resources": [
+        {
+          "type": "article",
+          "title": "Go-to-market strategy",
+          "url": "https://www.productplan.com/glossary/go-to-market-strategy/",
+          "provider": "ProductPlan",
+          "authority_score": 0.9
+        },
+        {
+          "type": "article",
+          "title": "Feature flags and rollout patterns",
+          "url": "https://launchdarkly.com/blog/feature-flags-best-practices/",
+          "provider": "LaunchDarkly",
+          "authority_score": 0.92
+        },
+        {
+          "type": "video",
+          "title": "Launch strategy for product managers",
+          "url": "https://www.youtube.com/results?search_query=go+to+market+strategy+product+manager",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Plan a go-to-market strategy for a new product feature, including launch sequencing, messaging, rollout controls, and post-launch learning loops.",
+        "socratic_prompt": "Why is launch success more than a marketing event when the product must still earn retention and trust?",
+        "key_evaluation_criteria": [
+          "Can design launch and rollout strategies",
+          "Understands growth and adoption loops",
+          "Connects release to measurable outcomes"
+        ],
+        "remediation_hint": "Launch with a clear user story and measurable success criteria; if the product does not have a learning plan, the release is not ready."
+      },
+      "version": "1.0",
+      "keywords": [
+        "gtm",
+        "launch",
+        "feature-flags",
+        "rollout",
+        "marketing",
+        "growth"
+      ],
+      "active": true
+    },
+    {
+      "id": "pm_11_leadership_and_scaling",
+      "name": "Leadership, Influence, and Scaling Products",
+      "domain": "product_manager",
+      "category": "Leadership",
+      "tier": 4,
+      "difficulty_level": "advanced",
+      "estimated_hours": 18,
+      "prerequisites": {
+        "hard": ["pm_10_go_to_market_and_launch", "pm_08_stakeholder_management_and_communication"],
+        "soft": ["pm_09_risk_management_and_tooling"]
+      },
+      "transferable_to": [
+        "senior_product_lead",
+        "executive_lead",
+        "engineering_manager",
+        "strategy_lead"
+      ],
+      "core_concepts": [
+        "Influencing without authority",
+        "Emotional intelligence and leadership",
+        "Scaling product organizations",
+        "Portfolio and platform thinking",
+        "Advanced product strategy",
+        "AI and ML in product management"
+      ],
+      "resources": [
+        {
+          "type": "article",
+          "title": "Leadership and influence for product managers",
+          "url": "https://www.productschool.com/blog/product-management/leadership-product-manager",
+          "provider": "Product School",
+          "authority_score": 0.89
+        },
+        {
+          "type": "article",
+          "title": "Platform and portfolio thinking",
+          "url": "https://www.mckinsey.com/featured-insights/strategy/portfolio-management-trends",
+          "provider": "McKinsey",
+          "authority_score": 0.9
+        },
+        {
+          "type": "video",
+          "title": "Leadership and scaling product organizations",
+          "url": "https://www.youtube.com/results?search_query=leadership+for+product+managers+scaling+organization",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Describe how you would lead a growing product organization through conflicting priorities, strategic scale, and cross-functional dependencies without losing focus on customer value.",
+        "socratic_prompt": "Why do scaling product organizations need leadership and trust systems as much as technical systems?",
+        "key_evaluation_criteria": [
+          "Understands leadership and influence",
+          "Can reason about scaling and operating at product portfolio level",
+          "Balances strategy, people, and execution"
+        ],
+        "remediation_hint": "Move from individual delivery to organizational leverage: set clear outcomes, align teams, and create a disciplined learning system."
+      },
+      "version": "1.0",
+      "keywords": [
+        "leadership",
+        "influence",
+        "scaling",
+        "portfolio",
+        "strategy",
+        "ai-in-product"
+      ],
+      "active": true
+    },
+    {
+      "id": "pm_12_continuous_learning_and_advanced_topics",
+      "name": "Continuous Learning and Advanced Product Topics",
+      "domain": "product_manager",
+      "category": "Advanced Topics",
+      "tier": 4,
+      "difficulty_level": "advanced",
+      "estimated_hours": 10,
+      "prerequisites": {
+        "hard": ["pm_11_leadership_and_scaling"],
+        "soft": ["pm_10_go_to_market_and_launch"]
+      },
+      "transferable_to": [
+        "executive_product_lead",
+        "strategy_lead",
+        "innovation_lead",
+        "founder"
+      ],
+      "core_concepts": [
+        "AI and ML in product management",
+        "Internationalization and global scale",
+        "Portfolio management",
+        "Advanced analytics and forecasting",
+        "Keeping product learning alive",
+        "Long-term product leadership"
+      ],
+      "resources": [
+        {
+          "type": "article",
+          "title": "AI in Product Management",
+          "url": "https://www.productschool.com/blog/ai-product-management",
+          "provider": "Product School",
+          "authority_score": 0.88
+        },
+        {
+          "type": "article",
+          "title": "Product portfolio management",
+          "url": "https://www.productplan.com/glossary/product-portfolio-management/",
+          "provider": "ProductPlan",
+          "authority_score": 0.9
+        },
+        {
+          "type": "video",
+          "title": "Advanced product leadership and AI",
+          "url": "https://www.youtube.com/results?search_query=advanced+product+management+ai+leadership",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Design a long-term product learning system that combines strategy, portfolio thinking, and AI-enabled product opportunities while preserving strong user focus.",
+        "socratic_prompt": "Why does durable product leadership depend on learning systems that evolve with market and technology shifts, not just on prior wins?",
+        "key_evaluation_criteria": [
+          "Can think at advanced strategic scale",
+          "Integrates AI, platform, and portfolio concepts",
+          "Builds a sustainable product learning culture"
+        ],
+        "remediation_hint": "Keep a strong user-value lens and a disciplined portfolio cadence so innovation expands the product without diluting focus."
+      },
+      "version": "1.0",
+      "keywords": [
+        "continuous-learning",
+        "ai-product",
+        "portfolio",
+        "platform-thinking",
+        "scaling",
+        "leadership"
+      ],
+      "active": true
+    }
+  ]
+}

@@ -71,16 +71,21 @@ The following endpoints exist in `go-api.yaml` and are required by the frontend 
 - **`/diagnostics/*` Conflict**: The frontend requests `/diagnostics/start`, `/diagnostics/{sessionId}/answer`, and `/diagnostics/{sessionId}/results`. While present in `go-api.yaml`, there is zero documentation of a Diagnostics data model in `AI_Learning_Platform_Database_Design.md`, and it is completely omitted from the `module-database-map.md`. If Go is to persist diagnostic sessions, an architectural update to the schema is required.
 - **`/search` Conflict**: Search traditionally belongs to FastAPI as it interfaces with `intelligence.concept_embeddings` and `intelligence.resource_embeddings`. However, `go-api.yaml` exposes `GET /search`. This indicates a "GO → FASTAPI ORCHESTRATION" relay pattern, rather than direct frontend-to-FastAPI access.
 
-## 4. FastAPI-Owned Endpoints
-FastAPI explicitly owns the semantic intelligence layer documented in `ai-service.yaml`. Go orchestrates calls to these internal `v1/*` endpoints:
-- `/v1/semantic-mapping`
-- `/v1/gap-analysis`
-- `/v1/resource-ranking`
-- `/v1/assessment/generate`
-- `/v1/evaluate`
-- `/v1/competency-estimate`
-- `/v1/adaptive-decision`
-- `/v1/remediation/generate`
+## 4. Intelligence (formerly FastAPI-owned) Endpoints
+The AI intelligence layer documented in `ai-service.yaml` has been ported into the Go backend and is served in-process at exact `/api/v1/*` paths (mirroring the FastAPI route set). Go's domain routes remain the front-door; these `/api/v1/*` intelligence endpoints are the direct AI capability surface:
+- `POST /api/v1/goal/analyze`
+- `GET /api/v1/roadmap`, `POST /api/v1/roadmap`, `GET /api/v1/roadmap/list`
+- `GET /api/v1/resource`
+- `POST /api/v1/evaluate`
+- `POST /api/v1/recommendation/personalize-roadmap`
+- `POST /api/v1/learning/lesson`, `POST /api/v1/learning/evaluate`
+- `POST /api/v1/adaptive/next-action`
+- `POST /api/v1/mastery/update`, `POST /api/v1/mastery/update-incremental`, `GET /api/v1/mastery/params/{node_id}`
+- `GET /api/v1/guardrails/status`, `POST /api/v1/guardrails/check`
+- `GET /api/v1/voice/status`, `POST /api/v1/voice/transcribe`, `POST /api/v1/voice/synthesize`, `POST /api/v1/voice/tutor-session`
+- `GET /api/v1/health`
+
+These endpoints degrade without LLM/NVIDIA/Groq keys exactly as FastAPI did (guardrail blocks, BKT/adaptive logic, keyword domain matching and deterministic fallbacks still work).
 
 ## 5. Shared Endpoints
 There are no endpoints where Go and FastAPI jointly manage HTTP writing. Go is exclusively the front-door (API Gateway), maintaining a strict orchestrator pattern where it proxies AI requests to FastAPI, validates them, and writes to Postgres.

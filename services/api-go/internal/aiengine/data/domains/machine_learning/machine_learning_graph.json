@@ -1,0 +1,847 @@
+{
+  "domain_id": "machine_learning",
+  "domain_name": "Machine Learning",
+  "total_nodes": 12,
+  "nodes": [
+    {
+      "id": "ml_01_programming_fundamentals",
+      "name": "Programming Fundamentals for ML",
+      "domain": "machine_learning",
+      "category": "Programming Foundations",
+      "tier": 1,
+      "difficulty_level": "basic",
+      "estimated_hours": 12,
+      "prerequisites": {
+        "hard": [],
+        "soft": []
+      },
+      "transferable_to": [
+        "ai_engineer",
+        "data_scientist",
+        "backend_engineer",
+        "full_stack"
+      ],
+      "core_concepts": [
+        "Python syntax and data types",
+        "Conditionals, loops, and functions",
+        "Object-oriented programming basics",
+        "Exceptions and debugging",
+        "Modules and package usage",
+        "Problem-solving for data tasks"
+      ],
+      "resources": [
+        {
+          "type": "documentation",
+          "title": "Python Official Tutorial",
+          "url": "https://docs.python.org/3/tutorial/",
+          "provider": "Python",
+          "authority_score": 0.99
+        },
+        {
+          "type": "article",
+          "title": "Python for Everybody",
+          "url": "https://www.py4e.com/",
+          "provider": "Python for Everybody",
+          "authority_score": 0.9
+        },
+        {
+          "type": "video",
+          "title": "Python for Beginners",
+          "url": "https://www.youtube.com/results?search_query=python+for+beginners",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Write a small Python script that reads a dataset file, cleans a field, and summarizes the results using loops and functions.",
+        "socratic_prompt": "Why do clear control flow and clean abstractions matter more in AI systems than in toy scripts?",
+        "key_evaluation_criteria": [
+          "Understands Python basics",
+          "Can write logical and reusable code",
+          "Understands debugging and modularity"
+        ],
+        "remediation_hint": "Work through small problem sets and rewrite them until the logic is straightforward and testable."
+      },
+      "version": "1.0",
+      "keywords": [
+        "python",
+        "programming",
+        "functions",
+        "loops",
+        "debugging",
+        "code-logic"
+      ],
+      "active": true
+    },
+    {
+      "id": "ml_02_linear_algebra_and_calculus",
+      "name": "Linear Algebra and Calculus Foundations",
+      "domain": "machine_learning",
+      "category": "Mathematical Foundations",
+      "tier": 1,
+      "difficulty_level": "basic",
+      "estimated_hours": 18,
+      "prerequisites": {
+        "hard": ["ml_01_programming_fundamentals"],
+        "soft": []
+      },
+      "transferable_to": [
+        "ai_engineer",
+        "data_scientist",
+        "quant_analyst",
+        "software_architect"
+      ],
+      "core_concepts": [
+        "Scalars, vectors, and tensors",
+        "Matrix operations and determinants",
+        "Eigenvalues and diagonalization",
+        "Derivatives and partial derivatives",
+        "Chain rule and gradients",
+        "Jacobian and Hessian intuition"
+      ],
+      "resources": [
+        {
+          "type": "course",
+          "title": "Essence of Linear Algebra",
+          "url": "https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab",
+          "provider": "3Blue1Brown",
+          "authority_score": 0.98
+        },
+        {
+          "type": "course",
+          "title": "Calculus 1 and derivatives",
+          "url": "https://www.khanacademy.org/math/calculus-1",
+          "provider": "Khan Academy",
+          "authority_score": 0.95
+        },
+        {
+          "type": "article",
+          "title": "Matrix and vector operations for ML",
+          "url": "https://developers.google.com/machine-learning/glossary",
+          "provider": "Google ML Glossary",
+          "authority_score": 0.92
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Explain how gradients and matrix operations drive model optimization, and compute a simple gradient for a small linear expression.",
+        "socratic_prompt": "Why do machine learning models depend on mathematical structure rather than just raw code?",
+        "key_evaluation_criteria": [
+          "Understands vectors, matrices, and derivatives",
+          "Can reason about optimization basics",
+          "Links math to model learning"
+        ],
+        "remediation_hint": "Start with geometric intuition and small numerical examples before moving to abstract notation."
+      },
+      "version": "1.0",
+      "keywords": [
+        "linear-algebra",
+        "calculus",
+        "gradient",
+        "matrix",
+        "vectors",
+        "derivatives"
+      ],
+      "active": true
+    },
+    {
+      "id": "ml_03_probability_and_statistics",
+      "name": "Probability and Statistics for ML",
+      "domain": "machine_learning",
+      "category": "Statistics",
+      "tier": 1,
+      "difficulty_level": "basic",
+      "estimated_hours": 16,
+      "prerequisites": {
+        "hard": ["ml_02_linear_algebra_and_calculus"],
+        "soft": []
+      },
+      "transferable_to": [
+        "data_analyst",
+        "data_scientist",
+        "ai_engineer",
+        "researcher"
+      ],
+      "core_concepts": [
+        "Descriptive statistics",
+        "Probability basics and distributions",
+        "Bayes theorem",
+        "Variance, covariance, and correlation",
+        "Inferential statistics",
+        "Sampling and uncertainty"
+      ],
+      "resources": [
+        {
+          "type": "article",
+          "title": "Probability and Statistics for Data Science",
+          "url": "https://seeing-theory.brown.edu/index.html",
+          "provider": "Brown University",
+          "authority_score": 0.94
+        },
+        {
+          "type": "documentation",
+          "title": "Statistics for Machine Learning",
+          "url": "https://scikit-learn.org/stable/modules/statistical_inference.html",
+          "provider": "scikit-learn",
+          "authority_score": 0.9
+        },
+        {
+          "type": "video",
+          "title": "Probability and statistics explained",
+          "url": "https://www.youtube.com/results?search_query=probability+statistics+for+machine+learning",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Interpret a dataset distribution and explain how probability and statistics influence feature selection and model confidence.",
+        "socratic_prompt": "Why is uncertainty a core part of machine learning rather than a side issue?",
+        "key_evaluation_criteria": [
+          "Understands statistics and probability basics",
+          "Can interpret distributions and uncertainty",
+          "Connects statistical ideas to model behavior"
+        ],
+        "remediation_hint": "Use visual plots and distributions to reason concretely before working with abstract formulas."
+      },
+      "version": "1.0",
+      "keywords": [
+        "probability",
+        "statistics",
+        "bayes",
+        "variance",
+        "distribution",
+        "inference"
+      ],
+      "active": true
+    },
+    {
+      "id": "ml_04_python_data_stack",
+      "name": "Python Data Stack and Visualization",
+      "domain": "machine_learning",
+      "category": "Data Engineering",
+      "tier": 1,
+      "difficulty_level": "basic",
+      "estimated_hours": 18,
+      "prerequisites": {
+        "hard": ["ml_01_programming_fundamentals"],
+        "soft": []
+      },
+      "transferable_to": [
+        "data_analyst",
+        "data_engineer",
+        "ai_engineer",
+        "researcher"
+      ],
+      "core_concepts": [
+        "NumPy arrays and broadcasting",
+        "Pandas data structures",
+        "Data aggregation and grouping",
+        "Matplotlib and Seaborn plotting",
+        "CSV, JSON, and tabular data handling",
+        "Exploratory data analysis"
+      ],
+      "resources": [
+        {
+          "type": "documentation",
+          "title": "NumPy User Guide",
+          "url": "https://numpy.org/doc/stable/user/",
+          "provider": "NumPy",
+          "authority_score": 0.98
+        },
+        {
+          "type": "documentation",
+          "title": "Pandas User Guide",
+          "url": "https://pandas.pydata.org/docs/user_guide/index.html",
+          "provider": "Pandas",
+          "authority_score": 0.97
+        },
+        {
+          "type": "video",
+          "title": "Pandas and data visualization tutorial",
+          "url": "https://www.youtube.com/results?search_query=pandas+python+data+visualization+tutorial",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Use NumPy and Pandas to load a dataset, clean a column, compute summary statistics, and visualize key patterns.",
+        "socratic_prompt": "Why does understanding data shape and distribution often matter more than the algorithm choice itself?",
+        "key_evaluation_criteria": [
+          "Can manipulate tabular data effectively",
+          "Uses visualization for analysis",
+          "Prepares data for modeling confidently"
+        ],
+        "remediation_hint": "Practice reading and summarizing raw data before fitting any model; the quality of the data pipeline determines model usefulness."
+      },
+      "version": "1.0",
+      "keywords": [
+        "numpy",
+        "pandas",
+        "matplotlib",
+        "seaborn",
+        "eda",
+        "dataframes"
+      ],
+      "active": true
+    },
+    {
+      "id": "ml_05_data_collection_and_preprocessing",
+      "name": "Data Collection, Sources, and Preprocessing",
+      "domain": "machine_learning",
+      "category": "Data Preparation",
+      "tier": 2,
+      "difficulty_level": "intermediate",
+      "estimated_hours": 18,
+      "prerequisites": {
+        "hard": ["ml_04_python_data_stack"],
+        "soft": ["ml_03_probability_and_statistics"]
+      },
+      "transferable_to": [
+        "data_engineer",
+        "data_analyst",
+        "ai_engineer",
+        "researcher"
+      ],
+      "core_concepts": [
+        "Data sources and collection methods",
+        "CSV, JSON, Parquet, and other formats",
+        "Data quality and missing values",
+        "Feature scaling and normalization",
+        "Feature engineering and selection",
+        "Preprocessing pipelines"
+      ],
+      "resources": [
+        {
+          "type": "article",
+          "title": "Data Cleaning and Feature Engineering",
+          "url": "https://www.kaggle.com/learn/feature-engineering",
+          "provider": "Kaggle",
+          "authority_score": 0.93
+        },
+        {
+          "type": "documentation",
+          "title": "scikit-learn preprocessing",
+          "url": "https://scikit-learn.org/stable/modules/preprocessing.html",
+          "provider": "scikit-learn",
+          "authority_score": 0.94
+        },
+        {
+          "type": "video",
+          "title": "Feature engineering and preprocessing",
+          "url": "https://www.youtube.com/results?search_query=feature+engineering+machine+learning+tutorial",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Prepare a raw dataset for modeling by handling missing values, encoding categories, scaling numeric fields, and explaining why each transformation matters.",
+        "socratic_prompt": "Why do weak preprocessing choices often produce worse models than a more advanced algorithm?",
+        "key_evaluation_criteria": [
+          "Understands data cleaning and feature preparation",
+          "Can choose appropriate transformations",
+          "Builds model-ready pipelines"
+        ],
+        "remediation_hint": "Treat preprocessing as part of the model design and evaluate each step in relation to the downstream objective."
+      },
+      "version": "1.0",
+      "keywords": [
+        "data-preprocessing",
+        "feature-engineering",
+        "normalization",
+        "missing-data",
+        "pipelines",
+        "data-quality"
+      ],
+      "active": true
+    },
+    {
+      "id": "ml_06_machine_learning_basics",
+      "name": "Machine Learning Fundamentals and Learning Types",
+      "domain": "machine_learning",
+      "category": "Core ML Concepts",
+      "tier": 2,
+      "difficulty_level": "intermediate",
+      "estimated_hours": 16,
+      "prerequisites": {
+        "hard": ["ml_05_data_collection_and_preprocessing"],
+        "soft": ["ml_03_probability_and_statistics"]
+      },
+      "transferable_to": [
+        "ai_engineer",
+        "data_scientist",
+        "product_analyst",
+        "software_architect"
+      ],
+      "core_concepts": [
+        "What is machine learning?",
+        "Supervised, unsupervised, semi-supervised, and reinforcement learning",
+        "Bias-variance tradeoff",
+        "Train/test split and generalization",
+        "Objective functions and optimization",
+        "Model learning process"
+      ],
+      "resources": [
+        {
+          "type": "article",
+          "title": "Machine Learning Crash Course",
+          "url": "https://developers.google.com/machine-learning/crash-course",
+          "provider": "Google",
+          "authority_score": 0.96
+        },
+        {
+          "type": "documentation",
+          "title": "scikit-learn user guide",
+          "url": "https://scikit-learn.org/stable/user_guide.html",
+          "provider": "scikit-learn",
+          "authority_score": 0.95
+        },
+        {
+          "type": "video",
+          "title": "Machine learning fundamentals",
+          "url": "https://www.youtube.com/results?search_query=machine+learning+fundamentals+for+beginners",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Explain the difference between supervised and unsupervised learning and describe what makes a model generalize beyond the training data.",
+        "socratic_prompt": "Why do learning problems often need more than just a fitting algorithm to become valuable in production?",
+        "key_evaluation_criteria": [
+          "Can articulate ML learning paradigms",
+          "Understands train/test and generalization",
+          "Links concepts to real problem framing"
+        ],
+        "remediation_hint": "Frame each problem in terms of data, target, objective, and feedback before choosing an algorithm."
+      },
+      "version": "1.0",
+      "keywords": [
+        "machine-learning",
+        "supervised",
+        "unsupervised",
+        "generalization",
+        "train-test",
+        "optimization"
+      ],
+      "active": true
+    },
+    {
+      "id": "ml_07_supervised_learning",
+      "name": "Supervised Learning Algorithms",
+      "domain": "machine_learning",
+      "category": "Algorithms",
+      "tier": 2,
+      "difficulty_level": "intermediate",
+      "estimated_hours": 20,
+      "prerequisites": {
+        "hard": ["ml_06_machine_learning_basics"],
+        "soft": ["ml_05_data_collection_and_preprocessing"]
+      },
+      "transferable_to": [
+        "data_scientist",
+        "ai_engineer",
+        "analyst",
+        "researcher"
+      ],
+      "core_concepts": [
+        "Linear regression and polynomial regression",
+        "Logistic regression",
+        "Decision trees and random forest",
+        "KNN and SVM",
+        "Classification and regression tasks",
+        "Feature-based prediction"
+      ],
+      "resources": [
+        {
+          "type": "documentation",
+          "title": "scikit-learn supervised learning",
+          "url": "https://scikit-learn.org/stable/supervised_learning.html",
+          "provider": "scikit-learn",
+          "authority_score": 0.96
+        },
+        {
+          "type": "article",
+          "title": "Decision Trees and Random Forests",
+          "url": "https://scikit-learn.org/stable/modules/tree.html",
+          "provider": "scikit-learn",
+          "authority_score": 0.95
+        },
+        {
+          "type": "video",
+          "title": "Supervised learning algorithms explained",
+          "url": "https://www.youtube.com/results?search_query=supervised+learning+algorithms+machine+learning",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Choose a suitable supervised learning algorithm for a tabular classification problem and explain the trade-offs between interpretability, performance, and complexity.",
+        "socratic_prompt": "Why do algorithm choice and representation choice matter together in supervised learning?",
+        "key_evaluation_criteria": [
+          "Understands key supervised models",
+          "Can map model to task type",
+          "Uses interpretability and performance trade-offs effectively"
+        ],
+        "remediation_hint": "Benchmark a few simple baselines first; model selection is more reliable when you know the problem and the data."
+      },
+      "version": "1.0",
+      "keywords": [
+        "linear-regression",
+        "logistic-regression",
+        "decision-tree",
+        "random-forest",
+        "svm",
+        "knn"
+      ],
+      "active": true
+    },
+    {
+      "id": "ml_08_unsupervised_and_reinforcement_learning",
+      "name": "Unsupervised Learning and Reinforcement Learning",
+      "domain": "machine_learning",
+      "category": "Advanced ML Paradigms",
+      "tier": 2,
+      "difficulty_level": "intermediate",
+      "estimated_hours": 18,
+      "prerequisites": {
+        "hard": ["ml_07_supervised_learning"],
+        "soft": ["ml_06_machine_learning_basics"]
+      },
+      "transferable_to": [
+        "ai_engineer",
+        "data_scientist",
+        "robotics_engineer",
+        "researcher"
+      ],
+      "core_concepts": [
+        "Clustering and dimensionality reduction",
+        "PCA and autoencoders",
+        "Hierarchical and probabilistic clustering",
+        "RL fundamentals and reward systems",
+        "Policy, value functions, and Q-learning",
+        "Representation learning"
+      ],
+      "resources": [
+        {
+          "type": "article",
+          "title": "Unsupervised Learning Guide",
+          "url": "https://scikit-learn.org/stable/modules/clustering.html",
+          "provider": "scikit-learn",
+          "authority_score": 0.96
+        },
+        {
+          "type": "article",
+          "title": "Introduction to Reinforcement Learning",
+          "url": "https://www.youtube.com/results?search_query=reinforcement+learning+introduction",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        },
+        {
+          "type": "video",
+          "title": "PCA, clustering, and unsupervised learning",
+          "url": "https://www.youtube.com/results?search_query=pca+clustering+unsupervised+learning",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Explain how clustering or dimensionality reduction helps uncover structure in unlabeled data, and compare that with the reward-driven setting of reinforcement learning.",
+        "socratic_prompt": "Why do some learning tasks need discovery of structure, while others require sequential decision-making under uncertainty?",
+        "key_evaluation_criteria": [
+          "Can explain unsupervised RL scenarios",
+          "Understands cluster and latent structure methods",
+          "Differentiates discovery-based and reward-based learning"
+        ],
+        "remediation_hint": "Relate each method to a real-world pattern: grouping similarity, reducing complexity, or learning through trial and feedback."
+      },
+      "version": "1.0",
+      "keywords": [
+        "clustering",
+        "pca",
+        "autoencoder",
+        "reinforcement-learning",
+        "q-learning",
+        "unsupervised"
+      ],
+      "active": true
+    },
+    {
+      "id": "ml_09_model_evaluation_and_validation",
+      "name": "Model Evaluation, Validation, and Metrics",
+      "domain": "machine_learning",
+      "category": "Evaluation",
+      "tier": 2,
+      "difficulty_level": "intermediate",
+      "estimated_hours": 14,
+      "prerequisites": {
+        "hard": ["ml_07_supervised_learning", "ml_08_unsupervised_and_reinforcement_learning"],
+        "soft": ["ml_06_machine_learning_basics"]
+      },
+      "transferable_to": [
+        "data_scientist",
+        "ai_engineer",
+        "analyst",
+        "product_analyst"
+      ],
+      "core_concepts": [
+        "Accuracy, precision, recall, and F1-score",
+        "ROC-AUC and log loss",
+        "Confusion matrix",
+        "Cross-validation and K-fold",
+        "Train-validation-test split",
+        "Overfitting and underfitting"
+      ],
+      "resources": [
+        {
+          "type": "documentation",
+          "title": "Model evaluation in scikit-learn",
+          "url": "https://scikit-learn.org/stable/modules/model_evaluation.html",
+          "provider": "scikit-learn",
+          "authority_score": 0.95
+        },
+        {
+          "type": "article",
+          "title": "Metrics for classification and regression",
+          "url": "https://developers.google.com/machine-learning/crash-course/classification/precision-and-recall",
+          "provider": "Google",
+          "authority_score": 0.94
+        },
+        {
+          "type": "video",
+          "title": "Model evaluation metrics",
+          "url": "https://www.youtube.com/results?search_query=model+evaluation+metrics+machine+learning",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "A model has strong accuracy but poor recall; explain how you would evaluate the risk and choose the right metric and validation strategy.",
+        "socratic_prompt": "Why do the right evaluation metrics depend on the business or scientific objective, not just on a model’s headline score?",
+        "key_evaluation_criteria": [
+          "Knows evaluation metrics and validation methods",
+          "Can reason about overfitting and generalization",
+          "Chooses metrics for problem context"
+        ],
+        "remediation_hint": "Measure the model with the objective in mind and compare against a sensible baseline before trusting any single score."
+      },
+      "version": "1.0",
+      "keywords": [
+        "precision",
+        "recall",
+        "f1-score",
+        "roc-auc",
+        "cross-validation",
+        "evaluation"
+      ],
+      "active": true
+    },
+    {
+      "id": "ml_10_deep_learning_basics",
+      "name": "Deep Learning Fundamentals",
+      "domain": "machine_learning",
+      "category": "Deep Learning",
+      "tier": 3,
+      "difficulty_level": "intermediate",
+      "estimated_hours": 22,
+      "prerequisites": {
+        "hard": ["ml_09_model_evaluation_and_validation"],
+        "soft": ["ml_07_supervised_learning"]
+      },
+      "transferable_to": [
+        "ai_engineer",
+        "deep_learning_engineer",
+        "researcher",
+        "computer_vision_engineer"
+      ],
+      "core_concepts": [
+        "Perceptron and multi-layer perceptrons",
+        "Forward and backward propagation",
+        "Activation functions",
+        "Loss functions and optimization",
+        "Neural network basics",
+        "Training deep models"
+      ],
+      "resources": [
+        {
+          "type": "course",
+          "title": "Neural Networks and Deep Learning",
+          "url": "https://www.coursera.org/learn/neural-networks-deep-learning",
+          "provider": "Coursera",
+          "authority_score": 0.96
+        },
+        {
+          "type": "documentation",
+          "title": "PyTorch tutorials",
+          "url": "https://pytorch.org/tutorials/",
+          "provider": "PyTorch",
+          "authority_score": 0.97
+        },
+        {
+          "type": "video",
+          "title": "Deep learning fundamentals",
+          "url": "https://www.youtube.com/results?search_query=deep+learning+fundamentals+for+beginners",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Explain how a neural network learns from data, why backpropagation matters, and how activation functions influence representation learning.",
+        "socratic_prompt": "Why does deep learning rely on structure and optimization as much as data quality?",
+        "key_evaluation_criteria": [
+          "Understands neural network architecture",
+          "Can explain feedforward and backpropagation",
+          "Understands training dynamics"
+        ],
+        "remediation_hint": "Build a tiny network on a toy dataset first so the mechanics of learning become visible and not abstract."
+      },
+      "version": "1.0",
+      "keywords": [
+        "neural-network",
+        "backpropagation",
+        "activation",
+        "loss-function",
+        "deep-learning",
+        "training"
+      ],
+      "active": true
+    },
+    {
+      "id": "ml_11_cnn_rnn_transformers",
+      "name": "CNNs, RNNs, and Transformer Architectures",
+      "domain": "machine_learning",
+      "category": "Advanced Architectures",
+      "tier": 3,
+      "difficulty_level": "advanced",
+      "estimated_hours": 24,
+      "prerequisites": {
+        "hard": ["ml_10_deep_learning_basics"],
+        "soft": ["ml_09_model_evaluation_and_validation"]
+      },
+      "transferable_to": [
+        "ai_engineer",
+        "computer_vision_engineer",
+        "nlp_engineer",
+        "researcher"
+      ],
+      "core_concepts": [
+        "Convolutional networks for vision",
+        "Pooling, padding, and striding",
+        "RNNs, GRUs, and LSTMs",
+        "Attention and self-attention",
+        "Transformers and multi-head attention",
+        "Modern sequence and vision modeling"
+      ],
+      "resources": [
+        {
+          "type": "course",
+          "title": "Transformer models and attention",
+          "url": "https://www.youtube.com/results?search_query=transformers+deep+learning+attention",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        },
+        {
+          "type": "documentation",
+          "title": "PyTorch Transformer docs",
+          "url": "https://pytorch.org/docs/stable/generated/torch.nn.Transformer.html",
+          "provider": "PyTorch",
+          "authority_score": 0.97
+        },
+        {
+          "type": "article",
+          "title": "Stanford CS231n and CS224n notes",
+          "url": "https://cs231n.github.io/",
+          "provider": "Stanford",
+          "authority_score": 0.96
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Explain the strengths and assumptions of CNNs versus transformers for tasks like image recognition or sequence understanding, and justify your architectural choice.",
+        "socratic_prompt": "Why do model architectures change with data structure and task assumptions instead of staying universal?",
+        "key_evaluation_criteria": [
+          "Understands modern architecture design",
+          "Can connect architectures to data types",
+          "Reasons clearly about model trade-offs"
+        ],
+        "remediation_hint": "Study a few canonical architectures and compare them using actual data properties like spatial structure, sequencing, and context length."
+      },
+      "version": "1.0",
+      "keywords": [
+        "cnn",
+        "rnn",
+        "lstm",
+        "transformer",
+        "attention",
+        "vision-and-nlp"
+      ],
+      "active": true
+    },
+    {
+      "id": "ml_12_mlops_and_production",
+      "name": "MLOps, Deployment, and Production ML",
+      "domain": "machine_learning",
+      "category": "Production ML",
+      "tier": 4,
+      "difficulty_level": "advanced",
+      "estimated_hours": 16,
+      "prerequisites": {
+        "hard": ["ml_11_cnn_rnn_transformers", "ml_09_model_evaluation_and_validation"],
+        "soft": ["ml_10_deep_learning_basics"]
+      },
+      "transferable_to": [
+        "ai_engineer",
+        "mlops_engineer",
+        "data_scientist",
+        "software_architect"
+      ],
+      "core_concepts": [
+        "Model deployment and serving",
+        "Monitoring, retraining, and drift",
+        "Experiment tracking and model registry",
+        "Explainability and governance",
+        "CI/CD for ML systems",
+        "Production feedback loops"
+      ],
+      "resources": [
+        {
+          "type": "article",
+          "title": "MLOps Guide",
+          "url": "https://ml-ops.org/",
+          "provider": "MLOps Community",
+          "authority_score": 0.9
+        },
+        {
+          "type": "documentation",
+          "title": "MLflow",
+          "url": "https://mlflow.org/docs/latest/index.html",
+          "provider": "MLflow",
+          "authority_score": 0.93
+        },
+        {
+          "type": "video",
+          "title": "MLOps and model deployment",
+          "url": "https://www.youtube.com/results?search_query=mlops+model+deployment+tutorial",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Design an end-to-end ML production workflow from data pipeline through training, deployment, monitoring, and retraining, and explain the operational risks at each stage.",
+        "socratic_prompt": "Why can a model be technically good and still fail in production if monitoring and governance are weak?",
+        "key_evaluation_criteria": [
+          "Understands production ML lifecycle",
+          "Can reason about monitoring and drift",
+          "Links technical excellence to operational reliability"
+        ],
+        "remediation_hint": "Treat deployment as a system design problem, not just a model packaging task; operational readiness is part of the model’s quality."
+      },
+      "version": "1.0",
+      "keywords": [
+        "mlops",
+        "deployment",
+        "monitoring",
+        "drift",
+        "model-registry",
+        "production-ml"
+      ],
+      "active": true
+    }
+  ]
+}

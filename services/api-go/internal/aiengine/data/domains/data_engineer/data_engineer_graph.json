@@ -1,0 +1,847 @@
+{
+  "domain_id": "data_engineer",
+  "domain_name": "Data Engineer",
+  "total_nodes": 12,
+  "nodes": [
+    {
+      "id": "de_01_foundations_and_lifecycle",
+      "name": "Data Engineering Foundations and Lifecycle",
+      "domain": "data_engineer",
+      "category": "Foundations",
+      "tier": 1,
+      "difficulty_level": "basic",
+      "estimated_hours": 8,
+      "prerequisites": {
+        "hard": [],
+        "soft": []
+      },
+      "transferable_to": [
+        "data_analyst",
+        "ai_data_scientist",
+        "software_architect",
+        "platform_engineer"
+      ],
+      "core_concepts": [
+        "What is data engineering",
+        "Data engineering vs data science",
+        "Lifecycle of data creation and usage",
+        "Data generation, storage, ingestion, serving, and analytics",
+        "Technology selection and trade-offs",
+        "End-to-end data product thinking"
+      ],
+      "resources": [
+        {
+          "type": "article",
+          "title": "What is Data Engineering",
+          "url": "https://www.databricks.com/glossary/data-engineering",
+          "provider": "Databricks",
+          "authority_score": 0.96
+        },
+        {
+          "type": "article",
+          "title": "Data Engineering Lifecycle",
+          "url": "https://www.manning.com/books/data-engineering-with-python",
+          "provider": "Manning",
+          "authority_score": 0.9
+        },
+        {
+          "type": "documentation",
+          "title": "Roadmap.sh Data Engineer",
+          "url": "https://roadmap.sh/roadmaps/data-engineer",
+          "provider": "Roadmap.sh",
+          "authority_score": 0.94
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Explain the major stages of the data engineering lifecycle and identify where a data pipeline should enforce quality checks and operational monitoring.",
+        "socratic_prompt": "Why does a system that collects data efficiently but does not store or serve it reliably fail to create business value?",
+        "key_evaluation_criteria": [
+          "Understands the data lifecycle end to end",
+          "Links data movement to operational quality",
+          "Recognizes that engineering value comes from reliable delivery as well as collection"
+        ],
+        "remediation_hint": "Map each data object to its producer, storage destination, consumer, and operational controls before optimizing any single stage."
+      },
+      "version": "1.0",
+      "keywords": [
+        "data-engineering",
+        "lifecycle",
+        "data-pipeline",
+        "data-platform",
+        "architecture",
+        "business-value"
+      ],
+      "active": true
+    },
+    {
+      "id": "de_02_programming_and_systems",
+      "name": "Programming, Linux, and Distributed Systems Basics",
+      "domain": "data_engineer",
+      "category": "Engineering Foundations",
+      "tier": 1,
+      "difficulty_level": "basic",
+      "estimated_hours": 16,
+      "prerequisites": {
+        "hard": ["de_01_foundations_and_lifecycle"],
+        "soft": []
+      },
+      "transferable_to": [
+        "backend_engineer",
+        "platform_engineer",
+        "software_architect",
+        "ai_data_scientist"
+      ],
+      "core_concepts": [
+        "Python, Java, Scala, or Go fundamentals",
+        "Data structures and algorithms",
+        "Git and GitHub workflows",
+        "Linux command-line reasoning",
+        "Networking fundamentals",
+        "Distributed systems basics"
+      ],
+      "resources": [
+        {
+          "type": "documentation",
+          "title": "Python Official Documentation",
+          "url": "https://docs.python.org/3/",
+          "provider": "Python Software Foundation",
+          "authority_score": 0.99
+        },
+        {
+          "type": "documentation",
+          "title": "Linux Command Line Basics",
+          "url": "https://ubuntu.com/tutorials/command-line-for-beginners",
+          "provider": "Canonical",
+          "authority_score": 0.9
+        },
+        {
+          "type": "video",
+          "title": "Distributed Systems Overview",
+          "url": "https://www.youtube.com/results?search_query=distributed+systems+for+beginners",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Describe how you would troubleshoot a pipeline that works locally but fails in a remote environment due to a missing dependency, path issue, or network restriction.",
+        "socratic_prompt": "Why do even simple data pipelines depend on Linux, networking, and version control practices in real production systems?",
+        "key_evaluation_criteria": [
+          "Demonstrates practical systems literacy",
+          "Knows command-line and environment basics",
+          "Understands that data systems depend on operational reliability"
+        ],
+        "remediation_hint": "Practice diagnosing environment differences, not just writing code, because pipeline failures are often caused by infrastructure assumptions."
+      },
+      "version": "1.0",
+      "keywords": [
+        "python",
+        "linux",
+        "git",
+        "networking",
+        "distributed-systems",
+        "programming"
+      ],
+      "active": true
+    },
+    {
+      "id": "de_03_sql_and_relational_databases",
+      "name": "SQL, Relational Design, and Transactional Databases",
+      "domain": "data_engineer",
+      "category": "Data Storage & Access",
+      "tier": 1,
+      "difficulty_level": "basic",
+      "estimated_hours": 18,
+      "prerequisites": {
+        "hard": ["de_02_programming_and_systems"],
+        "soft": []
+      },
+      "transferable_to": [
+        "data_analyst",
+        "backend_engineer",
+        "software_architect",
+        "database_admin"
+      ],
+      "core_concepts": [
+        "SQL basics and joins",
+        "Indexing and query optimization",
+        "Transactions and consistency",
+        "Relational modeling and normalization",
+        "OLTP versus OLAP",
+        "MySQL, PostgreSQL, Aurora, SQL Server, Oracle"
+      ],
+      "resources": [
+        {
+          "type": "documentation",
+          "title": "PostgreSQL Documentation",
+          "url": "https://www.postgresql.org/docs/current/",
+          "provider": "PostgreSQL",
+          "authority_score": 0.99
+        },
+        {
+          "type": "article",
+          "title": "SQL Tutorial",
+          "url": "https://www.w3schools.com/sql/",
+          "provider": "W3Schools",
+          "authority_score": 0.85
+        },
+        {
+          "type": "video",
+          "title": "SQL for Data Engineering",
+          "url": "https://www.youtube.com/results?search_query=sql+for+data+engineering",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Describe how you would design a relational schema for customer orders, payments, and inventory while ensuring correctness under concurrent writes and query performance at scale.",
+        "socratic_prompt": "Why do normalized designs and transactional guarantees differ from the needs of analytical reporting, and how do those trade-offs change across workloads?",
+        "key_evaluation_criteria": [
+          "Understands relational modeling and data integrity",
+          "Can reason about query performance and indexing",
+          "Distinguishes OLTP and OLAP patterns clearly"
+        ],
+        "remediation_hint": "Design the entities and their constraints first, then optimize access patterns with indexes and materialized summaries only where the workload requires it."
+      },
+      "version": "1.0",
+      "keywords": [
+        "sql",
+        "postgresql",
+        "relational-database",
+        "transactions",
+        "normalization",
+        "oltp"
+      ],
+      "active": true
+    },
+    {
+      "id": "de_04_nosql_and_data_models",
+      "name": "NoSQL Data Stores and Alternative Data Models",
+      "domain": "data_engineer",
+      "category": "Data Storage & Access",
+      "tier": 2,
+      "difficulty_level": "basic",
+      "estimated_hours": 14,
+      "prerequisites": {
+        "hard": ["de_03_sql_and_relational_databases"],
+        "soft": []
+      },
+      "transferable_to": [
+        "backend_engineer",
+        "software_architect",
+        "data_analyst",
+        "product_engineer"
+      ],
+      "core_concepts": [
+        "Document, key-value, columnar, and graph databases",
+        "MongoDB, Cassandra, Redis, Neo4j, DynamoDB, Elasticsearch",
+        "When to use NoSQL instead of SQL",
+        "CAP theorem and consistency trade-offs",
+        "SCD patterns, star and snowflake schemas",
+        "Schema flexibility and application match"
+      ],
+      "resources": [
+        {
+          "type": "documentation",
+          "title": "MongoDB Documentation",
+          "url": "https://www.mongodb.com/docs/",
+          "provider": "MongoDB",
+          "authority_score": 0.98
+        },
+        {
+          "type": "documentation",
+          "title": "Redis Documentation",
+          "url": "https://redis.io/docs/",
+          "provider": "Redis",
+          "authority_score": 0.97
+        },
+        {
+          "type": "video",
+          "title": "NoSQL Databases Explained",
+          "url": "https://www.youtube.com/results?search_query=nosql+databases+explained",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "A product team needs high-write throughput for user activity logs, flexible schema evolution, and fast lookups by session. Which storage pattern and database type fit best, and why?",
+        "socratic_prompt": "Why can a system with incredibly fast reads still fail if the data model does not match the query pattern and the workload violates consistency assumptions?",
+        "key_evaluation_criteria": [
+          "Matches database type to workload characteristics",
+          "Understands consistency and availability trade-offs",
+          "Chooses data modeling patterns appropriately"
+        ],
+        "remediation_hint": "Start by mapping the read and write patterns to a storage model before selecting a database product, because the data model drives both cost and correctness."
+      },
+      "version": "1.0",
+      "keywords": [
+        "nosql",
+        "mongodb",
+        "redis",
+        "cap-theorem",
+        "graph-db",
+        "columnar"
+      ],
+      "active": true
+    },
+    {
+      "id": "de_05_data_warehousing_and_lakes",
+      "name": "Data Warehouses, Data Lakes, and Lakehouse Concepts",
+      "domain": "data_engineer",
+      "category": "Analytical Storage",
+      "tier": 2,
+      "difficulty_level": "intermediate",
+      "estimated_hours": 16,
+      "prerequisites": {
+        "hard": ["de_04_nosql_and_data_models"],
+        "soft": ["de_03_sql_and_relational_databases"]
+      },
+      "transferable_to": [
+        "data_analyst",
+        "business_intelligence_analyst",
+        "ai_data_scientist",
+        "platform_engineer"
+      ],
+      "core_concepts": [
+        "Data warehouse architecture",
+        "Star versus snowflake schemas",
+        "Data lake, lakehouse, data mesh, and data fabric",
+        "ETL and ELT patterns",
+        "BigQuery, Redshift, Snowflake, Databricks, Delta Lake",
+        "Metadata and data governance"
+      ],
+      "resources": [
+        {
+          "type": "documentation",
+          "title": "Snowflake Documentation",
+          "url": "https://docs.snowflake.com/",
+          "provider": "Snowflake",
+          "authority_score": 0.98
+        },
+        {
+          "type": "documentation",
+          "title": "Databricks Lakehouse Overview",
+          "url": "https://www.databricks.com/glossary/lakehouse",
+          "provider": "Databricks",
+          "authority_score": 0.95
+        },
+        {
+          "type": "video",
+          "title": "Data Warehouse vs Lakehouse",
+          "url": "https://www.youtube.com/results?search_query=data+warehouse+vs+lakehouse",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Explain when a company should choose a warehouse, a lake, or a lakehouse and how those choices affect cost, governance, and analytics performance.",
+        "socratic_prompt": "Why do analytical systems often separate storage from compute, and how does that architectural decision influence speed, cost, and flexibility?",
+        "key_evaluation_criteria": [
+          "Understands data modeling and warehouse/lakehouse trade-offs",
+          "Knows key cloud analytics architectures",
+          "Links storage choice to business and operational needs"
+        ],
+        "remediation_hint": "Model the workload first: how large, how structured, how often queried, and under what governance constraints before selecting the storage platform."
+      },
+      "version": "1.0",
+      "keywords": [
+        "data-warehouse",
+        "data-lake",
+        "lakehouse",
+        "snowflake",
+        "bigquery",
+        "delta-lake"
+      ],
+      "active": true
+    },
+    {
+      "id": "de_06_data_ingestion_and_pipelines",
+      "name": "Data Ingestion, ETL, and Pipeline Design",
+      "domain": "data_engineer",
+      "category": "Data Movement",
+      "tier": 2,
+      "difficulty_level": "intermediate",
+      "estimated_hours": 18,
+      "prerequisites": {
+        "hard": ["de_05_data_warehousing_and_lakes"],
+        "soft": ["de_03_sql_and_relational_databases"]
+      },
+      "transferable_to": [
+        "backend_engineer",
+        "data_analyst",
+        "ai_data_scientist",
+        "integration_engineer"
+      ],
+      "core_concepts": [
+        "Batch, hybrid, and streaming ingestion",
+        "ETL and ELT patterns",
+        "Data extraction from databases, APIs, apps, and logs",
+        "Pipeline orchestration and dependencies",
+        "Data quality checks during movement",
+        "Operational monitoring and retries"
+      ],
+      "resources": [
+        {
+          "type": "documentation",
+          "title": "Apache Airflow Documentation",
+          "url": "https://airflow.apache.org/docs/",
+          "provider": "Apache Airflow",
+          "authority_score": 0.98
+        },
+        {
+          "type": "article",
+          "title": "ETL vs ELT",
+          "url": "https://www.ibm.com/topics/etl",
+          "provider": "IBM",
+          "authority_score": 0.93
+        },
+        {
+          "type": "video",
+          "title": "Data Pipelines Explained",
+          "url": "https://www.youtube.com/results?search_query=data+pipeline+etl+elt",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Design a data ingestion pipeline that collects transactions from a payment system, normalizes them, and lands them in a warehouse while handling retries, partial failures, and schema drift safely.",
+        "socratic_prompt": "Why is a pipeline that never fails silently still not useful if it produces low-quality, unvalidated data?",
+        "key_evaluation_criteria": [
+          "Defines ingestion and transformation flow clearly",
+          "Handles failure, retry, and data quality concerns",
+          "Chooses ETL or ELT based on workload and governance needs"
+        ],
+        "remediation_hint": "Design the pipeline around the operational contract: what is expected to be delivered, how to detect bad data, and what the retry semantics should be under partial system failures."
+      },
+      "version": "1.0",
+      "keywords": [
+        "etl",
+        "elt",
+        "data-ingestion",
+        "airflow",
+        "pipelines",
+        "orchestration"
+      ],
+      "active": true
+    },
+    {
+      "id": "de_07_big_data_and_cluster_computing",
+      "name": "Big Data, Cluster Computing, and Apache Spark",
+      "domain": "data_engineer",
+      "category": "Distributed Processing",
+      "tier": 3,
+      "difficulty_level": "intermediate",
+      "estimated_hours": 20,
+      "prerequisites": {
+        "hard": ["de_06_data_ingestion_and_pipelines"],
+        "soft": ["de_04_nosql_and_data_models"]
+      },
+      "transferable_to": [
+        "platform_engineer",
+        "ai_data_scientist",
+        "software_architect",
+        "data_analyst"
+      ],
+      "core_concepts": [
+        "Distributed file systems and cluster management",
+        "HDFS, MapReduce, YARN, and job scheduling",
+        "Apache Spark architecture and transformations",
+        "Parallel processing and resilient data flows",
+        "Batch versus streaming data processing",
+        "Container-based deployment patterns"
+      ],
+      "resources": [
+        {
+          "type": "documentation",
+          "title": "Apache Spark Documentation",
+          "url": "https://spark.apache.org/docs/latest/",
+          "provider": "Apache Spark",
+          "authority_score": 0.99
+        },
+        {
+          "type": "article",
+          "title": "Hadoop and Spark Overview",
+          "url": "https://www.ibm.com/topics/hadoop",
+          "provider": "IBM",
+          "authority_score": 0.92
+        },
+        {
+          "type": "video",
+          "title": "Spark Fundamentals",
+          "url": "https://www.youtube.com/results?search_query=apache+spark+tutorial",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "When a daily ETL job that used to process a few million rows starts struggling with tens of billions of events, explain how you would redesign the job using cluster computing and distributed processing principles.",
+        "socratic_prompt": "Why do distributed systems not just scale by raw power, and what additional concerns emerge around partitioning, scheduling, and failure handling?",
+        "key_evaluation_criteria": [
+          "Understands cluster computing and distributed execution",
+          "Can reason about scaling and job orchestration",
+          "Connects architecture to throughput and resilience requirements"
+        ],
+        "remediation_hint": "Break the problem into partitionable work units, profile bottlenecks, and then design for sharding, retries, and efficient job scheduling rather than just adding more memory."
+      },
+      "version": "1.0",
+      "keywords": [
+        "spark",
+        "hadoop",
+        "cluster-computing",
+        "yarn",
+        "distributed-processing",
+        "mapreduce"
+      ],
+      "active": true
+    },
+    {
+      "id": "de_08_streaming_and_messaging",
+      "name": "Streaming Data and Messaging Systems",
+      "domain": "data_engineer",
+      "category": "Real-Time Data Systems",
+      "tier": 3,
+      "difficulty_level": "intermediate",
+      "estimated_hours": 16,
+      "prerequisites": {
+        "hard": ["de_07_big_data_and_cluster_computing"],
+        "soft": ["de_06_data_ingestion_and_pipelines"]
+      },
+      "transferable_to": [
+        "backend_engineer",
+        "platform_engineer",
+        "software_architect",
+        "integration_engineer"
+      ],
+      "core_concepts": [
+        "Streaming data, event-driven systems, async communication",
+        "Kafka, RabbitMQ, SQS, SNS",
+        "Messages versus streams",
+        "Retry logic, idempotency, and ordering",
+        "Real-time pipelines and event processing",
+        "Backpressure and dead-letter queues"
+      ],
+      "resources": [
+        {
+          "type": "documentation",
+          "title": "Kafka Documentation",
+          "url": "https://kafka.apache.org/documentation/",
+          "provider": "Apache Kafka",
+          "authority_score": 0.99
+        },
+        {
+          "type": "documentation",
+          "title": "RabbitMQ Tutorials",
+          "url": "https://www.rabbitmq.com/tutorials.html",
+          "provider": "RabbitMQ",
+          "authority_score": 0.96
+        },
+        {
+          "type": "video",
+          "title": "Kafka Fundamentals",
+          "url": "https://www.youtube.com/results?search_query=apache+kafka+tutorial",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Design a streaming ingestion architecture that must process click events in near real time while maintaining order for an account and tolerating broker outages without data loss.",
+        "socratic_prompt": "Why do asynchronous event systems require explicit handling of retries, ordering, and exactly-once semantics, and how do those choices affect correctness and cost?",
+        "key_evaluation_criteria": [
+          "Understands messaging and event semantics",
+          "Handles failure and ordering realistically",
+          "Can reason about operational constraints of streaming systems"
+        ],
+        "remediation_hint": "Think through the semantics of delivery, durability, and consumer behavior before choosing a broker and partitioning pattern."
+      },
+      "version": "1.0",
+      "keywords": [
+        "kafka",
+        "rabbitmq",
+        "streaming",
+        "messaging",
+        "event-driven",
+        "realtime"
+      ],
+      "active": true
+    },
+    {
+      "id": "de_09_cloud_and_infrastructure",
+      "name": "Cloud Platforms, Containerization, and Infrastructure",
+      "domain": "data_engineer",
+      "category": "Cloud & Infra",
+      "tier": 3,
+      "difficulty_level": "intermediate",
+      "estimated_hours": 18,
+      "prerequisites": {
+        "hard": ["de_07_big_data_and_cluster_computing"],
+        "soft": ["de_02_programming_and_systems"]
+      },
+      "transferable_to": [
+        "devops_engineer",
+        "cloud_engineer",
+        "platform_engineer",
+        "backend_engineer"
+      ],
+      "core_concepts": [
+        "Cloud architecture basics",
+        "AWS, Azure, and GCP services",
+        "Docker and Kubernetes",
+        "Infrastructure as Code",
+        "Terraform and deployment orchestration",
+        "Monitoring and environment management"
+      ],
+      "resources": [
+        {
+          "type": "documentation",
+          "title": "AWS Cloud Essentials",
+          "url": "https://docs.aws.amazon.com/",
+          "provider": "Amazon Web Services",
+          "authority_score": 0.99
+        },
+        {
+          "type": "documentation",
+          "title": "Docker Documentation",
+          "url": "https://docs.docker.com/",
+          "provider": "Docker",
+          "authority_score": 0.97
+        },
+        {
+          "type": "documentation",
+          "title": "Terraform Documentation",
+          "url": "https://developer.hashicorp.com/terraform/docs",
+          "provider": "HashiCorp",
+          "authority_score": 0.97
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Explain how you would deploy a data pipeline to the cloud with secure credentials, scalable compute, and repeatable infrastructure provisioning using container and IaC principles.",
+        "socratic_prompt": "Why do robust cloud deployments depend on immutability, environment separation, and declarative configuration rather than ad hoc manual changes?",
+        "key_evaluation_criteria": [
+          "Understands cloud-native architecture and IaC",
+          "Can reason about scalability and environment management",
+          "Connects deployment design to secure and repeatable operations"
+        ],
+        "remediation_hint": "Treat infrastructure as code and environment configuration as first-class software, because repeatability is a core reliability feature in data systems."
+      },
+      "version": "1.0",
+      "keywords": [
+        "cloud",
+        "aws",
+        "azure",
+        "gcp",
+        "docker",
+        "terraform"
+      ],
+      "active": true
+    },
+    {
+      "id": "de_10_security_data_governance_and_quality",
+      "name": "Data Security, Governance, and Quality",
+      "domain": "data_engineer",
+      "category": "Trust & Compliance",
+      "tier": 4,
+      "difficulty_level": "advanced",
+      "estimated_hours": 14,
+      "prerequisites": {
+        "hard": ["de_09_cloud_and_infrastructure", "de_06_data_ingestion_and_pipelines"],
+        "soft": ["de_05_data_warehousing_and_lakes"]
+      },
+      "transferable_to": [
+        "data_governance_specialist",
+        "platform_engineer",
+        "security_engineer",
+        "software_architect"
+      ],
+      "core_concepts": [
+        "Authentication and authorization",
+        "Encryption, tokenization, and masking",
+        "Data lineage, governance, and metadata management",
+        "Data quality and interoperability",
+        "Privacy, GDPR, and compliance",
+        "Data stewardship and controls"
+      ],
+      "resources": [
+        {
+          "type": "article",
+          "title": "Data Governance Overview",
+          "url": "https://www.ibm.com/topics/data-governance",
+          "provider": "IBM",
+          "authority_score": 0.94
+        },
+        {
+          "type": "documentation",
+          "title": "OWASP Top 10",
+          "url": "https://owasp.org/www-project-top-ten/",
+          "provider": "OWASP",
+          "authority_score": 0.99
+        },
+        {
+          "type": "video",
+          "title": "Data Privacy and Governance Basics",
+          "url": "https://www.youtube.com/results?search_query=data+governance+privacy+basics",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "A healthcare data platform contains sensitive records and multiple consuming teams. Explain how you would protect the data while ensuring governance, lineage, and compliant access across the pipeline.",
+        "socratic_prompt": "Why is governance not just a compliance issue but also a data quality and trust issue for downstream analytics and AI systems?",
+        "key_evaluation_criteria": [
+          "Understands security and privacy controls",
+          "Can explain governance, lineage, and stewardship",
+          "Connects trust and compliance to operational data quality"
+        ],
+        "remediation_hint": "Make trust part of the data product contract: define who can access what, how it is protected, and how lineage and quality are maintained over time."
+      },
+      "version": "1.0",
+      "keywords": [
+        "governance",
+        "security",
+        "privacy",
+        "gdpr",
+        "data-quality",
+        "lineage"
+      ],
+      "active": true
+    },
+    {
+      "id": "de_11_monitoring_ci_cd_and_testing",
+      "name": "CI/CD, Observability, and Testing for Data Pipelines",
+      "domain": "data_engineer",
+      "category": "Operations & Reliability",
+      "tier": 4,
+      "difficulty_level": "advanced",
+      "estimated_hours": 14,
+      "prerequisites": {
+        "hard": ["de_09_cloud_and_infrastructure", "de_08_streaming_and_messaging"],
+        "soft": ["de_06_data_ingestion_and_pipelines"]
+      },
+      "transferable_to": [
+        "devops_engineer",
+        "platform_engineer",
+        "reliability_engineer",
+        "software_architect"
+      ],
+      "core_concepts": [
+        "CI/CD for data workflows",
+        "GitHub Actions, GitLab CI, ArgoCD",
+        "Prometheus, Datadog, Sentry, New Relic",
+        "Unit, integration, e2e, smoke, A/B, and load testing",
+        "Pipeline health, monitoring, and alerting",
+        "Operational resilience and rollbacks"
+      ],
+      "resources": [
+        {
+          "type": "documentation",
+          "title": "GitHub Actions Documentation",
+          "url": "https://docs.github.com/en/actions",
+          "provider": "GitHub",
+          "authority_score": 0.96
+        },
+        {
+          "type": "documentation",
+          "title": "Prometheus Documentation",
+          "url": "https://prometheus.io/docs/",
+          "provider": "Prometheus",
+          "authority_score": 0.97
+        },
+        {
+          "type": "video",
+          "title": "Data Pipeline Monitoring",
+          "url": "https://www.youtube.com/results?search_query=data+pipeline+monitoring",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Explain how you would design a deployment and monitoring strategy for a data pipeline that must run reliably in production and be recoverable when a transformation fails mid-run.",
+        "socratic_prompt": "Why are smoke tests and runtime monitoring important in data engineering even when the code compiles successfully?",
+        "key_evaluation_criteria": [
+          "Understands operational quality and deployment safety",
+          "Can design meaningful tests and monitoring",
+          "Links observability to reliability decisions"
+        ],
+        "remediation_hint": "Keep a close feedback loop between code changes, pipeline metrics, and operational incidents; reliability is built through repeated verification and transparent signals."
+      },
+      "version": "1.0",
+      "keywords": [
+        "ci-cd",
+        "observability",
+        "monitoring",
+        "testing",
+        "prometheus",
+        "deployment"
+      ],
+      "active": true
+    },
+    {
+      "id": "de_12_data_serving_and_business_intelligence",
+      "name": "Data Serving, BI, Reverse ETL, and Productization",
+      "domain": "data_engineer",
+      "category": "Consumption & Delivery",
+      "tier": 4,
+      "difficulty_level": "advanced",
+      "estimated_hours": 12,
+      "prerequisites": {
+        "hard": ["de_11_monitoring_ci_cd_and_testing", "de_10_security_data_governance_and_quality"],
+        "soft": ["de_05_data_warehousing_and_lakes"]
+      },
+      "transferable_to": [
+        "business_intelligence_analyst",
+        "data_analyst",
+        "product_engineer",
+        "solutions_architect"
+      ],
+      "core_concepts": [
+        "Data serving and analytics consumption",
+        "BI tools like Tableau, Power BI, Streamlit, Looker",
+        "Reverse ETL and operational analytics",
+        "Serving trusted data products to business users",
+        "Data as an internal platform capability",
+        "Operationalization and stakeholder value"
+      ],
+      "resources": [
+        {
+          "type": "documentation",
+          "title": "Power BI Learning Resources",
+          "url": "https://learn.microsoft.com/en-us/power-bi/",
+          "provider": "Microsoft",
+          "authority_score": 0.98
+        },
+        {
+          "type": "documentation",
+          "title": "Tableau Learning",
+          "url": "https://www.tableau.com/learn",
+          "provider": "Tableau",
+          "authority_score": 0.97
+        },
+        {
+          "type": "article",
+          "title": "Reverse ETL Explained",
+          "url": "https://www.hightouch.com/blog/reverse-etl",
+          "provider": "Hightouch",
+          "authority_score": 0.9
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Describe how to deliver clean, trusted data to business users through dashboards, reverse ETL, and operational workflows without creating duplicate sources of truth.",
+        "socratic_prompt": "Why do the most valuable data products align technology with business decisions, not just with storage or compute efficiency?",
+        "key_evaluation_criteria": [
+          "Understands downstream consumption and business value",
+          "Can define productized data supply to stakeholders",
+          "Links technical reliability with business trust and usability"
+        ],
+        "remediation_hint": "Treat data as a product: define the user, contract, quality checks, and delivery path before expanding the platform."
+      },
+      "version": "1.0",
+      "keywords": [
+        "bi",
+        "reverse-etl",
+        "data-serving",
+        "tableau",
+        "power-bi",
+        "looker"
+      ],
+      "active": true
+    }
+  ]
+}

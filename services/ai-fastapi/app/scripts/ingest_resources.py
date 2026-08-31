@@ -3,9 +3,12 @@
 
 Usage: run this script from the ai-fastapi project or directly with Python.
 """
-from pathlib import Path
 import json
-from typing import Optional
+import logging
+from pathlib import Path
+
+logger = logging.getLogger(__name__)
+logging.basicConfig(level=logging.INFO)
 
 
 def find_ai_fastapi_root(script_path: Path) -> Path:
@@ -34,8 +37,10 @@ def ingest(chroma_folder_name: str = "chroma_data") -> int:
     # the script easier to run for scanning/debugging when chromadb isn't installed.
     try:
         import chromadb
-    except Exception:
-        print("chromadb package not available. Install with 'pip install chromadb' to perform ingestion.")
+    except ImportError:
+        logger.warning(
+            "chromadb package not available. Install with 'pip install chromadb' to perform ingestion."
+        )
         return 0
 
     # Initialize persistent ChromaDB client
@@ -44,9 +49,14 @@ def ingest(chroma_folder_name: str = "chroma_data") -> int:
     # Get or create collection
     try:
         collection = client.get_or_create_collection(name="gold_standard_resources")
-    except Exception:
-        # Fallback if API differs
-        collection = client.create_collection(name="gold_standard_resources")
+    except (AttributeError, TypeError) as exc:
+        # Fallback if the installed chromadb client uses a different API
+        logger.debug("get_or_create_collection not available: %s", exc)
+        try:
+            collection = client.create_collection(name="gold_standard_resources")
+        except Exception:
+            logger.exception("Failed to create or obtain 'gold_standard_resources' collection")
+            return 0
 
     total = 0
 
@@ -55,8 +65,8 @@ def ingest(chroma_folder_name: str = "chroma_data") -> int:
         try:
             with open(graph_file, "r", encoding="utf-8") as fh:
                 data = json.load(fh)
-        except Exception as e:
-            print(f"Failed to load {graph_file}: {e}")
+        except (json.JSONDecodeError, OSError):
+            logger.exception("Failed to load %s", graph_file)
             continue
 
         nodes = data.get("nodes") or data.get("graph") or []
@@ -86,21 +96,37 @@ def ingest(chroma_folder_name: str = "chroma_data") -> int:
                 try:
                     collection.add(documents=[document], metadatas=[metadata], ids=[res_id])
                     total += 1
-                except Exception as e:
-                    # If collection.add signature differs, try single-item add via client
-                    try:
-                        client.add(collection_name="gold_standard_resources", documents=[document], metadatas=[metadata], ids=[res_id])
-                        total += 1
-                    except Exception:
-                        print(f"Failed to add resource {res_id} from {graph_file}: {e}")
+                except (TypeError, AttributeError) as e:
+                    # Signature mismatch between chromadb versions; try client-level API
+                    logger.debug("collection.add failed, trying client.add: %s", e)
+                    add_func = getattr(client, "add", None)
+                    if callable(add_func):
+                        try:
+                            add_func(
+                                collection_name="gold_standard_resources",
+                                documents=[document],
+                                metadatas=[metadata],
+                                ids=[res_id],
+                            )
+                            total += 1
+                        except Exception:
+                            logger.exception("Failed to add resource %s from %s", res_id, graph_file)
+                    else:
+                        logger.error(
+                            "chromadb client has no 'add' method; cannot add resource %s from %s",
+                            res_id,
+                            graph_file,
+                        )
+                except Exception:
+                    logger.exception("Unexpected error adding resource %s from %s", res_id, graph_file)
 
-    print(f"Ingested {total} resources into 'gold_standard_resources' at {chroma_dir}")
+    logger.info("Ingested %d resources into 'gold_standard_resources' at %s", total, chroma_dir)
     return total
 
 
 if __name__ == "__main__":
     count = ingest()
     if count:
-        print("Ingestion completed successfully.")
+        logger.info("Ingestion completed successfully.")
     else:
-        print("No resources were ingested.")
+        logger.info("No resources were ingested.")

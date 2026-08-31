@@ -6,6 +6,7 @@ import (
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
+
 // TxManager defines an interface for managing database transactions.
 type TxManager interface {
 	Do(ctx context.Context, fn func(ctx context.Context, tx pgx.Tx) error) error

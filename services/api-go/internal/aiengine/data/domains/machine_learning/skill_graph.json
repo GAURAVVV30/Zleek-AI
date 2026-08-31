@@ -1,0 +1,14 @@
+{
+  "domain": "machine_learning",
+  "nodes": [
+    {"id": "ml_intro", "label": "Machine Learning Fundamentals", "type": "concept"},
+    {"id": "supervised", "label": "Supervised Learning", "type": "concept"},
+    {"id": "evaluation", "label": "Model Evaluation", "type": "concept"},
+    {"id": "deployment", "label": "Deployment", "type": "concept"}
+  ],
+  "edges": [
+    {"source": "ml_intro", "target": "supervised"},
+    {"source": "supervised", "target": "evaluation"},
+    {"source": "evaluation", "target": "deployment"}
+  ]
+}

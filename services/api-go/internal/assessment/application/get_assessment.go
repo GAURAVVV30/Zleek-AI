@@ -2,42 +2,59 @@ package application
 
 import (
 	"context"
+	"errors"
 
 	"github.com/hcl-backend/services/api-go/internal/assessment/domain"
 )
 
+// ensureDefinition loads the latest assessment for a concept, generating the
+// deterministic quiz on first access.
+func ensureDefinition(ctx context.Context, repo AssessmentRepository, catalog ConceptCatalog, conceptID string) (*domain.AssessmentDefinition, []domain.AssessmentItem, error) {
+	def, err := repo.GetDefinitionByConceptID(ctx, conceptID)
+	if err == nil {
+		items, err := repo.GetItemsByDefinitionID(ctx, def.ID)
+		if err != nil {
+			return nil, nil, err
+		}
+		return def, items, nil
+	}
+	if !errors.Is(err, domain.ErrAssessmentNotFound) {
+		return nil, nil, err
+	}
+
+	title, _ := catalog.ConceptName(ctx, conceptID)
+	core, _ := catalog.CoreConceptNames(ctx, conceptID)
+	genDef, items := generateQuiz(conceptID, title, core)
+	genDef.ConceptID = conceptID
+	if err := repo.SaveDefinition(ctx, genDef, items); err != nil {
+		return nil, nil, err
+	}
+	return genDef, items, nil
+}
+
+// GetAssessmentUseCase returns the client-visible quiz for a concept.
 type GetAssessmentUseCase struct {
 	repo           AssessmentRepository
-	conceptService ConceptService
+	conceptCatalog ConceptCatalog
 }
 
-func NewGetAssessmentUseCase(repo AssessmentRepository, conceptService ConceptService) *GetAssessmentUseCase {
-	return &GetAssessmentUseCase{
-		repo:           repo,
-		conceptService: conceptService,
-	}
+func NewGetAssessmentUseCase(repo AssessmentRepository, conceptCatalog ConceptCatalog) *GetAssessmentUseCase {
+	return &GetAssessmentUseCase{repo: repo, conceptCatalog: conceptCatalog}
 }
 
-func (uc *GetAssessmentUseCase) Execute(ctx context.Context, conceptID string) (*domain.AssessmentDefinition, error) {
-	if err := uc.conceptService.ValidateConcept(ctx, conceptID); err != nil {
+func (uc *GetAssessmentUseCase) Execute(ctx context.Context, conceptID string) (*domain.QuizView, error) {
+	if err := uc.conceptCatalog.ValidateConcept(ctx, conceptID); err != nil {
 		return nil, domain.ErrConceptNotFound
 	}
-
-	def, err := uc.repo.GetDefinitionByConceptID(ctx, conceptID)
-	if err != nil {
-		return nil, domain.ErrAssessmentNotFound
-	}
-
-	items, err := uc.repo.GetItemsByDefinitionID(ctx, def.ID)
+	title, _ := uc.conceptCatalog.ConceptName(ctx, conceptID)
+	def, items, err := ensureDefinition(ctx, uc.repo, uc.conceptCatalog, conceptID)
 	if err != nil {
 		return nil, err
 	}
-
-	// Strip answer keys for the client response
-	for i := range items {
-		items[i].AnswerKey = nil
-	}
-	def.Items = items
-
-	return def, nil
+	_ = def
+	return &domain.QuizView{
+		ConceptID:    conceptID,
+		ConceptTitle: title,
+		Questions:    questionsForView(items),
+	}, nil
 }

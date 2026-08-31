@@ -46,6 +46,9 @@ func (l *Logger) With(args ...any) *Logger {
 	return &Logger{logger: l.logger.With(args...)}
 }
 
+// Slog exposes the underlying *slog.Logger for sinks that accept it directly.
+func (l *Logger) Slog() *slog.Logger { return l.logger }
+
 func (l *Logger) Fatal(msg string, args ...any) {
 	l.logger.Error(msg, args...)
 	os.Exit(1)

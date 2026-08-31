@@ -1,155 +1,462 @@
 openapi: 3.0.3
 info:
-  title: Learning Platform AI Service
-  version: 1.0.0
-  description: API for the FastAPI Intelligence Service (Go -> FastAPI)
+  title: Learning Platform AI Service Contract
+  version: 2.0.0
+  description: >
+    AI intelligence endpoints (goal analysis, roadmap generation, BKT mastery,
+    adaptive decisions, guardrails, voice, sentiment-augmented evaluation and
+    RAG-backed resources). These paths mirror the FastAPI intelligence service
+    route-for-route and are now served in-process by the Go backend at
+    /api/v1/*. The Go backend validates and persists authoritative state; these
+    endpoints propose/degrade without API keys exactly as FastAPI did.
+servers:
+  - url: http://localhost:8080/api/v1
 paths:
-  /v1/semantic-mapping:
+  /goal/analyze:
     post:
-      summary: Goal/Skill Semantic Mapping
-      operationId: post_v1_semantic-mapping
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
+      summary: Map a free-text goal to a knowledge domain
+      operationId: post_goal_analyze
       requestBody:
         required: true
         content:
           application/json:
             schema:
               type: object
+              required: [user_text]
               properties:
-                goal_text:
+                user_text:
                   type: string
-  /v1/gap-analysis:
-    post:
-      summary: Skill-Gap Analysis
-      operationId: post_v1_gap-analysis
       responses:
         '200':
-          description: OK
+          description: Mapping result (degrades to an error dict without LLM keys)
           content:
             application/json:
               schema:
                 type: object
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-  /v1/resource-ranking:
-    post:
-      summary: Resource Ranking / RAG
-      operationId: post_v1_resource-ranking
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-  /v1/assessment/generate:
-    post:
-      summary: Assessment Generation
-      operationId: post_v1_assessment_generate
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                concept_id:
-                  type: string
-  /v1/evaluate:
-    post:
-      summary: Evaluation Engine
-      operationId: post_v1_evaluate
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-  /v1/competency-estimate:
-    post:
-      summary: Competency Estimation
-      operationId: post_v1_competency-estimate
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-  /v1/adaptive-decision:
-    post:
-      summary: Adaptive Decision Logic
-      operationId: post_v1_adaptive-decision
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-  /v1/remediation/generate:
-    post:
-      summary: Remediation Generation
-      operationId: post_v1_remediation_generate
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-  /v1/health:
+                properties:
+                  mapped_domain_id:
+                    type: string
+                  confidence:
+                    type: number
+                  error:
+                    type: string
+        '422':
+          description: Validation error
+  /roadmap:
     get:
-      summary: Health check endpoint
-      operationId: get_v1_health
+      summary: Fetch a stored roadmap
+      operationId: get_roadmap
+      parameters:
+        - name: domain
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Roadmap record
+        '404':
+          description: Roadmap not found
+    post:
+      summary: Persist a roadmap for a domain
+      operationId: post_roadmap
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [domain, nodes, edges]
+              properties:
+                domain:
+                  type: string
+                nodes:
+                  type: array
+                  items:
+                    type: object
+                edges:
+                  type: array
+                  items:
+                    type: object
+      responses:
+        '200':
+          description: Stored roadmap record
+        '422':
+          description: Validation error
+  /roadmap/list:
+    get:
+      summary: List all stored roadmaps
+      operationId: get_roadmap_list
+      responses:
+        '200':
+          description: List of roadmap domains
+          content:
+            application/json:
+              schema:
+                type: object
+  /resource:
+    get:
+      summary: Fetch curated resources for a topic
+      operationId: get_resource
+      parameters:
+        - name: domain
+          in: query
+          schema:
+            type: string
+        - name: topic
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Curated resources
+        '400':
+          description: Missing topic
+  /evaluate:
+    post:
+      summary: Legacy score-based evaluation
+      operationId: post_evaluate
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [user_id, domain, score]
+              properties:
+                user_id:
+                  type: string
+                domain:
+                  type: string
+                score:
+                  type: number
+      responses:
+        '200':
+          description: Evaluation verdict (grade + feedback)
+        '422':
+          description: Validation error
+  /recommendation/personalize-roadmap:
+    post:
+      summary: Generate a personalized learning path from the domain graph
+      operationId: post_recommendation_personalize_roadmap
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [domain_id]
+              properties:
+                domain_id:
+                  type: string
+                completed_nodes:
+                  type: array
+                  items:
+                    type: string
+                competency_states:
+                  type: object
+      responses:
+        '200':
+          description: Ordered learning path honoring hard prerequisites
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  domain_id:
+                    type: string
+                  path:
+                    type: array
+                    items:
+                      type: object
+        '404':
+          description: Unknown domain
+        '422':
+          description: Validation error
+  /learning/lesson:
+    post:
+      summary: Generate a lesson for a graph node with resources
+      operationId: post_learning_lesson
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [domain_id, node_id]
+              properties:
+                domain_id:
+                  type: string
+                node_id:
+                  type: string
+      responses:
+        '200':
+          description: Lesson payload plus curated resources
+        '404':
+          description: Unknown node
+        '422':
+          description: Validation error
+  /learning/evaluate:
+    post:
+      summary: Guardrails + rubric + sentiment + LLM evaluation of a student answer
+      operationId: post_learning_evaluate
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [domain_id, node_id, student_answer]
+              properties:
+                domain_id:
+                  type: string
+                node_id:
+                  type: string
+                student_answer:
+                  type: string
+                attempt_history:
+                  type: array
+                  items:
+                    type: integer
+      responses:
+        '200':
+          description: Blocked (guardrail) or evaluation result
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  blocked:
+                    type: boolean
+                  reason:
+                    type: string
+                  guardrails_method:
+                    type: string
+                  score:
+                    type: object
+                  feedback:
+                    type: string
+                  bkt:
+                    type: object
+        '404':
+          description: Unknown node
+        '422':
+          description: Validation error
+  /adaptive/next-action:
+    post:
+      summary: Decide advance / remediate / human_intervention
+      operationId: post_adaptive_next_action
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [node_id]
+              properties:
+                node_id:
+                  type: string
+                score:
+                  type: number
+                failed_attempts:
+                  type: integer
+                p_mastery:
+                  type: number
+      responses:
+        '200':
+          description: Recommended action and decision basis
+        '422':
+          description: Validation error
+  /mastery/update:
+    post:
+      summary: Full BKT forward pass over an attempt history
+      operationId: post_mastery_update
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [domain_id, node_id, attempt_history]
+              properties:
+                domain_id:
+                  type: string
+                node_id:
+                  type: string
+                attempt_history:
+                  type: array
+                  items:
+                    type: integer
+                    enum: [0, 1]
+      responses:
+        '200':
+          description: BKT result (p_mastery, mastered, attempts, params)
+        '422':
+          description: Validation error (attempts must be 0/1)
+  /mastery/update-incremental:
+    post:
+      summary: Single-step BKT update from current p_mastery
+      operationId: post_mastery_update_incremental
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [node_id, current_p_mastery, new_response]
+              properties:
+                node_id:
+                  type: string
+                current_p_mastery:
+                  type: number
+                new_response:
+                  type: integer
+      responses:
+        '200':
+          description: Updated BKT state
+        '422':
+          description: Validation error
+  /mastery/params/{node_id}:
+    get:
+      summary: BKT parameters for a node
+      operationId: get_mastery_params
+      parameters:
+        - name: node_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: BKT params (defaults unless node graph overrides)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  params:
+                    type: object
+                  source:
+                    type: string
+        '404':
+          description: Unknown node
+  /guardrails/status:
+    get:
+      summary: Guardrails policy status (enabled toggles and method)
+      operationId: get_guardrails_status
+      responses:
+        '200':
+          description: Guardrails configuration
+  /guardrails/check:
+    post:
+      summary: Check student input against safety policies
+      operationId: post_guardrails_check
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [student_text]
+              properties:
+                student_text:
+                  type: string
+                lesson_topic:
+                  type: string
+      responses:
+        '200':
+          description: blocked flag, reason and refusal message
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  blocked:
+                    type: boolean
+                  reason:
+                    type: string
+                  refusal_message:
+                    type: string
+                  method:
+                    type: string
+        '422':
+          description: Validation error
+  /voice/status:
+    get:
+      summary: ASR/TTS availability
+      operationId: get_voice_status
+      responses:
+        '200':
+          description: per-engine availability flags
+  /voice/transcribe:
+    post:
+      summary: Transcribe audio (Riva -> Groq fallback)
+      operationId: post_voice_transcribe
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '200':
+          description: transcript and inferred language
+        '502':
+          description: ASR unavailable
+  /voice/synthesize:
+    post:
+      summary: Synthesize a wav response (Riva TTS / MMS fallback)
+      operationId: post_voice_synthesize
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                text:
+                  type: string
+      responses:
+        '200':
+          description: audio/wav bytes
+        '502':
+          description: TTS unavailable
+  /voice/tutor-session:
+    post:
+      summary: Transcribe -> evaluate -> spoken feedback loop
+      operationId: post_voice_tutor_session
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                domain_id:
+                  type: string
+                node_id:
+                  type: string
+                file:
+                  type: string
+                  format: binary
+                attempt_history:
+                  type: string
+                return_audio:
+                  type: string
+      responses:
+        '200':
+          description: evaluation JSON with optional base64 wav
+        '404':
+          description: Unknown node
+        '502':
+          description: ASR or evaluation service failure
+  /health:
+    get:
+      summary: AI service health check
+      operationId: get_health
       responses:
         '200':
           description: OK
@@ -158,6 +465,12 @@ paths:
               schema:
                 type: object
                 properties:
+                  service:
+                    type: string
+                    example: ai-fastapi
+                  version:
+                    type: string
+                    example: "3.0"
                   status:
                     type: string
                     example: ok

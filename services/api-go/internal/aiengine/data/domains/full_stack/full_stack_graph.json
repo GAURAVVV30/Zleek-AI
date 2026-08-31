@@ -1,0 +1,847 @@
+{
+  "domain_id": "full_stack",
+  "domain_name": "Full Stack",
+  "total_nodes": 12,
+  "nodes": [
+    {
+      "id": "fs_01_web_foundations",
+      "name": "Web Foundations and HTTP Basics",
+      "domain": "full_stack",
+      "category": "Web Foundations",
+      "tier": 1,
+      "difficulty_level": "basic",
+      "estimated_hours": 10,
+      "prerequisites": {
+        "hard": [],
+        "soft": []
+      },
+      "transferable_to": [
+        "frontend_engineer",
+        "backend_engineer",
+        "software_architect",
+        "product_engineer"
+      ],
+      "core_concepts": [
+        "How the web works",
+        "Client-server communication",
+        "HTTP and HTTPS",
+        "Browsers, DNS, and hosting",
+        "Request-response lifecycle",
+        "Web application architecture"
+      ],
+      "resources": [
+        {
+          "type": "article",
+          "title": "How the Internet Works",
+          "url": "https://developer.mozilla.org/en-US/docs/Learn/Common_questions/Web_mechanics/How_does_the_Internet_work",
+          "provider": "MDN",
+          "authority_score": 0.96
+        },
+        {
+          "type": "documentation",
+          "title": "HTTP Overview",
+          "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Overview",
+          "provider": "MDN",
+          "authority_score": 0.97
+        },
+        {
+          "type": "video",
+          "title": "Internet and DNS explained",
+          "url": "https://www.youtube.com/results?search_query=internet+and+dns+explained",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Explain how a browser request becomes a rendered web page and why network understanding matters for both frontend and backend work.",
+        "socratic_prompt": "Why do product problems often hide in the request lifecycle even when the application code looks correct?",
+        "key_evaluation_criteria": [
+          "Can describe browser-server communication",
+          "Understands HTTP concepts",
+          "Connects network fundamentals to product behavior"
+        ],
+        "remediation_hint": "Trace one request end-to-end from the browser to the server and back, then map each step to a real product behavior."
+      },
+      "version": "1.0",
+      "keywords": [
+        "internet",
+        "http",
+        "browser",
+        "web",
+        "dns",
+        "networking"
+      ],
+      "active": true
+    },
+    {
+      "id": "fs_02_git_and_tooling",
+      "name": "Git, GitHub, and Project Tooling",
+      "domain": "full_stack",
+      "category": "Developer Workflow",
+      "tier": 1,
+      "difficulty_level": "basic",
+      "estimated_hours": 12,
+      "prerequisites": {
+        "hard": ["fs_01_web_foundations"],
+        "soft": []
+      },
+      "transferable_to": [
+        "frontend_engineer",
+        "backend_engineer",
+        "devops_sre",
+        "software_architect"
+      ],
+      "core_concepts": [
+        "Version control basics",
+        "Git workflows and branching",
+        "Pull requests and code reviews",
+        "GitHub collaboration",
+        "Package management basics",
+        "Local dev environment setup"
+      ],
+      "resources": [
+        {
+          "type": "documentation",
+          "title": "Git Documentation",
+          "url": "https://git-scm.com/doc",
+          "provider": "Git",
+          "authority_score": 0.98
+        },
+        {
+          "type": "documentation",
+          "title": "npm Documentation",
+          "url": "https://docs.npmjs.com/",
+          "provider": "npm",
+          "authority_score": 0.95
+        },
+        {
+          "type": "video",
+          "title": "Git and GitHub for beginners",
+          "url": "https://www.youtube.com/results?search_query=git+and+github+for+beginners",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Describe the correct Git workflow for a team building a feature, from a branch to a reviewed merge into the main branch.",
+        "socratic_prompt": "Why does disciplined version control reduce avoidable defects and confusion in fast-moving full-stack teams?",
+        "key_evaluation_criteria": [
+          "Can use Git basics correctly",
+          "Understands collaboration and branching",
+          "Maintains safe project workflows"
+        ],
+        "remediation_hint": "Practice with small repositories and feature branches until the commit, push, merge, and review flow becomes second nature."
+      },
+      "version": "1.0",
+      "keywords": [
+        "git",
+        "github",
+        "version-control",
+        "npm",
+        "workflow",
+        "collaboration"
+      ],
+      "active": true
+    },
+    {
+      "id": "fs_03_html_css_javascript",
+      "name": "HTML, CSS, and JavaScript Fundamentals",
+      "domain": "full_stack",
+      "category": "Frontend Foundations",
+      "tier": 1,
+      "difficulty_level": "basic",
+      "estimated_hours": 22,
+      "prerequisites": {
+        "hard": ["fs_01_web_foundations", "fs_02_git_and_tooling"],
+        "soft": []
+      },
+      "transferable_to": [
+        "frontend_engineer",
+        "backend_engineer",
+        "product_engineer",
+        "fullstack_developer"
+      ],
+      "core_concepts": [
+        "Semantic HTML",
+        "CSS layout and responsiveness",
+        "JavaScript syntax and logic",
+        "DOM manipulation",
+        "Events and interactivity",
+        "Static web pages"
+      ],
+      "resources": [
+        {
+          "type": "documentation",
+          "title": "MDN HTML Guide",
+          "url": "https://developer.mozilla.org/en-US/docs/Web/HTML",
+          "provider": "MDN",
+          "authority_score": 0.97
+        },
+        {
+          "type": "documentation",
+          "title": "MDN CSS Guide",
+          "url": "https://developer.mozilla.org/en-US/docs/Web/CSS",
+          "provider": "MDN",
+          "authority_score": 0.97
+        },
+        {
+          "type": "documentation",
+          "title": "MDN JavaScript Guide",
+          "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide",
+          "provider": "MDN",
+          "authority_score": 0.98
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Build a small landing page with semantic structure, styling, and an interactive element that responds to user input or fetches basic data.",
+        "socratic_prompt": "Why do clean semantics and predictable DOM behavior make frontend projects easier to debug and extend?",
+        "key_evaluation_criteria": [
+          "Can build static pages with HTML and CSS",
+          "Understands JavaScript interactivity",
+          "Produces maintainable, accessible markup"
+        ],
+        "remediation_hint": "Build simple interfaces repeatedly until the structure, styling, and interaction flow are clear and resilient."
+      },
+      "version": "1.0",
+      "keywords": [
+        "html",
+        "css",
+        "javascript",
+        "dom",
+        "interactive-ui",
+        "responsive-web"
+      ],
+      "active": true
+    },
+    {
+      "id": "fs_04_frontend_interactivity",
+      "name": "Interactivity, External Packages, and UI Checkpoints",
+      "domain": "full_stack",
+      "category": "Frontend Practice",
+      "tier": 1,
+      "difficulty_level": "basic",
+      "estimated_hours": 14,
+      "prerequisites": {
+        "hard": ["fs_03_html_css_javascript"],
+        "soft": []
+      },
+      "transferable_to": [
+        "frontend_engineer",
+        "fullstack_developer",
+        "product_engineer",
+        "ui_engineer"
+      ],
+      "core_concepts": [
+        "Interactivity with JavaScript",
+        "External packages and dependency management",
+        "Static webpage checkpoint",
+        "UI patterns and state updates",
+        "Project-building practice",
+        "Reusable front-end components"
+      ],
+      "resources": [
+        {
+          "type": "documentation",
+          "title": "MDN Web APIs",
+          "url": "https://developer.mozilla.org/en-US/docs/Web/API",
+          "provider": "MDN",
+          "authority_score": 0.97
+        },
+        {
+          "type": "article",
+          "title": "JavaScript.info",
+          "url": "https://javascript.info/",
+          "provider": "JavaScript.info",
+          "authority_score": 0.93
+        },
+        {
+          "type": "video",
+          "title": "JavaScript interactivity basics",
+          "url": "https://www.youtube.com/results?search_query=javascript+interactivity+for+beginners",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Create a small interactive webpage that uses packages or browser APIs to add real value, and explain your decisions around structure and dependency use.",
+        "socratic_prompt": "Why can a UI feel useful and maintainable when state and dependencies are designed intentionally rather than bolted on?",
+        "key_evaluation_criteria": [
+          "Builds interactive front-end features",
+          "Understands package usage responsibly",
+          "Can improve UI work through real-world checkpoints"
+        ],
+        "remediation_hint": "Choose small but meaningful UI features, then improve your implementation by reducing coupling and making updates predictable."
+      },
+      "version": "1.0",
+      "keywords": [
+        "interactivity",
+        "npm",
+        "ui",
+        "javascript",
+        "packages",
+        "static-web"
+      ],
+      "active": true
+    },
+    {
+      "id": "fs_05_react_tailwind",
+      "name": "React, Tailwind CSS, and Component UI",
+      "domain": "full_stack",
+      "category": "Frontend Frameworks",
+      "tier": 2,
+      "difficulty_level": "intermediate",
+      "estimated_hours": 26,
+      "prerequisites": {
+        "hard": ["fs_04_frontend_interactivity"],
+        "soft": ["fs_02_git_and_tooling"]
+      },
+      "transferable_to": [
+        "frontend_engineer",
+        "fullstack_developer",
+        "ui_engineer",
+        "product_engineer"
+      ],
+      "core_concepts": [
+        "React component model",
+        "State and props",
+        "Tailwind CSS utility patterns",
+        "Component composition",
+        "Modern frontend architecture",
+        "Collaborative UI development"
+      ],
+      "resources": [
+        {
+          "type": "documentation",
+          "title": "React Documentation",
+          "url": "https://react.dev/learn",
+          "provider": "React",
+          "authority_score": 0.99
+        },
+        {
+          "type": "documentation",
+          "title": "Tailwind CSS Documentation",
+          "url": "https://tailwindcss.com/docs",
+          "provider": "Tailwind CSS",
+          "authority_score": 0.97
+        },
+        {
+          "type": "video",
+          "title": "React + Tailwind tutorial",
+          "url": "https://www.youtube.com/results?search_query=react+tailwind+css+tutorial",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Build a small React app with reusable components and an efficient styling system, then explain how state and composition keep the interface maintainable.",
+        "socratic_prompt": "Why do component boundaries matter more as the UI grows beyond a few screens?",
+        "key_evaluation_criteria": [
+          "Can compose UI with React patterns",
+          "Uses Tailwind or similar design system effectively",
+          "Recognizes maintainability as a core design concern"
+        ],
+        "remediation_hint": "Refactor small sections into reusable components and revisit state placement until patterns become consistent and predictable."
+      },
+      "version": "1.0",
+      "keywords": [
+        "react",
+        "tailwind",
+        "components",
+        "frontend",
+        "state",
+        "ui"
+      ],
+      "active": true
+    },
+    {
+      "id": "fs_06_backend_foundations",
+      "name": "Backend Foundations with Node.js",
+      "domain": "full_stack",
+      "category": "Backend Development",
+      "tier": 2,
+      "difficulty_level": "intermediate",
+      "estimated_hours": 20,
+      "prerequisites": {
+        "hard": ["fs_05_react_tailwind"],
+        "soft": ["fs_03_html_css_javascript"]
+      },
+      "transferable_to": [
+        "backend_engineer",
+        "fullstack_developer",
+        "software_architect",
+        "ai_engineer"
+      ],
+      "core_concepts": [
+        "Server-side JavaScript",
+        "Node.js runtime basics",
+        "Event loop and async programming",
+        "CLI tools and server scripts",
+        "Backend project setup",
+        "Application lifecycle"
+      ],
+      "resources": [
+        {
+          "type": "documentation",
+          "title": "Node.js Docs",
+          "url": "https://nodejs.org/en/docs/",
+          "provider": "Node.js",
+          "authority_score": 0.98
+        },
+        {
+          "type": "article",
+          "title": "Node.js Introduction",
+          "url": "https://nodejs.dev/en/learn/",
+          "provider": "Node.js",
+          "authority_score": 0.95
+        },
+        {
+          "type": "video",
+          "title": "Node.js crash course",
+          "url": "https://www.youtube.com/results?search_query=nodejs+crash+course+for+beginners",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Create a small Node.js app that responds to requests or executes a CLI task, and explain how the runtime handles async work and process execution.",
+        "socratic_prompt": "Why does non-blocking execution matter so much when building APIs or server-side workflows?",
+        "key_evaluation_criteria": [
+          "Can run Node.js applications",
+          "Understands runtime and async behavior",
+          "Builds simple backend logic with basic server concepts"
+        ],
+        "remediation_hint": "Start with tiny server and CLI examples, then gradually add real request handling and asynchronous tasks to build confidence."
+      },
+      "version": "1.0",
+      "keywords": [
+        "nodejs",
+        "backend",
+        "async",
+        "server",
+        "cli",
+        "runtime"
+      ],
+      "active": true
+    },
+    {
+      "id": "fs_07_restful_apis",
+      "name": "RESTful APIs and CRUD Applications",
+      "domain": "full_stack",
+      "category": "API Development",
+      "tier": 2,
+      "difficulty_level": "intermediate",
+      "estimated_hours": 18,
+      "prerequisites": {
+        "hard": ["fs_06_backend_foundations"],
+        "soft": ["fs_05_react_tailwind"]
+      },
+      "transferable_to": [
+        "backend_engineer",
+        "fullstack_developer",
+        "software_architect",
+        "api_engineer"
+      ],
+      "core_concepts": [
+        "REST architecture",
+        "HTTP methods and status codes",
+        "CRUD operations",
+        "Route design and validation",
+        "Request/response modeling",
+        "API testing"
+      ],
+      "resources": [
+        {
+          "type": "documentation",
+          "title": "MDN HTTP Methods",
+          "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods",
+          "provider": "MDN",
+          "authority_score": 0.97
+        },
+        {
+          "type": "documentation",
+          "title": "REST API Tutorial",
+          "url": "https://restfulapi.net/",
+          "provider": "REST API Tutorial",
+          "authority_score": 0.92
+        },
+        {
+          "type": "video",
+          "title": "REST API tutorial",
+          "url": "https://www.youtube.com/results?search_query=rest+api+tutorial+for+beginners",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Design a small CRUD API for a resource and explain how routes, payloads, and status codes support a predictable client-server contract.",
+        "socratic_prompt": "Why do clean resource modeling and consistent status codes make APIs easier to consume and maintain over time?",
+        "key_evaluation_criteria": [
+          "Can create and document CRUD endpoints",
+          "Understands REST conventions and HTTP semantics",
+          "Builds APIs that are easy to consume"
+        ],
+        "remediation_hint": "Keep resource boundaries clear and route structures consistent; ambiguity in APIs grows into expensive rework later."
+      },
+      "version": "1.0",
+      "keywords": [
+        "rest",
+        "api",
+        "crud",
+        "http",
+        "routes",
+        "endpoints"
+      ],
+      "active": true
+    },
+    {
+      "id": "fs_08_data_auth_and_storage",
+      "name": "Authentication, Redis, and Data Persistence",
+      "domain": "full_stack",
+      "category": "Data & Security",
+      "tier": 2,
+      "difficulty_level": "intermediate",
+      "estimated_hours": 18,
+      "prerequisites": {
+        "hard": ["fs_07_restful_apis"],
+        "soft": ["fs_06_backend_foundations"]
+      },
+      "transferable_to": [
+        "backend_engineer",
+        "fullstack_developer",
+        "data_engineer",
+        "security_engineer"
+      ],
+      "core_concepts": [
+        "JWT and session auth",
+        "Authorization and protected resources",
+        "Redis cache and sessions",
+        "Relational data modeling",
+        "PostgreSQL basics",
+        "Secure app data flow"
+      ],
+      "resources": [
+        {
+          "type": "documentation",
+          "title": "JWT Introduction",
+          "url": "https://jwt.io/introduction",
+          "provider": "JWT.io",
+          "authority_score": 0.95
+        },
+        {
+          "type": "documentation",
+          "title": "PostgreSQL Documentation",
+          "url": "https://www.postgresql.org/docs/",
+          "provider": "PostgreSQL",
+          "authority_score": 0.98
+        },
+        {
+          "type": "documentation",
+          "title": "Redis Documentation",
+          "url": "https://redis.io/docs/",
+          "provider": "Redis",
+          "authority_score": 0.97
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Design a secure app flow with user authentication, database persistence, and caching, and explain how each service contributes to reliability and performance.",
+        "socratic_prompt": "Why are security, caching, and persistence decisions tightly coupled in real applications rather than unrelated concerns?",
+        "key_evaluation_criteria": [
+          "Understands auth patterns and secure APIs",
+          "Can explain data persistence choices",
+          "Connects app correctness to reliability and security"
+        ],
+        "remediation_hint": "Model the system’s critical data paths first, then decide where caching and auth need to be enforced based on the product’s trust boundaries."
+      },
+      "version": "1.0",
+      "keywords": [
+        "jwt",
+        "redis",
+        "postgresql",
+        "auth",
+        "database",
+        "security"
+      ],
+      "active": true
+    },
+    {
+      "id": "fs_09_linux_and_cloud_basics",
+      "name": "Linux Basics and Cloud Fundamentals",
+      "domain": "full_stack",
+      "category": "Infrastructure Basics",
+      "tier": 3,
+      "difficulty_level": "intermediate",
+      "estimated_hours": 16,
+      "prerequisites": {
+        "hard": ["fs_08_data_auth_and_storage"],
+        "soft": ["fs_06_backend_foundations"]
+      },
+      "transferable_to": [
+        "devops_sre",
+        "backend_engineer",
+        "fullstack_developer",
+        "cloud_engineer"
+      ],
+      "core_concepts": [
+        "Linux command line basics",
+        "Processes, filesystems, and networking",
+        "Cloud fundamentals and provisioning",
+        "EC2, VPC, Route53, SES, S3",
+        "Basic operational knowledge",
+        "Deployment readiness"
+      ],
+      "resources": [
+        {
+          "type": "documentation",
+          "title": "Linux Documentation",
+          "url": "https://tldp.org/LDP/intro-linux/html/",
+          "provider": "The Linux Documentation Project",
+          "authority_score": 0.9
+        },
+        {
+          "type": "documentation",
+          "title": "AWS Cloud Fundamentals",
+          "url": "https://aws.amazon.com/what-is-cloud-computing/",
+          "provider": "AWS",
+          "authority_score": 0.98
+        },
+        {
+          "type": "video",
+          "title": "Linux basics for developers",
+          "url": "https://www.youtube.com/results?search_query=linux+bash+for+developers",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Explain how you would move an app from local development to a cloud environment and why Linux and networking basics matter for deployment confidence.",
+        "socratic_prompt": "Why do many deployment problems arise from missing operational understanding rather than application logic alone?",
+        "key_evaluation_criteria": [
+          "Understands Linux and cloud basics",
+          "Can explain networking and service access patterns",
+          "Connects infrastructure to app delivery"
+        ],
+        "remediation_hint": "Learn the basic operational commands and cloud building blocks until they become a reliable mental model for deploying systems."
+      },
+      "version": "1.0",
+      "keywords": [
+        "linux",
+        "cloud",
+        "aws",
+        "vpc",
+        "ec2",
+        "s3"
+      ],
+      "active": true
+    },
+    {
+      "id": "fs_10_cicd_and_monitoring",
+      "name": "CI/CD, Monitoring, and Delivery Pipelines",
+      "domain": "full_stack",
+      "category": "DevOps & Delivery",
+      "tier": 3,
+      "difficulty_level": "intermediate",
+      "estimated_hours": 18,
+      "prerequisites": {
+        "hard": ["fs_09_linux_and_cloud_basics"],
+        "soft": ["fs_08_data_auth_and_storage"]
+      },
+      "transferable_to": [
+        "devops_sre",
+        "fullstack_developer",
+        "platform_engineer",
+        "software_architect"
+      ],
+      "core_concepts": [
+        "GitHub Actions and pipelines",
+        "Continuous integration and deployment",
+        "Monitoring and observability basics",
+        "Application health checks",
+        "Automation of delivery",
+        "Continuous improvement loops"
+      ],
+      "resources": [
+        {
+          "type": "documentation",
+          "title": "GitHub Actions Docs",
+          "url": "https://docs.github.com/en/actions",
+          "provider": "GitHub",
+          "authority_score": 0.98
+        },
+        {
+          "type": "article",
+          "title": "Monitoring and Observability Guide",
+          "url": "https://www.atlassian.com/continuous-delivery/principles/continuous-integration-vs-delivery-vs-deployment",
+          "provider": "Atlassian",
+          "authority_score": 0.9
+        },
+        {
+          "type": "video",
+          "title": "CI/CD for beginners",
+          "url": "https://www.youtube.com/results?search_query=github+actions+ci+cd+tutorial",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Describe the full CI/CD path for a product with tests, deployments, and alerts, and explain how monitoring feedback prevents regressions from reaching users.",
+        "socratic_prompt": "Why do delivery pipelines fail when teams focus only on code shipping and not on validation, observability, and rollback?",
+        "key_evaluation_criteria": [
+          "Understands CI/CD flow and automation",
+          "Can discuss monitoring and deployment safety",
+          "Links delivery process to product reliability"
+        ],
+        "remediation_hint": "Design for observability from day one so that release confidence is measurable and rollback paths are predictable."
+      },
+      "version": "1.0",
+      "keywords": [
+        "ci/cd",
+        "github-actions",
+        "monitoring",
+        "deployment",
+        "automation",
+        "observability"
+      ],
+      "active": true
+    },
+    {
+      "id": "fs_11_infrastructure_automation",
+      "name": "Infrastructure Automation and DevOps Practice",
+      "domain": "full_stack",
+      "category": "Automation",
+      "tier": 3,
+      "difficulty_level": "intermediate",
+      "estimated_hours": 18,
+      "prerequisites": {
+        "hard": ["fs_10_cicd_and_monitoring"],
+        "soft": ["fs_09_linux_and_cloud_basics"]
+      },
+      "transferable_to": [
+        "devops_sre",
+        "platform_engineer",
+        "fullstack_developer",
+        "software_architect"
+      ],
+      "core_concepts": [
+        "Infrastructure as code",
+        "Ansible and automation",
+        "Terraform basics",
+        "Repeating environment setup",
+        "Provisioning and scaling",
+        "Operational consistency"
+      ],
+      "resources": [
+        {
+          "type": "documentation",
+          "title": "Ansible Documentation",
+          "url": "https://docs.ansible.com/",
+          "provider": "Ansible",
+          "authority_score": 0.96
+        },
+        {
+          "type": "documentation",
+          "title": "Terraform Documentation",
+          "url": "https://developer.hashicorp.com/terraform/docs",
+          "provider": "HashiCorp",
+          "authority_score": 0.97
+        },
+        {
+          "type": "video",
+          "title": "Terraform and Ansible basics",
+          "url": "https://www.youtube.com/results?search_query=terraform+ansible+for+beginners",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Explain how infrastructure as code reduces manual mistakes and makes a full-stack deployment more repeatable and production-safe.",
+        "socratic_prompt": "Why do well-automated systems become easier to trust than manually configured environments over time?",
+        "key_evaluation_criteria": [
+          "Understands infrastructure automation",
+          "Can explain provisioning and scaling implications",
+          "Builds repeatability into deployment workflows"
+        ],
+        "remediation_hint": "Automate the operations that are repeated and high risk, then treat infra changes with the same review discipline as application code."
+      },
+      "version": "1.0",
+      "keywords": [
+        "ansible",
+        "terraform",
+        "infrastructure-as-code",
+        "automation",
+        "devops",
+        "provisioning"
+      ],
+      "active": true
+    },
+    {
+      "id": "fs_12_fullstack_delivery",
+      "name": "Production Deployment, Monitoring, and Full-Stack Delivery",
+      "domain": "full_stack",
+      "category": "Production Delivery",
+      "tier": 4,
+      "difficulty_level": "advanced",
+      "estimated_hours": 16,
+      "prerequisites": {
+        "hard": ["fs_11_infrastructure_automation", "fs_10_cicd_and_monitoring"],
+        "soft": ["fs_09_linux_and_cloud_basics"]
+      },
+      "transferable_to": [
+        "fullstack_developer",
+        "devops_sre",
+        "software_architect",
+        "engineering_manager"
+      ],
+      "core_concepts": [
+        "Deployment strategy and rollback",
+        "Production monitoring and incident response",
+        "Application lifecycle management",
+        "Full-stack delivery ownership",
+        "Cross-functional product readiness",
+        "High-confidence releases"
+      ],
+      "resources": [
+        {
+          "type": "article",
+          "title": "Release Engineering and deployment practices",
+          "url": "https://www.atlassian.com/continuous-delivery/principles",
+          "provider": "Atlassian",
+          "authority_score": 0.9
+        },
+        {
+          "type": "article",
+          "title": "Monitoring best practices",
+          "url": "https://sre.google/sre-book/monitoring-distributed-systems/",
+          "provider": "Google SRE",
+          "authority_score": 0.96
+        },
+        {
+          "type": "video",
+          "title": "Production deployment and monitoring",
+          "url": "https://www.youtube.com/results?search_query=production+deployment+monitoring+fullstack",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Design a release and monitoring plan for a production full-stack app, and explain how you would detect failure, respond, and recover without disrupting users.",
+        "socratic_prompt": "Why does the difference between shipping and operating an app become obvious only when user traffic and real-world conditions are present?",
+        "key_evaluation_criteria": [
+          "Can plan production-grade delivery",
+          "Understands monitoring and rollback patterns",
+          "Owns full-stack release confidence"
+        ],
+        "remediation_hint": "Treat operational readiness as part of product quality: if you cannot observe and recover from issues quickly, the system is not deployment-ready."
+      },
+      "version": "1.0",
+      "keywords": [
+        "production",
+        "deployment",
+        "monitoring",
+        "rollback",
+        "full-stack",
+        "delivery"
+      ],
+      "active": true
+    }
+  ]
+}

@@ -3,8 +3,8 @@ package infrastructure
 import (
 	"context"
 
-	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/hcl-backend/services/api-go/internal/admin/domain"
+	"github.com/jackc/pgx/v5/pgxpool"
 )
 
 type PostgresAuditRepository struct {

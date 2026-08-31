@@ -1,0 +1,847 @@
+{
+  "domain_id": "devops_sre",
+  "domain_name": "DevOps SRE",
+  "total_nodes": 12,
+  "nodes": [
+    {
+      "id": "ds_01_devops_foundations",
+      "name": "DevOps Foundations and Operating Mindset",
+      "domain": "devops_sre",
+      "category": "Operations Foundations",
+      "tier": 1,
+      "difficulty_level": "basic",
+      "estimated_hours": 10,
+      "prerequisites": {
+        "hard": [],
+        "soft": []
+      },
+      "transferable_to": [
+        "backend_engineer",
+        "platform_engineer",
+        "cloud_engineer",
+        "site_reliability_engineer"
+      ],
+      "core_concepts": [
+        "What DevOps and SRE mean in practice",
+        "Collaboration between engineering and operations",
+        "Automation as a reliability strategy",
+        "System thinking and service ownership",
+        "Availability, resilience, and software delivery flow",
+        "SLOs, toil reduction, and human-centered operations"
+      ],
+      "resources": [
+        {
+          "type": "article",
+          "title": "What is DevOps",
+          "url": "https://www.atlassian.com/devops/what-is-devops",
+          "provider": "Atlassian",
+          "authority_score": 0.95
+        },
+        {
+          "type": "article",
+          "title": "Google SRE Book",
+          "url": "https://sre.google/sre-book/",
+          "provider": "Google SRE",
+          "authority_score": 0.99
+        },
+        {
+          "type": "documentation",
+          "title": "Roadmap.sh DevOps",
+          "url": "https://roadmap.sh/devops",
+          "provider": "Roadmap.sh",
+          "authority_score": 0.94
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Explain how a DevOps or SRE mindset changes the way a team handles deployments, incidents, and repeated operational work compared with a pure application-development mindset.",
+        "socratic_prompt": "Why does reducing toil not just improve productivity, but also reduce operational risk and increase service reliability?",
+        "key_evaluation_criteria": [
+          "Understands system operations as part of software delivery",
+          "Recognizes automation and reliability as engineering work",
+          "Can connect operational habits to service quality"
+        ],
+        "remediation_hint": "Start by identifying the recurring operational tasks that are painful or error-prone; those are the highest-value automation opportunities."
+      },
+      "version": "1.0",
+      "keywords": [
+        "devops",
+        "sre",
+        "reliability",
+        "automation",
+        "toil",
+        "service-ownership"
+      ],
+      "active": true
+    },
+    {
+      "id": "ds_02_linux_and_shell",
+      "name": "Linux, Shell, and System Administration Basics",
+      "domain": "devops_sre",
+      "category": "Systems & Operating Environment",
+      "tier": 1,
+      "difficulty_level": "basic",
+      "estimated_hours": 16,
+      "prerequisites": {
+        "hard": ["ds_01_devops_foundations"],
+        "soft": []
+      },
+      "transferable_to": [
+        "backend_engineer",
+        "cloud_engineer",
+        "platform_engineer",
+        "security_engineer"
+      ],
+      "core_concepts": [
+        "Linux distributions and system fundamentals",
+        "Processes, daemons, permissions, and file systems",
+        "Networking tools and troubleshooting",
+        "Bash and PowerShell scripting",
+        "Terminal workflows and log inspection",
+        "System performance awareness"
+      ],
+      "resources": [
+        {
+          "type": "documentation",
+          "title": "Linux Documentation",
+          "url": "https://tldp.org/LDP/intro-linux/html/",
+          "provider": "The Linux Documentation Project",
+          "authority_score": 0.9
+        },
+        {
+          "type": "documentation",
+          "title": "Bash Guide for Beginners",
+          "url": "https://tldp.org/LDP/Bash-Beginners-Guide/html/",
+          "provider": "TLDP",
+          "authority_score": 0.9
+        },
+        {
+          "type": "video",
+          "title": "Linux Fundamentals for DevOps",
+          "url": "https://www.youtube.com/results?search_query=linux+fundamentals+for+devops",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "A service is failing intermittently and the logs show no obvious application error. Explain how you would inspect the system using basic Linux and shell tools to diagnose the issue.",
+        "socratic_prompt": "Why do many production incidents begin as unexpected interactions between the application, the OS, and the network, even when the code itself appears correct?",
+        "key_evaluation_criteria": [
+          "Uses shell and system tools confidently",
+          "Knows how to identify process and resource issues",
+          "Links OS-level observations to root cause analysis"
+        ],
+        "remediation_hint": "Learn how to inspect processes, CPU, memory, sockets, and logs before changing code or redeploying systems."
+      },
+      "version": "1.0",
+      "keywords": [
+        "linux",
+        "shell",
+        "bash",
+        "processes",
+        "monitoring",
+        "system-admin"
+      ],
+      "active": true
+    },
+    {
+      "id": "ds_03_version_control_and_ci_cd",
+      "name": "Version Control, Git, and CI/CD Pipelines",
+      "domain": "devops_sre",
+      "category": "Delivery Automation",
+      "tier": 1,
+      "difficulty_level": "basic",
+      "estimated_hours": 12,
+      "prerequisites": {
+        "hard": ["ds_02_linux_and_shell"],
+        "soft": []
+      },
+      "transferable_to": [
+        "backend_engineer",
+        "software_engineer",
+        "platform_engineer",
+        "ai_engineer"
+      ],
+      "core_concepts": [
+        "Git workflows and branching strategies",
+        "Pull requests, code review, and merge discipline",
+        "GitHub/GitLab/Bitbucket usage",
+        "CI pipelines and delivery automation",
+        "Build, test, and deploy stages",
+        "Quality gates and safer deployments"
+      ],
+      "resources": [
+        {
+          "type": "documentation",
+          "title": "Git Documentation",
+          "url": "https://git-scm.com/doc",
+          "provider": "Git",
+          "authority_score": 0.98
+        },
+        {
+          "type": "documentation",
+          "title": "GitHub Actions Documentation",
+          "url": "https://docs.github.com/en/actions",
+          "provider": "GitHub",
+          "authority_score": 0.96
+        },
+        {
+          "type": "video",
+          "title": "Git and CI/CD Fundamentals",
+          "url": "https://www.youtube.com/results?search_query=git+ci+cd+for+beginners",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Design a safe CI/CD workflow for a microservice that must run tests, static checks, and deployment validation before it reaches production.",
+        "socratic_prompt": "Why is speed in deployment only valuable when the pipeline creates predictable, reviewable, and recoverable changes?",
+        "key_evaluation_criteria": [
+          "Uses version control and CI/CD correctly",
+          "Can explain pipeline stages and quality checks",
+          "Prevents unsafe or unreviewed code from reaching production"
+        ],
+        "remediation_hint": "Focus on fast feedback and auditable changes: build checks, pass/fail gates, and rollback plans are more valuable than ever-larger releases."
+      },
+      "version": "1.0",
+      "keywords": [
+        "git",
+        "ci-cd",
+        "github-actions",
+        "automation",
+        "branching",
+        "deployments"
+      ],
+      "active": true
+    },
+    {
+      "id": "ds_04_networking_security_and_proxies",
+      "name": "Networking, Security, and Proxying Basics",
+      "domain": "devops_sre",
+      "category": "Infrastructure & Networking",
+      "tier": 1,
+      "difficulty_level": "basic",
+      "estimated_hours": 12,
+      "prerequisites": {
+        "hard": ["ds_02_linux_and_shell"],
+        "soft": []
+      },
+      "transferable_to": [
+        "backend_engineer",
+        "security_engineer",
+        "cloud_engineer",
+        "platform_engineer"
+      ],
+      "core_concepts": [
+        "DNS, HTTP, HTTPS, TLS, SSH, SMTP, and email protocols",
+        "Firewall rules, white/grey listing, and access control",
+        "Proxying, reverse proxy, load balancing, caching",
+        "Nginx, Apache, Caddy, IIS",
+        "OSI model and request routing",
+        "Threat and edge security basics"
+      ],
+      "resources": [
+        {
+          "type": "article",
+          "title": "Nginx Beginner Guide",
+          "url": "https://nginx.org/en/docs/beginners_guide.html",
+          "provider": "NGINX",
+          "authority_score": 0.96
+        },
+        {
+          "type": "article",
+          "title": "How HTTPS Works",
+          "url": "https://www.cloudflare.com/learning/ssl/why-is-ssl-important/",
+          "provider": "Cloudflare",
+          "authority_score": 0.97
+        },
+        {
+          "type": "video",
+          "title": "Networking Fundamentals for DevOps",
+          "url": "https://www.youtube.com/results?search_query=networking+fundamentals+for+devops",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "A service is reachable internally but not externally. Explain how you would isolate whether the problem is DNS, TLS, firewall, proxy, or application-level configuration.",
+        "socratic_prompt": "Why do infrastructure and networking issues often look like application bugs until you trace the request path through the edge and proxy layers?",
+        "key_evaluation_criteria": [
+          "Understands request flow and edge infrastructure",
+          "Can reason through basic network troubleshooting",
+          "Separates application issues from connectivity issues"
+        ],
+        "remediation_hint": "Follow the traffic path from edge to app and check the control points in order: DNS, TLS, proxy, firewall, service routing, and application health."
+      },
+      "version": "1.0",
+      "keywords": [
+        "networking",
+        "dns",
+        "nginx",
+        "tls",
+        "firewall",
+        "proxy"
+      ],
+      "active": true
+    },
+    {
+      "id": "ds_05_containers_and_orchestration",
+      "name": "Containers, Orchestration, and Deployment Platforms",
+      "domain": "devops_sre",
+      "category": "Runtime & Platform",
+      "tier": 2,
+      "difficulty_level": "intermediate",
+      "estimated_hours": 18,
+      "prerequisites": {
+        "hard": ["ds_04_networking_security_and_proxies", "ds_03_version_control_and_ci_cd"],
+        "soft": ["ds_02_linux_and_shell"]
+      },
+      "transferable_to": [
+        "backend_engineer",
+        "cloud_engineer",
+        "platform_engineer",
+        "site_reliability_engineer"
+      ],
+      "core_concepts": [
+        "Docker and containerization basics",
+        "Kubernetes primitives and workloads",
+        "EKS, GKE, AKS, ECS, and Docker Swarm",
+        "Helm and deployment patterns",
+        "Autoscaling, rolling upgrades, and health checks",
+        "Container runtime and resource management"
+      ],
+      "resources": [
+        {
+          "type": "documentation",
+          "title": "Docker Documentation",
+          "url": "https://docs.docker.com/",
+          "provider": "Docker",
+          "authority_score": 0.97
+        },
+        {
+          "type": "documentation",
+          "title": "Kubernetes Documentation",
+          "url": "https://kubernetes.io/docs/home/",
+          "provider": "Kubernetes",
+          "authority_score": 0.99
+        },
+        {
+          "type": "video",
+          "title": "Docker and Kubernetes Basics",
+          "url": "https://www.youtube.com/results?search_query=docker+kubernetes+tutorial",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Explain how you would package and deploy a service in containers so that it is portable, horizontally scalable, and resilient during rolling updates and incidents.",
+        "socratic_prompt": "Why are readiness, liveness, and graceful shutdown more important than simply getting the container to boot successfully?",
+        "key_evaluation_criteria": [
+          "Understands container runtime and orchestration fundamentals",
+          "Can reason about pod lifecycle and deployment safety",
+          "Designs for resilience and service availability"
+        ],
+        "remediation_hint": "Think from the perspective of the traffic path and failure modes: what handles health, traffic routing, and restarts when a pod becomes unhealthy?"
+      },
+      "version": "1.0",
+      "keywords": [
+        "docker",
+        "kubernetes",
+        "containers",
+        "orchestration",
+        "eks",
+        "gke"
+      ],
+      "active": true
+    },
+    {
+      "id": "ds_06_cloud_infrastructure_and_iaac",
+      "name": "Cloud Platforms, IaC, and Provisioning",
+      "domain": "devops_sre",
+      "category": "Cloud & Automation",
+      "tier": 2,
+      "difficulty_level": "intermediate",
+      "estimated_hours": 16,
+      "prerequisites": {
+        "hard": ["ds_05_containers_and_orchestration"],
+        "soft": ["ds_03_version_control_and_ci_cd"]
+      },
+      "transferable_to": [
+        "cloud_engineer",
+        "platform_engineer",
+        "backend_engineer",
+        "site_reliability_engineer"
+      ],
+      "core_concepts": [
+        "AWS, Azure, GCP, DigitalOcean, and hosting basics",
+        "Terraform, Pulumi, CloudFormation, AWS CDK",
+        "Declarative infrastructure and drift detection",
+        "State management and reusable modules",
+        "Environment isolation and compliance",
+        "Serverless and managed services"
+      ],
+      "resources": [
+        {
+          "type": "documentation",
+          "title": "Terraform Documentation",
+          "url": "https://developer.hashicorp.com/terraform/docs",
+          "provider": "HashiCorp",
+          "authority_score": 0.97
+        },
+        {
+          "type": "documentation",
+          "title": "AWS Documentation",
+          "url": "https://docs.aws.amazon.com/",
+          "provider": "Amazon Web Services",
+          "authority_score": 0.99
+        },
+        {
+          "type": "video",
+          "title": "Infrastructure as Code Basics",
+          "url": "https://www.youtube.com/results?search_query=infrastructure+as+code+terraform",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Describe how you would provision a scalable application stack in the cloud with repeatable infrastructure, environment separation, and a low-risk change process.",
+        "socratic_prompt": "Why is treating infrastructure as code a reliability requirement, not just a convenience feature, in modern systems?",
+        "key_evaluation_criteria": [
+          "Understands cloud provisioning and IaC principles",
+          "Knows how to separate environments and manage config",
+          "Treats infrastructure as safe, auditable, and repeatable"
+        ],
+        "remediation_hint": "Start with declarative definitions and reusable modules so the infrastructure can be reviewed, diffed, and recreated predictably."
+      },
+      "version": "1.0",
+      "keywords": [
+        "terraform",
+        "aws",
+        "gcp",
+        "azure",
+        "iac",
+        "provisioning"
+      ],
+      "active": true
+    },
+    {
+      "id": "ds_07_configuration_management_and_secrets",
+      "name": "Configuration Management and Secret Handling",
+      "domain": "devops_sre",
+      "category": "Configuration & Security",
+      "tier": 2,
+      "difficulty_level": "intermediate",
+      "estimated_hours": 12,
+      "prerequisites": {
+        "hard": ["ds_06_cloud_infrastructure_and_iaac"],
+        "soft": ["ds_04_networking_security_and_proxies"]
+      },
+      "transferable_to": [
+        "security_engineer",
+        "platform_engineer",
+        "cloud_engineer",
+        "backend_engineer"
+      ],
+      "core_concepts": [
+        "Ansible, Chef, Puppet, and configuration drift management",
+        "Secrets management and rotation",
+        "Vault, Kubernetes Secrets, and external secret stores",
+        "Immutable configuration and environment safety",
+        "Idempotency and reusable infrastructure patterns",
+        "Least privilege and secure defaults"
+      ],
+      "resources": [
+        {
+          "type": "documentation",
+          "title": "Ansible Documentation",
+          "url": "https://docs.ansible.com/",
+          "provider": "Ansible",
+          "authority_score": 0.97
+        },
+        {
+          "type": "documentation",
+          "title": "HashiCorp Vault Documentation",
+          "url": "https://developer.hashicorp.com/vault/docs",
+          "provider": "HashiCorp",
+          "authority_score": 0.97
+        },
+        {
+          "type": "video",
+          "title": "Secrets Management Basics",
+          "url": "https://www.youtube.com/results?search_query=secrets+management+devops",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Explain how you would rotate secrets and manage environment configuration for a production service without introducing downtime or leaving stale credentials in use.",
+        "socratic_prompt": "Why do configuration and secret management failures often become system-wide reliability problems rather than isolated misconfigurations?",
+        "key_evaluation_criteria": [
+          "Understands secret lifecycle and secure configuration",
+          "Can reason about drift and environment correctness",
+          "Knows how to protect secrets and keep deployments predictable"
+        ],
+        "remediation_hint": "Use external secret stores, rotation workflows, and clear ownership boundaries so secrets are not embedded in code, scripts, or stale configs."
+      },
+      "version": "1.0",
+      "keywords": [
+        "ansible",
+        "vault",
+        "secrets-management",
+        "configuration",
+        "idempotency",
+        "security"
+      ],
+      "active": true
+    },
+    {
+      "id": "ds_08_monitoring_observability_and_logging",
+      "name": "Monitoring, Observability, and Log Management",
+      "domain": "devops_sre",
+      "category": "Operations & Reliability",
+      "tier": 3,
+      "difficulty_level": "intermediate",
+      "estimated_hours": 16,
+      "prerequisites": {
+        "hard": ["ds_05_containers_and_orchestration", "ds_04_networking_security_and_proxies"],
+        "soft": ["ds_02_linux_and_shell"]
+      },
+      "transferable_to": [
+        "site_reliability_engineer",
+        "platform_engineer",
+        "backend_engineer",
+        "security_engineer"
+      ],
+      "core_concepts": [
+        "Prometheus, Grafana, Datadog, New Relic, OpenTelemetry",
+        "Metrics, traces, and logs",
+        "Alerting, SLOs, and dashboards",
+        "Log aggregation and troubleshooting",
+        "Service health and incident investigation",
+        "Operational signal quality"
+      ],
+      "resources": [
+        {
+          "type": "documentation",
+          "title": "Prometheus Documentation",
+          "url": "https://prometheus.io/docs/",
+          "provider": "Prometheus",
+          "authority_score": 0.98
+        },
+        {
+          "type": "documentation",
+          "title": "Grafana Documentation",
+          "url": "https://grafana.com/docs/",
+          "provider": "Grafana",
+          "authority_score": 0.96
+        },
+        {
+          "type": "video",
+          "title": "Observability Basics",
+          "url": "https://www.youtube.com/results?search_query=observability+prometheus+grafana",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Explain how you would instrument a production service with useful metrics, logs, and traces so you can detect latency and error spikes while correlating the issue back to the user-facing behavior.",
+        "socratic_prompt": "Why do dashboards and alerts fail to prevent incidents when they only show symptoms and not the causal path or service dependencies?",
+        "key_evaluation_criteria": [
+          "Understands telemetry and observability fundamentals",
+          "Knows the difference between metrics, logs, and traces",
+          "Can connect monitoring signals to incident response and prevention"
+        ],
+        "remediation_hint": "Use the instrumentation to answer the questions: what is healthy, what is failing, and which dependency or pathway is responsible."
+      },
+      "version": "1.0",
+      "keywords": [
+        "prometheus",
+        "grafana",
+        "observability",
+        "logging",
+        "tracing",
+        "slo"
+      ],
+      "active": true
+    },
+    {
+      "id": "ds_09_artifact_management_and_gitops",
+      "name": "Artifact Management, Delivery, and GitOps",
+      "domain": "devops_sre",
+      "category": "Delivery & Release Control",
+      "tier": 3,
+      "difficulty_level": "intermediate",
+      "estimated_hours": 14,
+      "prerequisites": {
+        "hard": ["ds_08_monitoring_observability_and_logging", "ds_06_cloud_infrastructure_and_iaac"],
+        "soft": ["ds_03_version_control_and_ci_cd"]
+      },
+      "transferable_to": [
+        "platform_engineer",
+        "site_reliability_engineer",
+        "cloud_engineer",
+        "backend_engineer"
+      ],
+      "core_concepts": [
+        "Artifact repositories and image registries",
+        "Nexus, Artifactory, Cloudsmith, and OCI concepts",
+        "GitOps patterns with ArgoCD and FluxCD",
+        "Declarative deployments and reconcilers",
+        "Release promotion and environment drift control",
+        "Immutable delivery and recovery workflows"
+      ],
+      "resources": [
+        {
+          "type": "documentation",
+          "title": "Argo CD Documentation",
+          "url": "https://argo-cd.readthedocs.io/en/stable/",
+          "provider": "Argo CD",
+          "authority_score": 0.97
+        },
+        {
+          "type": "documentation",
+          "title": "Artifactory Documentation",
+          "url": "https://jfrog.com/help/rjcloud/",
+          "provider": "JFrog",
+          "authority_score": 0.94
+        },
+        {
+          "type": "video",
+          "title": "GitOps Fundamentals",
+          "url": "https://www.youtube.com/results?search_query=gitops+argocd+fundamentals",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Design a release workflow where application changes are versioned, promoted, and deployed through GitOps with auditability and rollback safety.",
+        "socratic_prompt": "Why do release systems that rely on manual commands often drift over time, and how do GitOps models reduce that operational complexity?",
+        "key_evaluation_criteria": [
+          "Understands artifact lifecycle and deployment promotion",
+          "Can reason about declarative, auditable releases",
+          "Recognizes the value of predictable rollback and drift control"
+        ],
+        "remediation_hint": "Treat deployments as a versioned system state, not a manual step, so the desired state is always inspectable and reproducible."
+      },
+      "version": "1.0",
+      "keywords": [
+        "gitops",
+        "argocd",
+        "fluxcd",
+        "artifact-management",
+        "release-promotion",
+        "deployments"
+      ],
+      "active": true
+    },
+    {
+      "id": "ds_10_service_mesh_and_resilience",
+      "name": "Service Mesh, Traffic Control, and Resilience Patterns",
+      "domain": "devops_sre",
+      "category": "Traffic & Reliability",
+      "tier": 3,
+      "difficulty_level": "advanced",
+      "estimated_hours": 14,
+      "prerequisites": {
+        "hard": ["ds_05_containers_and_orchestration", "ds_08_monitoring_observability_and_logging"],
+        "soft": ["ds_09_artifact_management_and_gitops"]
+      },
+      "transferable_to": [
+        "site_reliability_engineer",
+        "platform_engineer",
+        "backend_engineer",
+        "software_architect"
+      ],
+      "core_concepts": [
+        "Service mesh as a control plane for communication",
+        "Istio, Consul, Linkerd, Envoy",
+        "Traffic routing, retries, timeouts, and circuit breaking",
+        "Zero-trust service communication",
+        "Disaster recovery and resilience patterns",
+        "Policy enforcement at the mesh layer"
+      ],
+      "resources": [
+        {
+          "type": "documentation",
+          "title": "Istio Documentation",
+          "url": "https://istio.io/latest/docs/",
+          "provider": "Istio",
+          "authority_score": 0.98
+        },
+        {
+          "type": "article",
+          "title": "Service Mesh Overview",
+          "url": "https://www.redhat.com/en/topics/microservices/what-is-a-service-mesh",
+          "provider": "Red Hat",
+          "authority_score": 0.94
+        },
+        {
+          "type": "video",
+          "title": "Service Mesh Explained",
+          "url": "https://www.youtube.com/results?search_query=service+mesh+istio+explained",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Explain how a service mesh can improve resilience, traffic shaping, and security in a distributed system with many internal service-to-service calls.",
+        "socratic_prompt": "Why do retries and circuit breakers often need to be coordinated at the infrastructure layer, not just inside each application?",
+        "key_evaluation_criteria": [
+          "Knows when a service mesh adds real value",
+          "Understands resilience and policy enforcement in distributed systems",
+          "Can connect reliability patterns to incident prevention"
+        ],
+        "remediation_hint": "Do not add a mesh just for complexity; use it where traffic management, observability, or security policy crosses service boundaries in a meaningful way."
+      },
+      "version": "1.0",
+      "keywords": [
+        "service-mesh",
+        "istio",
+        "consul",
+        "linkerd",
+        "resilience",
+        "traffic-management"
+      ],
+      "active": true
+    },
+    {
+      "id": "ds_11_incident_response_and_sre_practice",
+      "name": "Incident Response, Reliability Engineering, and SRE Practice",
+      "domain": "devops_sre",
+      "category": "Reliability Engineering",
+      "tier": 4,
+      "difficulty_level": "advanced",
+      "estimated_hours": 16,
+      "prerequisites": {
+        "hard": ["ds_08_monitoring_observability_and_logging", "ds_10_service_mesh_and_resilience"],
+        "soft": ["ds_09_artifact_management_and_gitops"]
+      },
+      "transferable_to": [
+        "site_reliability_engineer",
+        "platform_engineer",
+        "production_engineer",
+        "software_architect"
+      ],
+      "core_concepts": [
+        "Incident response procedures and communication",
+        "Root cause analysis and postmortems",
+        "SLOs, SLIs, SLAs, and error budgets",
+        "Incident management, action plans, and blameless culture",
+        "Capacity planning and reliability budgets",
+        "Operational excellence and human safety in systems"
+      ],
+      "resources": [
+        {
+          "type": "article",
+          "title": "SRE Workbook",
+          "url": "https://sre.google/workbook/",
+          "provider": "Google SRE",
+          "authority_score": 0.99
+        },
+        {
+          "type": "article",
+          "title": "Postmortem Culture",
+          "url": "https://www.honeycomb.io/blog/postmortem-culture-drive-engineering-excellence",
+          "provider": "Honeycomb",
+          "authority_score": 0.9
+        },
+        {
+          "type": "video",
+          "title": "SRE Practices and Incident Response",
+          "url": "https://www.youtube.com/results?search_query=sre+incident+response",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Describe how you would handle a major incident in a production service, including detection, triage, coordination, mitigation, and a postmortem that improves the system rather than just assigning blame.",
+        "socratic_prompt": "Why do the most effective incident responses combine technical debugging with clear communication and a blameless learning process?",
+        "key_evaluation_criteria": [
+          "Understands incident workflow and response rigor",
+          "Can define SLOs and error budgets in practice",
+          "Builds reliability through learning, not just quick fixes"
+        ],
+        "remediation_hint": "Treat an incident as a system behavior to be analyzed and improved; document the causal chain, mitigation, and follow-up actions clearly."
+      },
+      "version": "1.0",
+      "keywords": [
+        "sre",
+        "incident-response",
+        "postmortem",
+        "slo",
+        "error-budget",
+        "reliability"
+      ],
+      "active": true
+    },
+    {
+      "id": "ds_12_platform_excellence_and_career_growth",
+      "name": "Platform Excellence, automation, and Growth",
+      "domain": "devops_sre",
+      "category": "Career & Platform Maturity",
+      "tier": 4,
+      "difficulty_level": "advanced",
+      "estimated_hours": 10,
+      "prerequisites": {
+        "hard": ["ds_11_incident_response_and_sre_practice", "ds_09_artifact_management_and_gitops"],
+        "soft": ["ds_08_monitoring_observability_and_logging"]
+      },
+      "transferable_to": [
+        "engineering_manager",
+        "platform_engineer",
+        "solutions_architect",
+        "principal_engineer"
+      ],
+      "core_concepts": [
+        "Platform engineering maturity",
+        "Developer experience and self-service workflows",
+        "Operational excellence at scale",
+        "Costs, reliability, and strategy trade-offs",
+        "Leadership through automation and standards",
+        "Continuous improvement and production accountability"
+      ],
+      "resources": [
+        {
+          "type": "article",
+          "title": "Platform Engineering Guide",
+          "url": "https://platformengineering.org/",
+          "provider": "Platform Engineering",
+          "authority_score": 0.94
+        },
+        {
+          "type": "article",
+          "title": "The DevOps Handbook",
+          "url": "https://itrevolution.com/product/the-devops-handbook-second-edition/",
+          "provider": "IT Revolution",
+          "authority_score": 0.95
+        },
+        {
+          "type": "video",
+          "title": "DevOps and Platform Engineering Career Path",
+          "url": "https://www.youtube.com/results?search_query=platform+engineering+devops+career",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "How would you increase platform reliability and developer productivity at scale without creating brittle self-service systems or compromising operational safety?",
+        "socratic_prompt": "Why is platform maturity not just about new tools, but about making the right defaults and guardrails easy to adopt by everyone?",
+        "key_evaluation_criteria": [
+          "Understands platform engineering as a leverage point",
+          "Can balance autonomy with safety and standards",
+          "Creates sustainable operational excellence and growth"
+        ],
+        "remediation_hint": "Design for reliable defaults, internal platforms, and operational guardrails so teams can move faster without increasing systemic risk."
+      },
+      "version": "1.0",
+      "keywords": [
+        "platform-engineering",
+        "operational-excellence",
+        "developer-experience",
+        "automation",
+        "growth",
+        "strategy"
+      ],
+      "active": true
+    }
+  ]
+}
