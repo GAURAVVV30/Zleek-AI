@@ -23,7 +23,24 @@ func (r *PostgresGoalRepository) Create(ctx context.Context, goal *domain.Goal) 
 		VALUES ($1, $2, $3, $4, $5, $6)
 	`
 	_, err := r.db.Exec(ctx, query, goal.ID, goal.LearnerID, goal.GoalText, goal.KnowledgeStructureID, goal.Status, goal.CreatedAt)
-	return err
+	if err != nil {
+		return err
+	}
+
+	profileQuery := `
+		INSERT INTO platform.learner_profiles (user_id, role, updated_at)
+		VALUES ($1, (
+			SELECT d.slug
+			FROM platform.knowledge_structures k
+			JOIN platform.domains d ON d.id = k.domain_id
+			WHERE k.id = $2
+		), now())
+		ON CONFLICT (user_id) DO UPDATE SET
+			role = EXCLUDED.role,
+			updated_at = now()
+	`
+	_, _ = r.db.Exec(ctx, profileQuery, goal.LearnerID, goal.KnowledgeStructureID)
+	return nil
 }
 
 func (r *PostgresGoalRepository) GetActiveByLearnerID(ctx context.Context, learnerID string) (*domain.Goal, error) {

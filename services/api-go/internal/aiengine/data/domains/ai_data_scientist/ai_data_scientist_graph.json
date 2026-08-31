@@ -1,0 +1,847 @@
+{
+  "domain_id": "ai_data_scientist",
+  "domain_name": "AI Data Scientist",
+  "total_nodes": 12,
+  "nodes": [
+    {
+      "id": "ai_ds_01_python_foundations",
+      "name": "Python for Data Science and Scientific Computing",
+      "domain": "ai_data_scientist",
+      "category": "Programming & Tooling",
+      "tier": 1,
+      "difficulty_level": "basic",
+      "estimated_hours": 12,
+      "prerequisites": {
+        "hard": [],
+        "soft": []
+      },
+      "transferable_to": [
+        "data_analyst",
+        "machine_learning_engineer",
+        "research_engineer",
+        "backend_developer"
+      ],
+      "core_concepts": [
+        "Python syntax and data structures",
+        "NumPy arrays and broadcasting",
+        "Pandas indexing and transformation",
+        "Functional programming and comprehensions",
+        "File I/O and reproducible scripts",
+        "Jupyter workflows for experimentation"
+      ],
+      "resources": [
+        {
+          "type": "documentation",
+          "title": "Python Official Documentation",
+          "url": "https://docs.python.org/3/",
+          "provider": "Python Software Foundation",
+          "authority_score": 0.99
+        },
+        {
+          "type": "course",
+          "title": "Python for Data Science Handbook",
+          "url": "https://jakevdp.github.io/PythonDataScienceHandbook/",
+          "provider": "Jake VanderPlas",
+          "authority_score": 0.97
+        },
+        {
+          "type": "video",
+          "title": "Python for Data Science Playlist",
+          "url": "https://www.youtube.com/results?search_query=python+for+data+science",
+          "provider": "YouTube",
+          "authority_score": 0.82
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "How would you write a Python pipeline that reads a CSV file, filters invalid records, groups by a category, and computes summary statistics without writing a monolithic script?",
+        "socratic_prompt": "When should you choose a vectorized NumPy operation over a Python loop in a data-heavy workflow, and what trade-off does this introduce?",
+        "key_evaluation_criteria": [
+          "Uses idiomatic Python and collection operations",
+          "Demonstrates understanding of data frames and vectorization",
+          "Designs a reproducible, readable analysis pipeline"
+        ],
+        "remediation_hint": "Practice writing small reusable functions and compare pure Python loops with pandas and NumPy solutions for the same task."
+      },
+      "version": "1.0",
+      "keywords": [
+        "python",
+        "numpy",
+        "pandas",
+        "jupyter",
+        "data-science",
+        "programming"
+      ],
+      "active": true
+    },
+    {
+      "id": "ai_ds_02_statistics_probability",
+      "name": "Statistics, Probability, and Inference",
+      "domain": "ai_data_scientist",
+      "category": "Statistics & Mathematics",
+      "tier": 1,
+      "difficulty_level": "basic",
+      "estimated_hours": 14,
+      "prerequisites": {
+        "hard": ["ai_ds_01_python_foundations"],
+        "soft": []
+      },
+      "transferable_to": [
+        "data_analyst",
+        "machine_learning_engineer",
+        "product_analyst",
+        "research_scientist"
+      ],
+      "core_concepts": [
+        "Descriptive statistics and distributions",
+        "Sampling, variance, and standard deviation",
+        "Probability theory and conditional probability",
+        "Hypothesis testing and confidence intervals",
+        "Correlation versus causation",
+        "Bayesian thinking and uncertainty"
+      ],
+      "resources": [
+        {
+          "type": "article",
+          "title": "Think Stats",
+          "url": "https://greenteapress.com/wp/think-stats-2e/",
+          "provider": "Allen Downey",
+          "authority_score": 0.96
+        },
+        {
+          "type": "documentation",
+          "title": "Scipy Stats Documentation",
+          "url": "https://docs.scipy.org/doc/scipy/tutorial/stats.html",
+          "provider": "SciPy",
+          "authority_score": 0.95
+        },
+        {
+          "type": "video",
+          "title": "Statistics for Data Science",
+          "url": "https://www.youtube.com/results?search_query=statistics+for+data+science",
+          "provider": "YouTube",
+          "authority_score": 0.84
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "A product team observes a 3% uplift in conversion after a redesign. Explain how you would test whether this change is statistically significant and what assumptions you must check first.",
+        "socratic_prompt": "Why does a high correlation between two variables not imply causation, and which design or analytical strategy is needed to distinguish the effect?",
+        "key_evaluation_criteria": [
+          "Understands sampling variability and statistical significance",
+          "Can explain p-values, confidence intervals, and assumptions",
+          "Can articulate causality limitations and design choices"
+        ],
+        "remediation_hint": "Review distributions, hypothesis tests, and the difference between observational and experimental evidence before drawing conclusions."
+      },
+      "version": "1.0",
+      "keywords": [
+        "statistics",
+        "probability",
+        "hypothesis-testing",
+        "inference",
+        "confidence-intervals",
+        "distribution"
+      ],
+      "active": true
+    },
+    {
+      "id": "ai_ds_03_data_engineering_basics",
+      "name": "Data Engineering Fundamentals for Analysis",
+      "domain": "ai_data_scientist",
+      "category": "Data Management",
+      "tier": 1,
+      "difficulty_level": "basic",
+      "estimated_hours": 10,
+      "prerequisites": {
+        "hard": ["ai_ds_01_python_foundations"],
+        "soft": []
+      },
+      "transferable_to": [
+        "data_engineer",
+        "analytics_engineer",
+        "machine_learning_engineer",
+        "data_analyst"
+      ],
+      "core_concepts": [
+        "ETL and ELT pipelines",
+        "Schema inference and data quality issues",
+        "CSV, JSON, Parquet, and relational formats",
+        "Data lakes and warehouses",
+        "Batch versus streaming ingestion",
+        "Data cleaning and normalization"
+      ],
+      "resources": [
+        {
+          "type": "documentation",
+          "title": "Apache Parquet Documentation",
+          "url": "https://parquet.apache.org/documentation/latest/",
+          "provider": "Apache",
+          "authority_score": 0.96
+        },
+        {
+          "type": "article",
+          "title": "ETL vs ELT",
+          "url": "https://www.ibm.com/cloud/learn/etl",
+          "provider": "IBM",
+          "authority_score": 0.9
+        },
+        {
+          "type": "video",
+          "title": "Data Engineering Essentials",
+          "url": "https://www.youtube.com/results?search_query=data+engineering+essentials",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Design a simple data pipeline that ingests user events from multiple sources, standardizes schema fields, filters invalid records, and stores the result in a warehouse-friendly format.",
+        "socratic_prompt": "When is it better to transform data before loading versus after loading, and how does this decision affect observability and reproducibility?",
+        "key_evaluation_criteria": [
+          "Understands storage formats and ingestion strategies",
+          "Can identify data quality problems and validation steps",
+          "Builds a robust, testable pipeline architecture"
+        ],
+        "remediation_hint": "Map raw data to a canonical schema and define validation checks for missing values, duplicates, and invariants before analysis."
+      },
+      "version": "1.0",
+      "keywords": [
+        "data-engineering",
+        "etl",
+        "elt",
+        "parquet",
+        "schema",
+        "pipeline"
+      ],
+      "active": true
+    },
+    {
+      "id": "ai_ds_04_exploratory_data_analysis",
+      "name": "Exploratory Data Analysis and Visualization",
+      "domain": "ai_data_scientist",
+      "category": "Analytics & Visualization",
+      "tier": 1,
+      "difficulty_level": "basic",
+      "estimated_hours": 12,
+      "prerequisites": {
+        "hard": ["ai_ds_01_python_foundations", "ai_ds_02_statistics_probability"],
+        "soft": ["ai_ds_03_data_engineering_basics"]
+      },
+      "transferable_to": [
+        "data_analyst",
+        "product_analyst",
+        "business_intelligence_specialist",
+        "research_scientist"
+      ],
+      "core_concepts": [
+        "Univariate and multivariate analysis",
+        "Missing data handling and outlier detection",
+        "Histograms, scatter plots, box plots, and heatmaps",
+        "Feature distribution and skewness",
+        "Data storytelling and dashboard design",
+        "Bias and exploratory findings"
+      ],
+      "resources": [
+        {
+          "type": "documentation",
+          "title": "Seaborn Tutorial",
+          "url": "https://seaborn.pydata.org/tutorial.html",
+          "provider": "Seaborn",
+          "authority_score": 0.95
+        },
+        {
+          "type": "article",
+          "title": "Exploratory Data Analysis Methods",
+          "url": "https://towardsdatascience.com/exploratory-data-analysis-eda-a-practical-guide-d8c7f7d1f8c3",
+          "provider": "Towards Data Science",
+          "authority_score": 0.88
+        },
+        {
+          "type": "video",
+          "title": "EDA in Practice",
+          "url": "https://www.youtube.com/results?search_query=exploratory+data+analysis+python",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "You are given a customer churn dataset with missing values, skewed features, and outliers. Explain the diagnostic steps you would take before model training and how you would communicate the findings to a business stakeholder.",
+        "socratic_prompt": "When a visual pattern appears strong but inconsistent across subgroups, what should you investigate before making a decision based on the result?",
+        "key_evaluation_criteria": [
+          "Uses EDA to uncover data quality and modeling risks",
+          "Chooses relevant plots and summary statistics",
+          "Communicates findings with context and business meaning"
+        ],
+        "remediation_hint": "Inspect distributions, segment by key variables, and validate assumptions before assuming a trend is actionable."
+      },
+      "version": "1.0",
+      "keywords": [
+        "eda",
+        "visualization",
+        "plots",
+        "analysis",
+        "outliers",
+        "exploration"
+      ],
+      "active": true
+    },
+    {
+      "id": "ai_ds_05_machine_learning_basics",
+      "name": "Machine Learning Foundations",
+      "domain": "ai_data_scientist",
+      "category": "Machine Learning",
+      "tier": 2,
+      "difficulty_level": "basic",
+      "estimated_hours": 16,
+      "prerequisites": {
+        "hard": ["ai_ds_02_statistics_probability", "ai_ds_04_exploratory_data_analysis"],
+        "soft": ["ai_ds_03_data_engineering_basics"]
+      },
+      "transferable_to": [
+        "machine_learning_engineer",
+        "research_scientist",
+        "applied_data_scientist",
+        "analyst"
+      ],
+      "core_concepts": [
+        "Supervised versus unsupervised learning",
+        "Bias-variance trade-off",
+        "Overfitting, generalization, and regularization",
+        "Train/validation/test splitting",
+        "Loss functions and optimization",
+        "Baseline models and model selection"
+      ],
+      "resources": [
+        {
+          "type": "documentation",
+          "title": "Scikit-Learn User Guide",
+          "url": "https://scikit-learn.org/stable/user_guide.html",
+          "provider": "Scikit-Learn",
+          "authority_score": 0.99
+        },
+        {
+          "type": "video",
+          "title": "Machine Learning Crash Course",
+          "url": "https://www.youtube.com/results?search_query=machine+learning+crash+course",
+          "provider": "Google Developers",
+          "authority_score": 0.94
+        },
+        {
+          "type": "article",
+          "title": "Bias-Variance Trade-off Explained",
+          "url": "https://scott.fortmann-roe.com/docs/BiasVariance.html",
+          "provider": "Scott Fortmann-Roe",
+          "authority_score": 0.91
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Given a classification problem with limited data, explain how you would choose a baseline model, tune complexity, and decide whether the model is underfitting or overfitting.",
+        "socratic_prompt": "Why does increasing model complexity often improve training performance while reducing generalization, and how do validation curves help decide what to do?",
+        "key_evaluation_criteria": [
+          "Explains training, validation, and concept of generalization",
+          "Understands bias-variance and regularization trade-offs",
+          "Can compare model complexity and performance using objective measures"
+        ],
+        "remediation_hint": "Review loss functions, regularization, and the learning curves of simple and complex models to understand the generalization gap."
+      },
+      "version": "1.0",
+      "keywords": [
+        "ml",
+        "classification",
+        "regression",
+        "bias-variance",
+        "training",
+        "validation"
+      ],
+      "active": true
+    },
+    {
+      "id": "ai_ds_06_feature_engineering",
+      "name": "Feature Engineering and Data Preparation",
+      "domain": "ai_data_scientist",
+      "category": "Data Preparation",
+      "tier": 2,
+      "difficulty_level": "intermediate",
+      "estimated_hours": 12,
+      "prerequisites": {
+        "hard": ["ai_ds_04_exploratory_data_analysis", "ai_ds_05_machine_learning_basics"],
+        "soft": []
+      },
+      "transferable_to": [
+        "machine_learning_engineer",
+        "data_engineer",
+        "analytics_engineer",
+        "applied_scientist"
+      ],
+      "core_concepts": [
+        "Missing value strategy and imputation",
+        "Categorical encoding and target leakage",
+        "Scaling and normalization",
+        "Polynomial and interaction features",
+        "Time-based feature generation",
+        "Pipeline design and feature validation"
+      ],
+      "resources": [
+        {
+          "type": "article",
+          "title": "Feature Engineering for Machine Learning",
+          "url": "https://www.machinelearningmastery.com/discover-feature-engineering-how-to-engineer-features-and-what-are-the-best-practices/",
+          "provider": "Machine Learning Mastery",
+          "authority_score": 0.92
+        },
+        {
+          "type": "documentation",
+          "title": "Scikit-Learn Preprocessing",
+          "url": "https://scikit-learn.org/stable/modules/preprocessing.html",
+          "provider": "Scikit-Learn",
+          "authority_score": 0.98
+        },
+        {
+          "type": "course",
+          "title": "Feature Engineering Course",
+          "url": "https://www.coursera.org/learn/feature-engineering",
+          "provider": "Coursera",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "You are given a dataset with high-cardinality categorical variables and timestamps. Explain how you would transform the features while avoiding leakage and preserving the model’s ability to generalize.",
+        "socratic_prompt": "When does feature scaling help, and when can it mislead or distort a model if applied incorrectly across training and evaluation folds?",
+        "key_evaluation_criteria": [
+          "Handles leakage, preprocessing, and selection carefully",
+          "Explains category encoding options and their biases",
+          "Builds a reproducible transformation pipeline"
+        ],
+        "remediation_hint": "Keep training and validation transformations in a single pipeline object and validate feature meaning before finalizing the model."
+      },
+      "version": "1.0",
+      "keywords": [
+        "feature-engineering",
+        "preprocessing",
+        "scaling",
+        "encoding",
+        "pipeline",
+        "data-preparation"
+      ],
+      "active": true
+    },
+    {
+      "id": "ai_ds_07_model_evaluation",
+      "name": "Model Evaluation and Experimentation Design",
+      "domain": "ai_data_scientist",
+      "category": "Evaluation & Metrics",
+      "tier": 2,
+      "difficulty_level": "intermediate",
+      "estimated_hours": 12,
+      "prerequisites": {
+        "hard": ["ai_ds_05_machine_learning_basics", "ai_ds_06_feature_engineering"],
+        "soft": []
+      },
+      "transferable_to": [
+        "machine_learning_engineer",
+        "research_scientist",
+        "product_analyst",
+        "analytics_lead"
+      ],
+      "core_concepts": [
+        "Accuracy, precision, recall, F1, ROC-AUC",
+        "Regression metrics such as MAE, RMSE, and R2",
+        "Cross-validation and stratification",
+        "Business-aligned KPI selection",
+        "Calibration and threshold selection",
+        "Experiment design and A/B testing"
+      ],
+      "resources": [
+        {
+          "type": "documentation",
+          "title": "Scikit-Learn Metrics",
+          "url": "https://scikit-learn.org/stable/modules/model_evaluation.html",
+          "provider": "Scikit-Learn",
+          "authority_score": 0.99
+        },
+        {
+          "type": "article",
+          "title": "How to Choose Evaluation Metrics",
+          "url": "https://towardsdatascience.com/how-to-choose-the-right-metric-for-your-machine-learning-problem-5df8af3b8b1d",
+          "provider": "Towards Data Science",
+          "authority_score": 0.86
+        },
+        {
+          "type": "video",
+          "title": "Understanding Model Evaluation",
+          "url": "https://www.youtube.com/results?search_query=model+evaluation+metrics+machine+learning",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "For a fraud detection model, explain which metrics you would prioritize and why a simple accuracy metric would be misleading in an imbalanced dataset.",
+        "socratic_prompt": "If your business objective is to minimize false negatives but false positives are costly, which threshold and metric combination would you choose and how would you defend it?",
+        "key_evaluation_criteria": [
+          "Selects metrics aligned with business risk and class imbalance",
+          "Understands validation methodology and confidence in results",
+          "Links model behavior to a decision-making objective"
+        ],
+        "remediation_hint": "Use class distribution, cost-sensitive evaluation, and careful threshold tuning to align the model with real business consequences."
+      },
+      "version": "1.0",
+      "keywords": [
+        "evaluation",
+        "metrics",
+        "cross-validation",
+        "ab-testing",
+        "precision",
+        "recall"
+      ],
+      "active": true
+    },
+    {
+      "id": "ai_ds_08_supervised_learning",
+      "name": "Supervised Learning Algorithms and Modeling",
+      "domain": "ai_data_scientist",
+      "category": "Algorithms",
+      "tier": 2,
+      "difficulty_level": "intermediate",
+      "estimated_hours": 18,
+      "prerequisites": {
+        "hard": ["ai_ds_05_machine_learning_basics", "ai_ds_06_feature_engineering", "ai_ds_07_model_evaluation"],
+        "soft": []
+      },
+      "transferable_to": [
+        "machine_learning_engineer",
+        "applied_data_scientist",
+        "research_engineer",
+        "analyst"
+      ],
+      "core_concepts": [
+        "Linear regression and logistic regression",
+        "Decision trees and random forests",
+        "Support vector machines",
+        "Gradient boosting and XGBoost",
+        "Interpretability versus predictive power",
+        "Model comparison and tuning"
+      ],
+      "resources": [
+        {
+          "type": "documentation",
+          "title": "Scikit-Learn Supervised Learning",
+          "url": "https://scikit-learn.org/stable/supervised_learning.html",
+          "provider": "Scikit-Learn",
+          "authority_score": 0.99
+        },
+        {
+          "type": "article",
+          "title": "How XGBoost Works",
+          "url": "https://xgboost.readthedocs.io/en/stable/tutorials/model.html",
+          "provider": "XGBoost",
+          "authority_score": 0.97
+        },
+        {
+          "type": "video",
+          "title": "Tree-Based Models Overview",
+          "url": "https://www.youtube.com/results?search_query=decision+tree+random+forest+machine+learning",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Choose a supervised learning approach for a structured tabular dataset with mixed feature types, explain the trade-offs between tree-based and linear approaches, and justify the model selection.",
+        "socratic_prompt": "Why might a tree-based ensemble outperform a linear model on nonlinear tabular data, and what information is lost if you prioritize interpretability too strongly?",
+        "key_evaluation_criteria": [
+          "Compares model assumptions and capacity appropriately",
+          "Explains feature interactions and nonlinearity handling",
+          "Selects model based on trade-offs rather than popularity"
+        ],
+        "remediation_hint": "Start with a strong baseline and compare against more complex models using validation metrics and feature importance analysis."
+      },
+      "version": "1.0",
+      "keywords": [
+        "supervised-learning",
+        "regression",
+        "classification",
+        "xgboost",
+        "random-forest",
+        "decision-tree"
+      ],
+      "active": true
+    },
+    {
+      "id": "ai_ds_09_unsupervised_learning",
+      "name": "Unsupervised Learning and Representation Learning",
+      "domain": "ai_data_scientist",
+      "category": "Algorithms",
+      "tier": 2,
+      "difficulty_level": "intermediate",
+      "estimated_hours": 14,
+      "prerequisites": {
+        "hard": ["ai_ds_05_machine_learning_basics", "ai_ds_06_feature_engineering"],
+        "soft": ["ai_ds_07_model_evaluation"]
+      },
+      "transferable_to": [
+        "data_scientist",
+        "market_insights_analyst",
+        "research_engineer",
+        "recommendation_engineer"
+      ],
+      "core_concepts": [
+        "Clustering and K-means",
+        "Dimensionality reduction with PCA and t-SNE",
+        "Association rules and anomaly detection",
+        "Similarity metrics and distance functions",
+        "Embedding and latent representation discovery",
+        "Pattern mining in unlabeled data"
+      ],
+      "resources": [
+        {
+          "type": "documentation",
+          "title": "Scikit-Learn Clustering Guide",
+          "url": "https://scikit-learn.org/stable/modules/clustering.html",
+          "provider": "Scikit-Learn",
+          "authority_score": 0.99
+        },
+        {
+          "type": "article",
+          "title": "PCA and Dimensionality Reduction",
+          "url": "https://towardsdatascience.com/principal-component-analysis-pca-explained-visually-with-python-6d2d0e9d7cf9",
+          "provider": "Towards Data Science",
+          "authority_score": 0.88
+        },
+        {
+          "type": "video",
+          "title": "Dimensionality Reduction Fundamentals",
+          "url": "https://www.youtube.com/results?search_query=principal+component+analysis+explained",
+          "provider": "YouTube",
+          "authority_score": 0.81
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Explain how you would segment a customer base without labels and decide whether K-means or a density-based approach is more appropriate for the data distribution.",
+        "socratic_prompt": "When clustering reveals strong structure, how do you decide whether the clusters are meaningful business segments or artifacts of scaling, normalization, or an unsuitable metric?",
+        "key_evaluation_criteria": [
+          "Understands unsupervised learning objectives and evaluation challenge",
+          "Can explain cluster quality and embedding choices",
+          "Recognizes the complexity of interpreting unlabeled structure"
+        ],
+        "remediation_hint": "Experiment with cluster validation metrics, dimensionality reduction, and domain-informed feature scaling before drawing business conclusions."
+      },
+      "version": "1.0",
+      "keywords": [
+        "unsupervised-learning",
+        "clustering",
+        "pca",
+        "embedding",
+        "anomaly-detection",
+        "representation"
+      ],
+      "active": true
+    },
+    {
+      "id": "ai_ds_10_deep_learning",
+      "name": "Deep Learning for Structured and Unstructured Data",
+      "domain": "ai_data_scientist",
+      "category": "Deep Learning",
+      "tier": 3,
+      "difficulty_level": "advanced",
+      "estimated_hours": 20,
+      "prerequisites": {
+        "hard": ["ai_ds_08_supervised_learning", "ai_ds_09_unsupervised_learning"],
+        "soft": ["ai_ds_06_feature_engineering"]
+      },
+      "transferable_to": [
+        "deep_learning_engineer",
+        "computer_vision_engineer",
+        "nlp_engineer",
+        "research_scientist"
+      ],
+      "core_concepts": [
+        "Neural network architecture and activation functions",
+        "Backpropagation and optimization",
+        "CNNs, RNNs, transformers, and attention",
+        "Transfer learning and embeddings",
+        "Regularization and training stability",
+        "Large-scale data and hardware acceleration"
+      ],
+      "resources": [
+        {
+          "type": "documentation",
+          "title": "PyTorch Documentation",
+          "url": "https://pytorch.org/docs/stable/index.html",
+          "provider": "PyTorch",
+          "authority_score": 0.99
+        },
+        {
+          "type": "article",
+          "title": "Attention Is All You Need",
+          "url": "https://arxiv.org/abs/1706.03762",
+          "provider": "arXiv",
+          "authority_score": 0.98
+        },
+        {
+          "type": "video",
+          "title": "Deep Learning Crash Course",
+          "url": "https://www.youtube.com/results?search_query=deep+learning+crash+course",
+          "provider": "YouTube",
+          "authority_score": 0.82
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Explain the architecture and training procedure you would use to build a model for a text classification problem with millions of sparse examples, and how you would decide between a classical ML model and a transformer-based model.",
+        "socratic_prompt": "Why do deep networks require careful regularization and optimization strategy, and how do attention mechanisms change the way sequence models reason about context?",
+        "key_evaluation_criteria": [
+          "Understands deep learning fundamentals and optimization",
+          "Compares model families and appropriateness for problem type",
+          "Explains training stability and representational power"
+        ],
+        "remediation_hint": "Focus on the relationship between architecture, optimization, dataset scale, and task complexity before choosing a deep model."
+      },
+      "version": "1.0",
+      "keywords": [
+        "deep-learning",
+        "neural-networks",
+        "pytorch",
+        "transformers",
+        "cnn",
+        "attention"
+      ],
+      "active": true
+    },
+    {
+      "id": "ai_ds_11_mlops_and_deployment",
+      "name": "MLOps, Deployment, and Production Monitoring",
+      "domain": "ai_data_scientist",
+      "category": "Production & Operations",
+      "tier": 3,
+      "difficulty_level": "advanced",
+      "estimated_hours": 16,
+      "prerequisites": {
+        "hard": ["ai_ds_07_model_evaluation", "ai_ds_10_deep_learning"],
+        "soft": ["ai_ds_03_data_engineering_basics"]
+      },
+      "transferable_to": [
+        "ml_engineer",
+        "platform_engineer",
+        "production_data_scientist",
+        "site_reliability_engineer"
+      ],
+      "core_concepts": [
+        "Model packaging and serving",
+        "CI/CD for ML workflows",
+        "Feature stores and model registries",
+        "Drift detection and retraining triggers",
+        "Monitoring, logging, and alerting",
+        "Reliability and governance for production models"
+      ],
+      "resources": [
+        {
+          "type": "documentation",
+          "title": "MLflow Documentation",
+          "url": "https://mlflow.org/docs/latest/index.html",
+          "provider": "MLflow",
+          "authority_score": 0.97
+        },
+        {
+          "type": "article",
+          "title": "The ML Ops Guide",
+          "url": "https://www.databricks.com/glossary/mlops",
+          "provider": "Databricks",
+          "authority_score": 0.92
+        },
+        {
+          "type": "video",
+          "title": "MLOps Fundamentals",
+          "url": "https://www.youtube.com/results?search_query=mlops+fundamentals",
+          "provider": "YouTube",
+          "authority_score": 0.82
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Design a deployment pipeline for a model that predicts churn in near real time, including monitoring, feedback capture, retraining thresholds, and rollback criteria.",
+        "socratic_prompt": "If production performance deteriorates slowly while training metrics remain strong, what hidden failure modes should you inspect and how would you detect them?",
+        "key_evaluation_criteria": [
+          "Understands production lifecycle and model governance",
+          "Connects monitoring to deployment safety and retraining",
+          "Designs resilient operational flows for machine learning services"
+        ],
+        "remediation_hint": "Track drift, latency, feature quality, and inference errors continuously, and create clear retraining and rollback policies."
+      },
+      "version": "1.0",
+      "keywords": [
+        "mlops",
+        "deployment",
+        "monitoring",
+        "drift",
+        "model-registry",
+        "production"
+      ],
+      "active": true
+    },
+    {
+      "id": "ai_ds_12_research_design_and_communication",
+      "name": "Experiment Design, Decision Making, and AI Communication",
+      "domain": "ai_data_scientist",
+      "category": "Leadership & Strategy",
+      "tier": 4,
+      "difficulty_level": "advanced",
+      "estimated_hours": 12,
+      "prerequisites": {
+        "hard": ["ai_ds_07_model_evaluation", "ai_ds_11_mlops_and_deployment"],
+        "soft": ["ai_ds_10_deep_learning"]
+      },
+      "transferable_to": [
+        "lead_data_scientist",
+        "principal_data_scientist",
+        "product_manager",
+        "decision_scientist"
+      ],
+      "core_concepts": [
+        "Experimental design and causal inference",
+        "Decision metrics aligned with business value",
+        "Model explainability and governance",
+        "Storytelling for technical and non-technical stakeholders",
+        "Risk framing and ethical AI principles",
+        "Roadmapping and prioritization of AI initiatives"
+      ],
+      "resources": [
+        {
+          "type": "article",
+          "title": "A/B Testing and Experimentation",
+          "url": "https://www.optimizely.com/optimization-glossary/ab-testing/",
+          "provider": "Optimizely",
+          "authority_score": 0.9
+        },
+        {
+          "type": "documentation",
+          "title": "Google Responsible AI Practices",
+          "url": "https://ai.google/responsibility/",
+          "provider": "Google AI",
+          "authority_score": 0.95
+        },
+        {
+          "type": "video",
+          "title": "How to Communicate Data Science Results",
+          "url": "https://www.youtube.com/results?search_query=data+science+communication+storytelling",
+          "provider": "YouTube",
+          "authority_score": 0.81
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "You have built a strong model but the business impact is uncertain. Describe how you would frame a pilot experiment, decide what success looks like, and communicate the business risk and model limitations to leadership.",
+        "socratic_prompt": "Why do good models sometimes fail to deliver product value, and how do experimental design and stakeholder communication reduce this gap?",
+        "key_evaluation_criteria": [
+          "Blends technical rigor with business and risk awareness",
+          "Uses sound statistical and causal reasoning",
+          "Communicates clearly with decision-makers and stakeholders"
+        ],
+        "remediation_hint": "Tie model outcomes to decision-making objectives, quantify uncertainty, and document assumptions and failure modes explicitly."
+      },
+      "version": "1.0",
+      "keywords": [
+        "experimentation",
+        "ab-testing",
+        "causal-inference",
+        "gov ernance",
+        "communication",
+        "responsible-ai"
+      ],
+      "active": true
+    }
+  ]
+}

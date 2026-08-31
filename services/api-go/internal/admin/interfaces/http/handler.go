@@ -9,9 +9,9 @@ import (
 )
 
 type Handler struct {
-	listUsers    *application.ListUsersUseCase
-	updateUser   *application.UpdateUserUseCase
-	getAuditLog  *application.GetAuditLogUseCase
+	listUsers   *application.ListUsersUseCase
+	updateUser  *application.UpdateUserUseCase
+	getAuditLog *application.GetAuditLogUseCase
 }
 
 func NewHandler(
@@ -63,7 +63,7 @@ func (h *Handler) UpdateUser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// According to yaml, it's /admin/users without an ID in the path. Let's decode from body.
-	
+
 	type requestBody struct {
 		ID     string  `json:"id"`
 		Role   *string `json:"role"`

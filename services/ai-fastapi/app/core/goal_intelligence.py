@@ -1,7 +1,7 @@
-from typing import Any, Dict, List, Optional
+from typing import Any
 
-from app.core.llm_client import LLMClient
 from app.core.graph_engine import GraphEngine
+from app.core.llm_client import LLMClient
 
 
 class GoalAnalyzer:
@@ -16,7 +16,7 @@ class GoalAnalyzer:
         self.llm = llm_client
         self.graph = graph_engine
 
-    def analyze_user_intent(self, user_text: str) -> Dict[str, Any]:
+    def analyze_user_intent(self, user_text: str) -> dict[str, Any]:
         """Analyze free-form user intent and map to a domain.
 
         Args:
@@ -28,7 +28,7 @@ class GoalAnalyzer:
             On failure returns a dict with an `error` key and `raw` text.
         """
 
-        domains: List[str] = self.graph.list_domains()
+        domains: list[str] = self.graph.list_domains()
         domains_text = ", ".join(domains) if domains else ""
 
         system_prompt = (

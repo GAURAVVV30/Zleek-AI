@@ -7,7 +7,24 @@ httpx
 groq
 networkx
 chromadb
+python-multipart
+numpy
 
 # Optional helper libs for PDFs/embeddings later
 pypdf
 sentence-transformers
+
+# D1: BKT Mastery Model — hand-coded, zero extra deps
+
+# D2: Sentiment & Engagement Analysis (local HuggingFace model)
+transformers
+torch
+
+# D3: AI Voice Tutor
+# ASR: NVIDIA Riva (primary) / Groq Whisper (fallback)
+# TTS: NVIDIA Riva (primary) / Facebook MMS-TTS local (fallback)
+soundfile
+
+# NVIDIA AI Enterprise Stack
+openai              # OpenAI SDK used for NIM, Riva, NV-Embed (all OpenAI-compatible)
+nemoguardrails      # NVIDIA NeMo Guardrails — Socratic enforcer

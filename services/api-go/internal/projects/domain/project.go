@@ -27,9 +27,9 @@ type SubmissionMetadata struct {
 }
 
 type ProjectSubmission struct {
-	LearnerID  string
-	ConceptID  string
-	Metadata   SubmissionMetadata
+	LearnerID   string
+	ConceptID   string
+	Metadata    SubmissionMetadata
 	SubmittedAt time.Time
 }
 

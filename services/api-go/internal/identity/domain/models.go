@@ -25,6 +25,9 @@ type User struct {
 	PasswordHash string
 	Role         UserRole
 	Status       UserStatus
+	FullName     string
+	Timezone     string
+	Theme        string
 	CreatedAt    time.Time
 	UpdatedAt    time.Time
 }

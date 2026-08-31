@@ -8,9 +8,9 @@ const (
 )
 
 type CompetencyUpdatedPayload struct {
-	LearnerID string  `json:"learner_id"`
-	ConceptID string  `json:"concept_id"`
-	NewState  string  `json:"new_state"`
+	LearnerID string `json:"learner_id"`
+	ConceptID string `json:"concept_id"`
+	NewState  string `json:"new_state"`
 }
 
 type ConceptWeakPayload struct {

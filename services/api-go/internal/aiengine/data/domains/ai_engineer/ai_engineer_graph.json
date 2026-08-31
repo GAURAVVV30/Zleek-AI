@@ -1,0 +1,847 @@
+{
+  "domain_id": "ai_engineer",
+  "domain_name": "AI Engineer",
+  "total_nodes": 12,
+  "nodes": [
+    {
+      "id": "ai_eng_01_python_and_data_literacy",
+      "name": "Python Programming and Data Literacy",
+      "domain": "ai_engineer",
+      "category": "Programming Fundamentals",
+      "tier": 1,
+      "difficulty_level": "basic",
+      "estimated_hours": 12,
+      "prerequisites": {
+        "hard": [],
+        "soft": []
+      },
+      "transferable_to": [
+        "ml_engineer",
+        "backend_developer",
+        "data_scientist",
+        "software_architect"
+      ],
+      "core_concepts": [
+        "Python syntax and data structures",
+        "Functions, modules, and packaging",
+        "File handling and API clients",
+        "NumPy and Pandas basics",
+        "Working with JSON and CSV data",
+        "Reproducible scripts and notebooks"
+      ],
+      "resources": [
+        {
+          "type": "documentation",
+          "title": "Python Official Docs",
+          "url": "https://docs.python.org/3/",
+          "provider": "Python Software Foundation",
+          "authority_score": 0.99
+        },
+        {
+          "type": "course",
+          "title": "Python for Data Analysis",
+          "url": "https://pandas.pydata.org/docs/",
+          "provider": "Pandas",
+          "authority_score": 0.96
+        },
+        {
+          "type": "video",
+          "title": "Python Fundamentals",
+          "url": "https://www.youtube.com/results?search_query=python+fundamentals",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "How would you build a small Python script that reads application logs, extracts timestamps and error codes, and calculates the most common failure pattern?",
+        "socratic_prompt": "Why is it useful to separate data parsing, transformation, and reporting logic into distinct functions when building AI-related pipelines?",
+        "key_evaluation_criteria": [
+          "Uses clean Python structures and modular code",
+          "Demonstrates handling of real-world data formats",
+          "Organizes logic for maintainability and reuse"
+        ],
+        "remediation_hint": "Practice decomposing workflow steps into reusable functions and test them on small inputs before scaling the automation."
+      },
+      "version": "1.0",
+      "keywords": [
+        "python",
+        "data",
+        "programming",
+        "pandas",
+        "automation",
+        "notebooks"
+      ],
+      "active": true
+    },
+    {
+      "id": "ai_eng_02_math_for_ml_and_ai",
+      "name": "Mathematics for Machine Learning and AI",
+      "domain": "ai_engineer",
+      "category": "Mathematics",
+      "tier": 1,
+      "difficulty_level": "basic",
+      "estimated_hours": 14,
+      "prerequisites": {
+        "hard": ["ai_eng_01_python_and_data_literacy"],
+        "soft": []
+      },
+      "transferable_to": [
+        "data_scientist",
+        "ml_engineer",
+        "research_engineer",
+        "algorithm_engineer"
+      ],
+      "core_concepts": [
+        "Linear algebra and vectors",
+        "Matrices, transposes, and eigenvalues",
+        "Calculus and gradients",
+        "Probability distributions",
+        "Optimization and convexity",
+        "Statistical thinking for model evaluation"
+      ],
+      "resources": [
+        {
+          "type": "course",
+          "title": "Essence of Linear Algebra",
+          "url": "https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab",
+          "provider": "3Blue1Brown",
+          "authority_score": 0.99
+        },
+        {
+          "type": "documentation",
+          "title": "Linear Algebra for Machine Learning",
+          "url": "https://scikit-learn.org/stable/modules/linear_model.html",
+          "provider": "Scikit-Learn",
+          "authority_score": 0.94
+        },
+        {
+          "type": "article",
+          "title": "Gradient Descent Fundamentals",
+          "url": "https://towardsdatascience.com/gradient-descent-algorithm-and-its-variants-10f652806a3",
+          "provider": "Towards Data Science",
+          "authority_score": 0.88
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Explain how a gradient is used to update weights in a simple neural network and why the learning rate matters in optimization.",
+        "socratic_prompt": "Why does a model fail to improve if the learning rate is too large or the loss landscape is poorly conditioned?",
+        "key_evaluation_criteria": [
+          "Understands vectors, gradients, and optimization dynamics",
+          "Can explain how learning rate influences convergence",
+          "Links mathematics to model training behavior"
+        ],
+        "remediation_hint": "Visualize small optimization problems and work through gradients manually before moving to multi-layer neural networks."
+      },
+      "version": "1.0",
+      "keywords": [
+        "math",
+        "linear-algebra",
+        "calculus",
+        "optimization",
+        "gradient",
+        "probability"
+      ],
+      "active": true
+    },
+    {
+      "id": "ai_eng_03_ml_foundations",
+      "name": "Machine Learning Foundations",
+      "domain": "ai_engineer",
+      "category": "Machine Learning",
+      "tier": 1,
+      "difficulty_level": "basic",
+      "estimated_hours": 16,
+      "prerequisites": {
+        "hard": ["ai_eng_02_math_for_ml_and_ai"],
+        "soft": ["ai_eng_01_python_and_data_literacy"]
+      },
+      "transferable_to": [
+        "data_scientist",
+        "ml_engineer",
+        "applied_ai_engineer",
+        "research_engineer"
+      ],
+      "core_concepts": [
+        "Supervised, unsupervised, and reinforcement learning",
+        "Bias-variance trade-off",
+        "Train/validation/test split",
+        "Regularization and overfitting",
+        "Loss functions and optimization",
+        "Baseline models and feature importance"
+      ],
+      "resources": [
+        {
+          "type": "documentation",
+          "title": "Scikit-Learn User Guide",
+          "url": "https://scikit-learn.org/stable/user_guide.html",
+          "provider": "Scikit-Learn",
+          "authority_score": 0.99
+        },
+        {
+          "type": "video",
+          "title": "Machine Learning Crash Course",
+          "url": "https://www.youtube.com/results?search_query=machine+learning+crash+course",
+          "provider": "Google Developers",
+          "authority_score": 0.94
+        },
+        {
+          "type": "article",
+          "title": "Bias-Variance Trade-off Explained",
+          "url": "https://scott.fortmann-roe.com/docs/BiasVariance.html",
+          "provider": "Scott Fortmann-Roe",
+          "authority_score": 0.91
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Given a tabular dataset with a small number of samples, choose and justify a model strategy that balances variance, training speed, and interpretability.",
+        "socratic_prompt": "When a model performs well on training data but poorly on validation data, what is causing the gap and how would you diagnose the cause?",
+        "key_evaluation_criteria": [
+          "Understands the train/validation/test workflow",
+          "Can identify overfitting and underfitting patterns",
+          "Explains model selection under realistic constraints"
+        ],
+        "remediation_hint": "Review learning curves, regularization, and baseline performance before choosing a more complex model."
+      },
+      "version": "1.0",
+      "keywords": [
+        "machine-learning",
+        "overfitting",
+        "regularization",
+        "baselines",
+        "validation",
+        "optimization"
+      ],
+      "active": true
+    },
+    {
+      "id": "ai_eng_04_feature_and_data_pipeline",
+      "name": "Feature Engineering and Data Pipelines",
+      "domain": "ai_engineer",
+      "category": "Data Preparation",
+      "tier": 2,
+      "difficulty_level": "intermediate",
+      "estimated_hours": 14,
+      "prerequisites": {
+        "hard": ["ai_eng_03_ml_foundations"],
+        "soft": ["ai_eng_01_python_and_data_literacy"]
+      },
+      "transferable_to": [
+        "data_engineer",
+        "ml_engineer",
+        "data_scientist",
+        "analytics_engineer"
+      ],
+      "core_concepts": [
+        "Missing values and imputation",
+        "Normalization and scaling",
+        "Categorical encoding",
+        "Feature leakage prevention",
+        "Train-time and inference-time transforms",
+        "Reusable preprocessing pipelines"
+      ],
+      "resources": [
+        {
+          "type": "documentation",
+          "title": "Scikit-Learn Preprocessing",
+          "url": "https://scikit-learn.org/stable/modules/preprocessing.html",
+          "provider": "Scikit-Learn",
+          "authority_score": 0.98
+        },
+        {
+          "type": "article",
+          "title": "Feature Engineering for Machine Learning",
+          "url": "https://machinelearningmastery.com/discover-feature-engineering-how-to-engineer-features-and-what-are-the-best-practices/",
+          "provider": "Machine Learning Mastery",
+          "authority_score": 0.92
+        },
+        {
+          "type": "video",
+          "title": "Feature Engineering Fundamentals",
+          "url": "https://www.youtube.com/results?search_query=feature+engineering+for+machine+learning",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Design a preprocessing workflow for a production recommender system where the same feature transformations must be applied consistently at training and inference time.",
+        "socratic_prompt": "What is the risk of applying a transformation using the full dataset before splitting train and validation, and how would you avoid this in a pipeline?",
+        "key_evaluation_criteria": [
+          "Uses a pipeline to keep transforms consistent",
+          "Avoids leakage and overstates performance",
+          "Explains feature encoding and scaling decisions"
+        ],
+        "remediation_hint": "Keep preprocessing as part of the training pipeline and persist the fitted transformers for inference-time consistency."
+      },
+      "version": "1.0",
+      "keywords": [
+        "feature-engineering",
+        "preprocessing",
+        "pipelines",
+        "scaling",
+        "encoding",
+        "leakage"
+      ],
+      "active": true
+    },
+    {
+      "id": "ai_eng_05_supervised_learning_algorithms",
+      "name": "Supervised Learning and Ensemble Models",
+      "domain": "ai_engineer",
+      "category": "Algorithms",
+      "tier": 2,
+      "difficulty_level": "intermediate",
+      "estimated_hours": 18,
+      "prerequisites": {
+        "hard": ["ai_eng_03_ml_foundations", "ai_eng_04_feature_and_data_pipeline"],
+        "soft": []
+      },
+      "transferable_to": [
+        "ml_engineer",
+        "data_scientist",
+        "risk_modeler",
+        "applied_ai_engineer"
+      ],
+      "core_concepts": [
+        "Linear regression and logistic regression",
+        "Decision trees and random forests",
+        "Gradient boosting and XGBoost",
+        "Support vector machines",
+        "Hyperparameter tuning",
+        "Model comparison and selection"
+      ],
+      "resources": [
+        {
+          "type": "documentation",
+          "title": "Scikit-Learn Supervised Learning",
+          "url": "https://scikit-learn.org/stable/supervised_learning.html",
+          "provider": "Scikit-Learn",
+          "authority_score": 0.99
+        },
+        {
+          "type": "article",
+          "title": "XGBoost Documentation",
+          "url": "https://xgboost.readthedocs.io/en/stable/",
+          "provider": "XGBoost",
+          "authority_score": 0.97
+        },
+        {
+          "type": "video",
+          "title": "Decision Tree and Random Forest Explained",
+          "url": "https://www.youtube.com/results?search_query=decision+tree+random+forest+explained",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Choose an algorithm for a structured tabular prediction task with mixed feature types and explain when a tree-based ensemble would be preferable to a linear model.",
+        "socratic_prompt": "If a model is highly interpretable but weak in predictive power, how do you decide whether to trade simplicity for accuracy in a production setting?",
+        "key_evaluation_criteria": [
+          "Understands algorithm trade-offs and assumptions",
+          "Can select models based on data shape and objective",
+          "Explains tuning and performance trade-offs"
+        ],
+        "remediation_hint": "Start with strong baselines and compare complexity, calibration, latency, and maintainability before deployment."
+      },
+      "version": "1.0",
+      "keywords": [
+        "supervised-learning",
+        "xgboost",
+        "ensemble",
+        "tree-models",
+        "gradient-boosting",
+        "classification"
+      ],
+      "active": true
+    },
+    {
+      "id": "ai_eng_06_model_evaluation_and_experimentation",
+      "name": "Model Evaluation and Experimentation Design",
+      "domain": "ai_engineer",
+      "category": "Evaluation & Metrics",
+      "tier": 2,
+      "difficulty_level": "intermediate",
+      "estimated_hours": 12,
+      "prerequisites": {
+        "hard": ["ai_eng_05_supervised_learning_algorithms"],
+        "soft": ["ai_eng_03_ml_foundations"]
+      },
+      "transferable_to": [
+        "data_scientist",
+        "ml_engineer",
+        "product_analyst",
+        "experiment_lead"
+      ],
+      "core_concepts": [
+        "Precision, recall, F1, ROC-AUC, and PR-AUC",
+        "MAE, RMSE, and R2 for regression",
+        "Cross-validation and data leakage control",
+        "A/B testing and causal experimentation",
+        "Threshold tuning and business KPI alignment",
+        "Calibration and decision boundaries"
+      ],
+      "resources": [
+        {
+          "type": "documentation",
+          "title": "Scikit-Learn Metrics",
+          "url": "https://scikit-learn.org/stable/modules/model_evaluation.html",
+          "provider": "Scikit-Learn",
+          "authority_score": 0.99
+        },
+        {
+          "type": "article",
+          "title": "Choose the Right Metric",
+          "url": "https://towardsdatascience.com/how-to-choose-the-right-metric-for-your-machine-learning-problem-5df8af3b8b1d",
+          "provider": "Towards Data Science",
+          "authority_score": 0.86
+        },
+        {
+          "type": "video",
+          "title": "A/B Testing and Experiment Design",
+          "url": "https://www.youtube.com/results?search_query=ab+testing+experiment+design",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "For a fraud detection model, explain which metrics you would prioritize, what threshold choices you would evaluate, and how you would validate the result as a business decision rather than a technical score alone.",
+        "socratic_prompt": "Why can raw accuracy deceive model evaluation in highly imbalanced datasets, and how do business costs affect the decision threshold?",
+        "key_evaluation_criteria": [
+          "Selects metrics aligned with risk and cost",
+          "Understands validation strategy and leakage risk",
+          "Connects model output to business decisions"
+        ],
+        "remediation_hint": "Use business-level costs, class imbalance, and validation design to choose evaluation metrics and thresholds intentionally."
+      },
+      "version": "1.0",
+      "keywords": [
+        "evaluation",
+        "metrics",
+        "ab-testing",
+        "cross-validation",
+        "precision",
+        "recall"
+      ],
+      "active": true
+    },
+    {
+      "id": "ai_eng_07_deep_learning_basics",
+      "name": "Deep Learning Fundamentals",
+      "domain": "ai_engineer",
+      "category": "Deep Learning",
+      "tier": 3,
+      "difficulty_level": "intermediate",
+      "estimated_hours": 20,
+      "prerequisites": {
+        "hard": ["ai_eng_02_math_for_ml_and_ai", "ai_eng_05_supervised_learning_algorithms"],
+        "soft": ["ai_eng_06_model_evaluation_and_experimentation"]
+      },
+      "transferable_to": [
+        "deep_learning_engineer",
+        "computer_vision_engineer",
+        "nlp_engineer",
+        "research_engineer"
+      ],
+      "core_concepts": [
+        "Neural networks and activations",
+        "Backpropagation and gradient descent",
+        "Loss functions and optimization",
+        "Regularization and dropout",
+        "CNNs and sequence models",
+        "Transfer learning and embeddings"
+      ],
+      "resources": [
+        {
+          "type": "documentation",
+          "title": "PyTorch Documentation",
+          "url": "https://pytorch.org/docs/stable/index.html",
+          "provider": "PyTorch",
+          "authority_score": 0.99
+        },
+        {
+          "type": "article",
+          "title": "Attention Is All You Need",
+          "url": "https://arxiv.org/abs/1706.03762",
+          "provider": "arXiv",
+          "authority_score": 0.98
+        },
+        {
+          "type": "video",
+          "title": "Deep Learning Crash Course",
+          "url": "https://www.youtube.com/results?search_query=deep+learning+crash+course",
+          "provider": "YouTube",
+          "authority_score": 0.82
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Explain how backpropagation updates weights in a neural network, why activation functions matter, and when a deeper model is likely to outperform a classical model for a specific task.",
+        "socratic_prompt": "What happens when a network becomes too deep without proper regularization, and how does this connect to high variance and poor generalization?",
+        "key_evaluation_criteria": [
+          "Understands gradient flow and training mechanics",
+          "Explains architecture choices and their trade-offs",
+          "Knows when deep learning is appropriate"
+        ],
+        "remediation_hint": "Practice tracing a small network step by step before scaling to large architectures, and compare with simpler baselines."
+      },
+      "version": "1.0",
+      "keywords": [
+        "deep-learning",
+        "neural-network",
+        "transformers",
+        "backpropagation",
+        "pytorch",
+        "cnn"
+      ],
+      "active": true
+    },
+    {
+      "id": "ai_eng_08_nlp_and_llms",
+      "name": "Natural Language Processing and Large Language Models",
+      "domain": "ai_engineer",
+      "category": "AI Systems",
+      "tier": 3,
+      "difficulty_level": "advanced",
+      "estimated_hours": 18,
+      "prerequisites": {
+        "hard": ["ai_eng_07_deep_learning_basics"],
+        "soft": ["ai_eng_06_model_evaluation_and_experimentation"]
+      },
+      "transferable_to": [
+        "nlp_engineer",
+        "ai_engineer",
+        "research_engineer",
+        "applied_ai_specialist"
+      ],
+      "core_concepts": [
+        "Tokenization and embeddings",
+        "Transformers and attention",
+        "Instruction tuning and RLHF",
+        "Prompt engineering and retrieval augmentation",
+        "Evaluation of LLM quality",
+        "Safety, grounding, and hallucination control"
+      ],
+      "resources": [
+        {
+          "type": "article",
+          "title": "The Illustrated Transformer",
+          "url": "https://jalammar.github.io/illustrated-transformer/",
+          "provider": "Jay Alammar",
+          "authority_score": 0.99
+        },
+        {
+          "type": "documentation",
+          "title": "Hugging Face Transformers",
+          "url": "https://huggingface.co/docs/transformers/index",
+          "provider": "Hugging Face",
+          "authority_score": 0.98
+        },
+        {
+          "type": "video",
+          "title": "Transformers Explained",
+          "url": "https://www.youtube.com/results?search_query=transformer+architecture+explained",
+          "provider": "YouTube",
+          "authority_score": 0.86
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Design an LLM-based application for enterprise document understanding that retrieves relevant policy text and answers grounded questions while minimizing hallucination and latency.",
+        "socratic_prompt": "When is retrieval augmentation more valuable than simply increasing model size, and how do you evaluate the quality of retrieved context versus model reasoning?",
+        "key_evaluation_criteria": [
+          "Understands transformer architecture and retrieval-based design",
+          "Can reason about grounding and factuality",
+          "Balances latency, cost, and quality in a production system"
+        ],
+        "remediation_hint": "Compare prompt design, retrieval quality, and scoring metrics for reliability, and design evaluation sets around failure cases rather than only happy paths."
+      },
+      "version": "1.0",
+      "keywords": [
+        "nlp",
+        "transformers",
+        "llm",
+        "retrieval",
+        "prompting",
+        "hallucination"
+      ],
+      "active": true
+    },
+    {
+      "id": "ai_eng_09_model_serving_and_inference",
+      "name": "Model Deployment, Serving, and Inference Systems",
+      "domain": "ai_engineer",
+      "category": "Production AI",
+      "tier": 3,
+      "difficulty_level": "advanced",
+      "estimated_hours": 16,
+      "prerequisites": {
+        "hard": ["ai_eng_08_nlp_and_llms", "ai_eng_06_model_evaluation_and_experimentation"],
+        "soft": ["ai_eng_04_feature_and_data_pipeline"]
+      },
+      "transferable_to": [
+        "ml_engineer",
+        "platform_engineer",
+        "software_engineer",
+        "production_ai_engineer"
+      ],
+      "core_concepts": [
+        "Model packaging and APIs",
+        "Batch and online inference",
+        "Latency, throughput, and autoscaling",
+        "Containerization of ML services",
+        "GPU and CPU optimization",
+        "Request routing and model versioning"
+      ],
+      "resources": [
+        {
+          "type": "documentation",
+          "title": "FastAPI Documentation",
+          "url": "https://fastapi.tiangolo.com/",
+          "provider": "FastAPI",
+          "authority_score": 0.96
+        },
+        {
+          "type": "article",
+          "title": "Machine Learning Model Serving",
+          "url": "https://www.databricks.com/blog/2020/10/30/model-serving-architecture-and-patterns.html",
+          "provider": "Databricks",
+          "authority_score": 0.92
+        },
+        {
+          "type": "video",
+          "title": "Deploying ML Models at Scale",
+          "url": "https://www.youtube.com/results?search_query=model+serving+machine+learning+deployment",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Design a production inference service for an LLM or classification model that handles concurrent requests, runs efficiently in the cloud, and supports rollback and version tracking.",
+        "socratic_prompt": "Why does a model that performs well offline become unreliable in production if batching, memory constraints, or feature drift are not addressed?",
+        "key_evaluation_criteria": [
+          "Understands inference architecture trade-offs",
+          "Cares about latency, reliability, and operational safety",
+          "Includes model lifecycle and rollback considerations"
+        ],
+        "remediation_hint": "Think through request routing, performance targets, autoscaling, canary deployment, and consistent feature pipelines across all inference stages."
+      },
+      "version": "1.0",
+      "keywords": [
+        "inference",
+        "serving",
+        "deployment",
+        "fastapi",
+        "latency",
+        "model-versioning"
+      ],
+      "active": true
+    },
+    {
+      "id": "ai_eng_10_mlops_and_observability",
+      "name": "MLOps, Monitoring, and Continuous Improvement",
+      "domain": "ai_engineer",
+      "category": "Operations & Reliability",
+      "tier": 3,
+      "difficulty_level": "advanced",
+      "estimated_hours": 15,
+      "prerequisites": {
+        "hard": ["ai_eng_09_model_serving_and_inference"],
+        "soft": ["ai_eng_08_nlp_and_llms"]
+      },
+      "transferable_to": [
+        "ml_engineer",
+        "platform_engineer",
+        "site_reliability_engineer",
+        "ai_operation_lead"
+      ],
+      "core_concepts": [
+        "Model registry and versioning",
+        "Data and model drift",
+        "Monitoring dashboards and alerts",
+        "CI/CD for ML pipelines",
+        "Feature store and lineage",
+        "Operational rollback and retraining policies"
+      ],
+      "resources": [
+        {
+          "type": "documentation",
+          "title": "MLflow Documentation",
+          "url": "https://mlflow.org/docs/latest/index.html",
+          "provider": "MLflow",
+          "authority_score": 0.97
+        },
+        {
+          "type": "article",
+          "title": "The Essentials of MLOps",
+          "url": "https://www.databricks.com/glossary/mlops",
+          "provider": "Databricks",
+          "authority_score": 0.92
+        },
+        {
+          "type": "video",
+          "title": "MLOps Fundamentals",
+          "url": "https://www.youtube.com/results?search_query=mlops+fundamentals",
+          "provider": "YouTube",
+          "authority_score": 0.82
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Explain how you would monitor a deployed recommendation model for drift, data quality degradation, and prediction quality, and define an operational workflow for retraining or rollback.",
+        "socratic_prompt": "If a model continues to look healthy in offline metrics but fails in the field, what hidden signals should you monitor and which policy should trigger retraining?",
+        "key_evaluation_criteria": [
+          "Defines observability and operation guardrails for production ML",
+          "Connects failures to retraining and rollback strategy",
+          "Understands drift, quality, and trust signals"
+        ],
+        "remediation_hint": "Instrument data pipelines, inference endpoints, and segmentation metrics to separate model quality issues from system reliability issues."
+      },
+      "version": "1.0",
+      "keywords": [
+        "mlops",
+        "monitoring",
+        "drift",
+        "registry",
+        "model-lifecycle",
+        "observability"
+      ],
+      "active": true
+    },
+    {
+      "id": "ai_eng_11_ai_system_design",
+      "name": "AI System Design and Architecture",
+      "domain": "ai_engineer",
+      "category": "System Design",
+      "tier": 4,
+      "difficulty_level": "advanced",
+      "estimated_hours": 18,
+      "prerequisites": {
+        "hard": ["ai_eng_08_nlp_and_llms", "ai_eng_09_model_serving_and_inference", "ai_eng_10_mlops_and_observability"],
+        "soft": ["ai_eng_07_deep_learning_basics"]
+      },
+      "transferable_to": [
+        "ai_architect",
+        "solutions_architect",
+        "technical_lead",
+        "principal_ai_engineer"
+      ],
+      "core_concepts": [
+        "AI system architecture patterns",
+        "Streaming and batch inference systems",
+        "Retrieval-augmented pipelines",
+        "Orchestration, routing, and guardrails",
+        "Latency, cost, and governance trade-offs",
+        "Designing resilient AI products"
+      ],
+      "resources": [
+        {
+          "type": "article",
+          "title": "Design Patterns for LLM Applications",
+          "url": "https://www.patterns.llmapps.ai/",
+          "provider": "LLM Patterns",
+          "authority_score": 0.95
+        },
+        {
+          "type": "documentation",
+          "title": "Azure AI Architecture Guidance",
+          "url": "https://learn.microsoft.com/en-us/azure/architecture/data-guide/ai-ml/",
+          "provider": "Microsoft Learn",
+          "authority_score": 0.96
+        },
+        {
+          "type": "video",
+          "title": "AI System Design Fundamentals",
+          "url": "https://www.youtube.com/results?search_query=ai+system+design+architecture",
+          "provider": "YouTube",
+          "authority_score": 0.82
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Design an enterprise AI assistant architecture that supports secure user access, grounded retrieval, tool integration, latency targets, and operational monitoring while minimizing cost and risk.",
+        "socratic_prompt": "When should you choose a stateless orchestration approach versus a workflow-controlled system, and how do these choices affect auditing, resilience, and user trust?",
+        "key_evaluation_criteria": [
+          "Designs end-to-end AI system components convincingly",
+          "Balances business constraints with technical feasibility",
+          "Handles observability, safety, and governance at system level"
+        ],
+        "remediation_hint": "Model the architecture as a set of bounded responsibilities, separate orchestration from model logic, and define guardrails and failure states explicitly."
+      },
+      "version": "1.0",
+      "keywords": [
+        "ai-system-design",
+        "architecture",
+        "orchestration",
+        "rag",
+        "guardrails",
+        "scalability"
+      ],
+      "active": true
+    },
+    {
+      "id": "ai_eng_12_ai_governance_and_strategy",
+      "name": "AI Governance, Ethics, and Strategic Delivery",
+      "domain": "ai_engineer",
+      "category": "Leadership & Governance",
+      "tier": 4,
+      "difficulty_level": "advanced",
+      "estimated_hours": 12,
+      "prerequisites": {
+        "hard": ["ai_eng_11_ai_system_design", "ai_eng_10_mlops_and_observability"],
+        "soft": ["ai_eng_08_nlp_and_llms"]
+      },
+      "transferable_to": [
+        "head_of_ai",
+        "solution_architect",
+        "technical_lead",
+        "ai_product_manager"
+      ],
+      "core_concepts": [
+        "Responsible AI and fairness",
+        "Risk assessment and model governance",
+        "AI product strategy and roadmap planning",
+        "Privacy and secure data handling",
+        "Ethical trade-offs and accountability",
+        "Executive communication for AI initiatives"
+      ],
+      "resources": [
+        {
+          "type": "documentation",
+          "title": "Google Responsible AI",
+          "url": "https://ai.google/responsibility/",
+          "provider": "Google AI",
+          "authority_score": 0.95
+        },
+        {
+          "type": "article",
+          "title": "AI Governance Overview",
+          "url": "https://www.nist.gov/itl/ai-risk-management-framework",
+          "provider": "NIST",
+          "authority_score": 0.96
+        },
+        {
+          "type": "video",
+          "title": "Responsible AI and Governance",
+          "url": "https://www.youtube.com/results?search_query=responsible+ai+governance",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Propose a governance strategy for deploying an AI-powered customer support system that includes fairness checks, privacy controls, audit logs, and a clear escalation path for failure.",
+        "socratic_prompt": "How do you prevent a technically successful AI feature from creating business or ethical risk when the model is not fully explainable and user trust is critical?",
+        "key_evaluation_criteria": [
+          "Understands responsible AI principles and governance trade-offs",
+          "Can align AI strategy with risk, trust, and accountability",
+          "Communicates decisions clearly to stakeholders"
+        ],
+        "remediation_hint": "Define operational accountability, governance checkpoints, and measurable risk thresholds that translate technical quality into trust and safe adoption."
+      },
+      "version": "1.0",
+      "keywords": [
+        "governance",
+        "responsible-ai",
+        "ethics",
+        "privacy",
+        "risk",
+        "strategy"
+      ],
+      "active": true
+    }
+  ]
+}

@@ -1,0 +1,847 @@
+{
+  "domain_id": "data_analyst",
+  "domain_name": "Data Analyst",
+  "total_nodes": 12,
+  "nodes": [
+    {
+      "id": "da_01_analytics_foundations",
+      "name": "Analytics Foundations and Career Roadmap",
+      "domain": "data_analyst",
+      "category": "Analytics Fundamentals",
+      "tier": 1,
+      "difficulty_level": "basic",
+      "estimated_hours": 8,
+      "prerequisites": {
+        "hard": [],
+        "soft": []
+      },
+      "transferable_to": [
+        "business_analyst",
+        "product_analyst",
+        "marketing_analyst",
+        "ai_data_scientist"
+      ],
+      "core_concepts": [
+        "What is data analytics",
+        "Descriptive, diagnostic, predictive, and prescriptive analytics",
+        "Business problem framing",
+        "Data collection and quality mindset",
+        "Role scope of a data analyst",
+        "Roadmap thinking and portfolio building"
+      ],
+      "resources": [
+        {
+          "type": "article",
+          "title": "What is Data Analytics",
+          "url": "https://www.tableau.com/learn/articles/data-analytics",
+          "provider": "Tableau",
+          "authority_score": 0.95
+        },
+        {
+          "type": "video",
+          "title": "Data Analytics for Beginners",
+          "url": "https://www.youtube.com/results?search_query=data+analytics+for+beginners",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        },
+        {
+          "type": "documentation",
+          "title": "Roadmap to Data Analyst",
+          "url": "https://roadmap.sh/roadmaps/data-analyst",
+          "provider": "Roadmap.sh",
+          "authority_score": 0.94
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Given a business problem like declining sign-ups, explain how you would classify the analysis as descriptive, diagnostic, predictive, or prescriptive before choosing a method.",
+        "socratic_prompt": "Why is it important to define the business question before selecting data sources, metrics, or charts?",
+        "key_evaluation_criteria": [
+          "Clarifies the business question and metric",
+          "Distinguishes analytics types correctly",
+          "Connects problem framing to the right analysis method"
+        ],
+        "remediation_hint": "Start with the business decision, then map the relevant data sources and metrics before doing any modeling."
+      },
+      "version": "1.0",
+      "keywords": [
+        "analytics",
+        "business-intelligence",
+        "metrics",
+        "descriptive",
+        "diagnostic",
+        "roadmap"
+      ],
+      "active": true
+    },
+    {
+      "id": "da_02_excel_analysis_and_reporting",
+      "name": "Excel Analytics and Reporting Fundamentals",
+      "domain": "data_analyst",
+      "category": "Spreadsheet Analysis",
+      "tier": 1,
+      "difficulty_level": "basic",
+      "estimated_hours": 12,
+      "prerequisites": {
+        "hard": ["da_01_analytics_foundations"],
+        "soft": []
+      },
+      "transferable_to": [
+        "business_analyst",
+        "operations_analyst",
+        "finance_analyst",
+        "product_analyst"
+      ],
+      "core_concepts": [
+        "Excel formulas and logic",
+        "IF, DATEDIF, VLOOKUP, HLOOKUP, REPLACE, SUBSTITUTE, TRIM, CONCAT",
+        "Pivot tables and grouped summaries",
+        "Charting and visual data storytelling",
+        "Conditional formatting and validation",
+        "Download and transform business data in spreadsheets"
+      ],
+      "resources": [
+        {
+          "type": "course",
+          "title": "Excel for Data Analysis",
+          "url": "https://support.microsoft.com/en-us/office/excel-for-the-web",
+          "provider": "Microsoft",
+          "authority_score": 0.96
+        },
+        {
+          "type": "video",
+          "title": "Excel Pivot Tables and Charts",
+          "url": "https://www.youtube.com/results?search_query=excel+pivot+tables+for+beginners",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        },
+        {
+          "type": "article",
+          "title": "Excel Logical Functions Guide",
+          "url": "https://support.microsoft.com/en-us/office/lookup-and-reference-functions",
+          "provider": "Microsoft",
+          "authority_score": 0.93
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "You receive a messy customer sales sheet with duplicate rows, inconsistent names, and repeated categories. Explain how you would clean and summarize the dataset using Excel functions and pivot tables.",
+        "socratic_prompt": "When would a lookup function be more reliable than manual formula copying, and what risks arise from hidden inconsistencies in source data?",
+        "key_evaluation_criteria": [
+          "Uses Excel functions appropriately and consistently",
+          "Creates summary tables and charts that reveal the story",
+          "Handles data irregularities with a repeatable workflow"
+        ],
+        "remediation_hint": "Practice cleaning data with formulas and grouping summaries before moving into deeper analysis."
+      },
+      "version": "1.0",
+      "keywords": [
+        "excel",
+        "pivot-tables",
+        "formulas",
+        "charting",
+        "reporting",
+        "data-cleaning"
+      ],
+      "active": true
+    },
+    {
+      "id": "da_03_sql_and_data_access",
+      "name": "SQL for Data Retrieval and Transformation",
+      "domain": "data_analyst",
+      "category": "Database Querying",
+      "tier": 1,
+      "difficulty_level": "basic",
+      "estimated_hours": 15,
+      "prerequisites": {
+        "hard": ["da_02_excel_analysis_and_reporting"],
+        "soft": []
+      },
+      "transferable_to": [
+        "data_engineer",
+        "business_intelligence_analyst",
+        "product_analyst",
+        "ai_data_scientist"
+      ],
+      "core_concepts": [
+        "SELECT, WHERE, ORDER BY, GROUP BY",
+        "JOINs and relational modeling",
+        "Aggregations and filtering",
+        "Subqueries and common table expressions",
+        "Data extraction from databases and CSV files",
+        "Querying structured business data"
+      ],
+      "resources": [
+        {
+          "type": "documentation",
+          "title": "SQL Tutorial",
+          "url": "https://www.w3schools.com/sql/",
+          "provider": "W3Schools",
+          "authority_score": 0.86
+        },
+        {
+          "type": "documentation",
+          "title": "PostgreSQL Documentation",
+          "url": "https://www.postgresql.org/docs/",
+          "provider": "PostgreSQL",
+          "authority_score": 0.99
+        },
+        {
+          "type": "video",
+          "title": "SQL for Data Analysis",
+          "url": "https://www.youtube.com/results?search_query=sql+for+data+analysis",
+          "provider": "YouTube",
+          "authority_score": 0.81
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Write a SQL query that joins customer, order, and product tables to summarize revenue by region and month, while excluding invalid rows and repeated records.",
+        "socratic_prompt": "Why is the correct join and row-level filter critical for answering a business question accurately, and what can go wrong when you over-aggregate too early?",
+        "key_evaluation_criteria": [
+          "Correct query structure and joins",
+          "Understands aggregation and filtering logic",
+          "Can translate business questions into SQL"
+        ],
+        "remediation_hint": "Define the exact result set first, then write the joins and filters step by step to avoid accidental duplication and missing rows."
+      },
+      "version": "1.0",
+      "keywords": [
+        "sql",
+        "joins",
+        "queries",
+        "database",
+        "aggregation",
+        "reporting"
+      ],
+      "active": true
+    },
+    {
+      "id": "da_04_python_for_analysis",
+      "name": "Python and Data Manipulation Libraries",
+      "domain": "data_analyst",
+      "category": "Programming & Data Wrangling",
+      "tier": 2,
+      "difficulty_level": "basic",
+      "estimated_hours": 18,
+      "prerequisites": {
+        "hard": ["da_03_sql_and_data_access"],
+        "soft": ["da_02_excel_analysis_and_reporting"]
+      },
+      "transferable_to": [
+        "ai_data_scientist",
+        "data_engineer",
+        "business_intelligence_analyst",
+        "research_analyst"
+      ],
+      "core_concepts": [
+        "Python basics and scripts",
+        "Pandas for data frames and cleaning",
+        "NumPy for arrays and numeric operations",
+        "Reading CSV, JSON, and API data",
+        "Grouping, filtering, and summarization",
+        "Reproducible analysis workflows"
+      ],
+      "resources": [
+        {
+          "type": "documentation",
+          "title": "Python Official Documentation",
+          "url": "https://docs.python.org/3/",
+          "provider": "Python Software Foundation",
+          "authority_score": 0.99
+        },
+        {
+          "type": "course",
+          "title": "Pandas Documentation",
+          "url": "https://pandas.pydata.org/docs/",
+          "provider": "Pandas",
+          "authority_score": 0.97
+        },
+        {
+          "type": "video",
+          "title": "Python for Data Analysis",
+          "url": "https://www.youtube.com/results?search_query=python+for+data+analysis+pandas",
+          "provider": "YouTube",
+          "authority_score": 0.82
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Build a Python script that loads a CSV, removes invalid rows, calculates grouped KPIs by category, and writes a clean summary table to a new file.",
+        "socratic_prompt": "Why do pandas operations often outperform manual loops in repeated analysis tasks, and when might a loop still be preferable?",
+        "key_evaluation_criteria": [
+          "Writes reproducible Python pipelines",
+          "Uses data frame operations correctly",
+          "Understands transformation and aggregation in code"
+        ],
+        "remediation_hint": "Focus on one clean transformation at a time and test each step with small intermediate outputs before scaling the analysis."
+      },
+      "version": "1.0",
+      "keywords": [
+        "python",
+        "pandas",
+        "numpy",
+        "dataframes",
+        "analysis-pipeline",
+        "wrangling"
+      ],
+      "active": true
+    },
+    {
+      "id": "da_05_data_collection_and_cleaning",
+      "name": "Data Collection, Cleanup, and Quality Management",
+      "domain": "data_analyst",
+      "category": "Data Preparation",
+      "tier": 2,
+      "difficulty_level": "basic",
+      "estimated_hours": 14,
+      "prerequisites": {
+        "hard": ["da_04_python_for_analysis"],
+        "soft": ["da_03_sql_and_data_access"]
+      },
+      "transferable_to": [
+        "data_engineer",
+        "analytics_engineer",
+        "product_analyst",
+        "ai_data_scientist"
+      ],
+      "core_concepts": [
+        "Data sources: CSV, databases, APIs, web scraping",
+        "Handling missing values and duplicates",
+        "Outlier detection and validation",
+        "Normalization and transformation",
+        "Data quality checks and reproducible cleaning pipelines",
+        "Schema and missing-data strategies"
+      ],
+      "resources": [
+        {
+          "type": "article",
+          "title": "Data Cleaning Best Practices",
+          "url": "https://www.kdnuggets.com/2017/06/data-cleaning-pandas-the-right-way.html",
+          "provider": "KDnuggets",
+          "authority_score": 0.9
+        },
+        {
+          "type": "documentation",
+          "title": "Pandas Data Cleaning Guide",
+          "url": "https://pandas.pydata.org/docs/user_guide/missing_data.html",
+          "provider": "Pandas",
+          "authority_score": 0.96
+        },
+        {
+          "type": "video",
+          "title": "Data Cleaning with Pandas",
+          "url": "https://www.youtube.com/results?search_query=data+cleaning+with+pandas",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "A marketing dataset contains missing values, duplicate records, and inconsistent categories. Explain how you would validate and transform it so the downstream analysis is trustworthy.",
+        "socratic_prompt": "Why do apparent data errors sometimes hide deeper business process issues, and how can an analyst use data profiling to distinguish data quality problems from process problems?",
+        "key_evaluation_criteria": [
+          "Detects missingness and duplicates systematically",
+          "Applies validation and transformation carefully",
+          "Explains why cleaning affects downstream trust and metrics"
+        ],
+        "remediation_hint": "Profile the data before changing it, record assumptions, and check outputs after each cleaning rule so your decisions remain auditable."
+      },
+      "version": "1.0",
+      "keywords": [
+        "data-cleaning",
+        "quality",
+        "missing-values",
+        "outliers",
+        "normalization",
+        "pipelines"
+      ],
+      "active": true
+    },
+    {
+      "id": "da_06_descriptive_statistics",
+      "name": "Descriptive Statistics and Data Exploration",
+      "domain": "data_analyst",
+      "category": "Statistics & Measurement",
+      "tier": 2,
+      "difficulty_level": "basic",
+      "estimated_hours": 12,
+      "prerequisites": {
+        "hard": ["da_05_data_collection_and_cleaning"],
+        "soft": ["da_04_python_for_analysis"]
+      },
+      "transferable_to": [
+        "product_analyst",
+        "research_analyst",
+        "ai_data_scientist",
+        "business_analyst"
+      ],
+      "core_concepts": [
+        "Mean, median, mode, range, variance, standard deviation",
+        "Dispersion, distribution, and central tendency",
+        "Skewness and kurtosis",
+        "Frequency distributions and descriptive summaries",
+        "Summarizing customer and operational metrics",
+        "Detecting patterns before modeling"
+      ],
+      "resources": [
+        {
+          "type": "article",
+          "title": "Descriptive Statistics Overview",
+          "url": "https://www.statisticshowto.com/probability-and-statistics/descriptive-statistics/",
+          "provider": "Statistics How To",
+          "authority_score": 0.88
+        },
+        {
+          "type": "documentation",
+          "title": "SciPy Statistics Guide",
+          "url": "https://docs.scipy.org/doc/scipy/reference/stats.html",
+          "provider": "SciPy",
+          "authority_score": 0.95
+        },
+        {
+          "type": "video",
+          "title": "Statistics Crash Course",
+          "url": "https://www.youtube.com/results?search_query=statistics+crash+course+for+data+analysis",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Interpret a distribution of transaction sizes and explain which summary statistics capture both central tendency and volatility, and why those measures matter in decision-making.",
+        "socratic_prompt": "When is the median more informative than the mean, and how can a skewed distribution distort a simple average?",
+        "key_evaluation_criteria": [
+          "Interprets summary statistics accurately",
+          "Connects metrics to business meaning",
+          "Identifies distribution properties that shape decisions"
+        ],
+        "remediation_hint": "Always inspect both the average and the spread, because different distributions can share the same mean but imply very different business risk."
+      },
+      "version": "1.0",
+      "keywords": [
+        "statistics",
+        "mean",
+        "median",
+        "variance",
+        "standard-deviation",
+        "distribution"
+      ],
+      "active": true
+    },
+    {
+      "id": "da_07_data_visualization",
+      "name": "Data Visualization and Storytelling",
+      "domain": "data_analyst",
+      "category": "Visualization",
+      "tier": 2,
+      "difficulty_level": "basic",
+      "estimated_hours": 12,
+      "prerequisites": {
+        "hard": ["da_06_descriptive_statistics"],
+        "soft": ["da_04_python_for_analysis"]
+      },
+      "transferable_to": [
+        "business_intelligence_analyst",
+        "product_analyst",
+        "ux_researcher",
+        "ai_data_scientist"
+      ],
+      "core_concepts": [
+        "Bar, line, scatter, histogram, funnel, heatmap, pie charts",
+        "Matplotlib, Seaborn, and ggplot2",
+        "Chart selection for the message",
+        "Dashboard design principles",
+        "Visual perception and storytelling",
+        "Exploration versus presentation"
+      ],
+      "resources": [
+        {
+          "type": "documentation",
+          "title": "Seaborn Documentation",
+          "url": "https://seaborn.pydata.org/",
+          "provider": "Seaborn",
+          "authority_score": 0.96
+        },
+        {
+          "type": "documentation",
+          "title": "Matplotlib Documentation",
+          "url": "https://matplotlib.org/stable/",
+          "provider": "Matplotlib",
+          "authority_score": 0.96
+        },
+        {
+          "type": "video",
+          "title": "Data Visualization Essentials",
+          "url": "https://www.youtube.com/results?search_query=data+visualization+with+python",
+          "provider": "YouTube",
+          "authority_score": 0.82
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Choose the best chart type for a dataset describing conversion by channel over time and explain what the visual should reveal to a stakeholder in under one minute.",
+        "socratic_prompt": "Why can a colorful but poorly chosen chart make a valid analysis harder to trust, and what visual design decisions support clearer decision-making?",
+        "key_evaluation_criteria": [
+          "Matches chart type to the story being told",
+          "Emphasizes clarity, not decoration",
+          "Turns analysis into a decision-oriented narrative"
+        ],
+        "remediation_hint": "Before building a chart, decide the key message and ensure each visual element supports that message rather than distracting from it."
+      },
+      "version": "1.0",
+      "keywords": [
+        "visualization",
+        "matplotlib",
+        "seaborn",
+        "charts",
+        "storytelling",
+        "dashboards"
+      ],
+      "active": true
+    },
+    {
+      "id": "da_08_reporting_and_dashboards",
+      "name": "Business Reporting and Dashboarding",
+      "domain": "data_analyst",
+      "category": "Business Intelligence",
+      "tier": 2,
+      "difficulty_level": "intermediate",
+      "estimated_hours": 12,
+      "prerequisites": {
+        "hard": ["da_07_data_visualization"],
+        "soft": ["da_03_sql_and_data_access"]
+      },
+      "transferable_to": [
+        "business_intelligence_analyst",
+        "operations_analyst",
+        "product_analyst",
+        "marketing_analyst"
+      ],
+      "core_concepts": [
+        "Tableau and Power BI fundamentals",
+        "Dashboard layout and KPI design",
+        "Data storytelling for stakeholders",
+        "Slice-and-dice analysis",
+        "Executive reporting and self-service BI",
+        "Monitoring trends and business health"
+      ],
+      "resources": [
+        {
+          "type": "documentation",
+          "title": "Tableau Learning Resources",
+          "url": "https://www.tableau.com/learn",
+          "provider": "Tableau",
+          "authority_score": 0.97
+        },
+        {
+          "type": "documentation",
+          "title": "Power BI Learning Center",
+          "url": "https://learn.microsoft.com/en-us/power-bi/",
+          "provider": "Microsoft",
+          "authority_score": 0.98
+        },
+        {
+          "type": "video",
+          "title": "Power BI Dashboard Design",
+          "url": "https://www.youtube.com/results?search_query=power+bi+dashboard+design",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Design a KPI dashboard for a SaaS product team that tracks activation, retention, churn, and expansion; explain which metrics should be on the first screen and what interaction patterns support decision-making.",
+        "socratic_prompt": "Why can a dashboard with too many metrics become harder to trust than a smaller set of chosen KPIs, and how do you decide what belongs in the executive view?",
+        "key_evaluation_criteria": [
+          "Uses KPI prioritization and story structure",
+          "Designs actionable dashboards for stakeholder needs",
+          "Connects dashboard metrics to business outcomes"
+        ],
+        "remediation_hint": "Start from the decision the stakeholder must make, then select a small set of metrics that clearly show whether the situation is improving or worsening."
+      },
+      "version": "1.0",
+      "keywords": [
+        "tableau",
+        "power-bi",
+        "dashboard",
+        "kpi",
+        "reporting",
+        "business-intelligence"
+      ],
+      "active": true
+    },
+    {
+      "id": "da_09_hypothesis_testing_and_regression",
+      "name": "Hypothesis Testing, Correlation, and Regression",
+      "domain": "data_analyst",
+      "category": "Inferential Statistics",
+      "tier": 3,
+      "difficulty_level": "intermediate",
+      "estimated_hours": 15,
+      "prerequisites": {
+        "hard": ["da_06_descriptive_statistics", "da_07_data_visualization"],
+        "soft": ["da_04_python_for_analysis"]
+      },
+      "transferable_to": [
+        "ai_data_scientist",
+        "research_analyst",
+        "marketing_analyst",
+        "product_analyst"
+      ],
+      "core_concepts": [
+        "Hypothesis testing and significance",
+        "Correlation analysis and causality limits",
+        "Linear and logistic regression",
+        "Uncertainty and confidence intervals",
+        "Model fit and feature relationships",
+        "Making data-driven decisions"
+      ],
+      "resources": [
+        {
+          "type": "article",
+          "title": "Hypothesis Testing Explained",
+          "url": "https://en.wikipedia.org/wiki/Statistical_hypothesis_testing",
+          "provider": "Wikipedia",
+          "authority_score": 0.88
+        },
+        {
+          "type": "documentation",
+          "title": "Statsmodels Documentation",
+          "url": "https://www.statsmodels.org/stable/index.html",
+          "provider": "Statsmodels",
+          "authority_score": 0.95
+        },
+        {
+          "type": "video",
+          "title": "Regression and Correlation Explained",
+          "url": "https://www.youtube.com/results?search_query=regression+correlation+statistics",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "A team changed a pricing page and saw a 5% conversion lift. Explain the steps you would take to test whether the difference is credible and whether demand is driven by price, page layout, or both.",
+        "socratic_prompt": "Why is correlation not enough to claim a causal relationship, and what evidence would make a regression analysis more credible than simple trend spotting?",
+        "key_evaluation_criteria": [
+          "Uses appropriate statistical assumptions",
+          "Can explain significance, correlation, and regression",
+          "Distinguishes exploratory findings from causal claims"
+        ],
+        "remediation_hint": "Pair statistical testing with domain understanding: a strong pattern is more believable when both the numbers and the business mechanism make sense."
+      },
+      "version": "1.0",
+      "keywords": [
+        "hypothesis-testing",
+        "correlation",
+        "regression",
+        "statsmodels",
+        "significance",
+        "inference"
+      ],
+      "active": true
+    },
+    {
+      "id": "da_10_machine_learning_basics",
+      "name": "Machine Learning Foundations for Analysts",
+      "domain": "data_analyst",
+      "category": "Applied ML",
+      "tier": 3,
+      "difficulty_level": "intermediate",
+      "estimated_hours": 14,
+      "prerequisites": {
+        "hard": ["da_09_hypothesis_testing_and_regression"],
+        "soft": ["da_04_python_for_analysis"]
+      },
+      "transferable_to": [
+        "ai_data_scientist",
+        "machine_learning_engineer",
+        "product_analyst",
+        "research_analyst"
+      ],
+      "core_concepts": [
+        "Supervised versus unsupervised learning",
+        "Decision trees, Naive Bayes, KNN, and logistic regression",
+        "Feature selection and overfitting",
+        "Train-test split and evaluation metrics",
+        "Model evaluation and monitoring",
+        "Practical usage in business analytics"
+      ],
+      "resources": [
+        {
+          "type": "article",
+          "title": "Scikit-learn User Guide",
+          "url": "https://scikit-learn.org/stable/user_guide.html",
+          "provider": "scikit-learn",
+          "authority_score": 0.97
+        },
+        {
+          "type": "video",
+          "title": "Machine Learning Basics",
+          "url": "https://www.youtube.com/results?search_query=machine+learning+basics+for+beginners",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        },
+        {
+          "type": "course",
+          "title": "Introduction to Machine Learning",
+          "url": "https://scikit-learn.org/stable/tutorial/index.html",
+          "provider": "scikit-learn",
+          "authority_score": 0.95
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Explain when classification or clustering is the better fit for a problem like customer segmentation or churn prediction, and how you would evaluate whether the model is useful in practice.",
+        "socratic_prompt": "Why can a model with a good training score still fail in production, and what checks help distinguish memorization from genuine learning?",
+        "key_evaluation_criteria": [
+          "Understands supervised and unsupervised ML problem types",
+          "Can evaluate fairness and effectiveness of a model",
+          "Connects model choice to business problem and metrics"
+        ],
+        "remediation_hint": "Use train-test validation and check not only performance but also whether the model solves the actual business question and remains interpretable."
+      },
+      "version": "1.0",
+      "keywords": [
+        "machine-learning",
+        "classification",
+        "clustering",
+        "logistic-regression",
+        "decision-tree",
+        "evaluation"
+      ],
+      "active": true
+    },
+    {
+      "id": "da_11_big_data_and_data_platforms",
+      "name": "Big Data Concepts and Data Platforms",
+      "domain": "data_analyst",
+      "category": "Data Engineering & Scale",
+      "tier": 3,
+      "difficulty_level": "intermediate",
+      "estimated_hours": 10,
+      "prerequisites": {
+        "hard": ["da_04_python_for_analysis", "da_05_data_collection_and_cleaning"],
+        "soft": ["da_03_sql_and_data_access"]
+      },
+      "transferable_to": [
+        "data_engineer",
+        "analytics_engineer",
+        "ai_data_scientist",
+        "platform_analyst"
+      ],
+      "core_concepts": [
+        "Big data principles and tooling",
+        "Hadoop, Spark, MapReduce, and parallel processing",
+        "Batch and streaming processing",
+        "Data warehouses and lakes",
+        "Scalable analytics pipelines",
+        "Working with large volumes of data"
+      ],
+      "resources": [
+        {
+          "type": "article",
+          "title": "Big Data Overview",
+          "url": "https://www.ibm.com/topics/big-data",
+          "provider": "IBM",
+          "authority_score": 0.94
+        },
+        {
+          "type": "documentation",
+          "title": "Apache Spark Documentation",
+          "url": "https://spark.apache.org/docs/latest/",
+          "provider": "Apache Spark",
+          "authority_score": 0.98
+        },
+        {
+          "type": "video",
+          "title": "Big Data and Spark Basics",
+          "url": "https://www.youtube.com/results?search_query=big+data+spark+tutorial",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Explain how your analysis process would change when data volume grows from thousands of rows to terabytes and the original local workflow no longer fits.",
+        "socratic_prompt": "Why do distributed processing systems become necessary when data size grows, and what trade-offs appear as complexity increases?",
+        "key_evaluation_criteria": [
+          "Understands scalable data processing and storage paradigms",
+          "Knows how to think about distributed computation",
+          "Connects platform decisions to business scale"
+        ],
+        "remediation_hint": "Learn the difference between data volume, velocity, and variety, and then reason about which storage or processing trade-offs matter most for the workload."
+      },
+      "version": "1.0",
+      "keywords": [
+        "big-data",
+        "spark",
+        "hadoop",
+        "parallel-processing",
+        "data-platforms",
+        "distributed-computing"
+      ],
+      "active": true
+    },
+    {
+      "id": "da_12_portfolio_and_community",
+      "name": "Portfolio Practice, Kaggle, and Continuous Learning",
+      "domain": "data_analyst",
+      "category": "Career Growth",
+      "tier": 4,
+      "difficulty_level": "advanced",
+      "estimated_hours": 10,
+      "prerequisites": {
+        "hard": ["da_10_machine_learning_basics", "da_08_reporting_and_dashboards"],
+        "soft": ["da_11_big_data_and_data_platforms"]
+      },
+      "transferable_to": [
+        "ai_data_scientist",
+        "business_intelligence_analyst",
+        "product_analyst",
+        "research_analyst"
+      ],
+      "core_concepts": [
+        "Portfolio project design and storytelling",
+        "Kaggle competitions and learning from public data",
+        "Certification and online learning platforms",
+        "Networking, mentorship, and career growth",
+        "Staying current with industry tools and trends",
+        "Communicating insights through projects and case studies"
+      ],
+      "resources": [
+        {
+          "type": "interactive",
+          "title": "Kaggle Competitions",
+          "url": "https://www.kaggle.com/competitions",
+          "provider": "Kaggle",
+          "authority_score": 0.97
+        },
+        {
+          "type": "course",
+          "title": "Coursera Data Analytics Courses",
+          "url": "https://www.coursera.org/search?query=data%20analytics",
+          "provider": "Coursera",
+          "authority_score": 0.93
+        },
+        {
+          "type": "video",
+          "title": "Career Growth in Data Analytics",
+          "url": "https://www.youtube.com/results?search_query=data+analyst+career+advice",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Describe how you would turn one analysis project into a portfolio-ready case study that clearly shows the business problem, methodology, insights, and measurable impact.",
+        "socratic_prompt": "Why are public datasets and competitions useful for learning even when they do not replicate a real business environment exactly?",
+        "key_evaluation_criteria": [
+          "Builds a credible portfolio with context and impact",
+          "Learns from community feedback and public benchmarks",
+          "Continues improvement through practice and networking"
+        ],
+        "remediation_hint": "Choose projects that combine a real question, clean workflow, and a visible result; this makes your work easier to explain to hiring teams and stakeholders."
+      },
+      "version": "1.0",
+      "keywords": [
+        "portfolio",
+        "kaggle",
+        "certifications",
+        "networking",
+        "career-growth",
+        "continuous-learning"
+      ],
+      "active": true
+    }
+  ]
+}

@@ -14,6 +14,6 @@ func NewGetConceptExplanationUseCase(aiSvc AIClientService) *GetConceptExplanati
 	}
 }
 
-func (uc *GetConceptExplanationUseCase) Execute(ctx context.Context, conceptID string) (string, error) {
+func (uc *GetConceptExplanationUseCase) Execute(ctx context.Context, conceptID string) (*ConceptExplanation, error) {
 	return uc.aiSvc.GetConceptExplanation(ctx, conceptID)
 }

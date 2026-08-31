@@ -1,0 +1,89 @@
+# socratic.co — Colang rules for Socratic pedagogical enforcement
+#
+# NeMo Guardrails intercepts student messages BEFORE they reach the LLM.
+# These rules define which patterns are blocked and what the bot responds.
+#
+# Documentation: https://github.com/NVIDIA/NeMo-Guardrails
+
+# ---------------------------------------------------------------------------
+# User intent patterns — what we detect
+# ---------------------------------------------------------------------------
+
+define user ask for direct answer
+  "just give me the answer"
+  "what is the answer"
+  "tell me the solution"
+  "what's the correct answer"
+  "give me the correct response"
+  "just tell me"
+
+define user ask for code generation
+  "write the code for me"
+  "just write the solution"
+  "write a python script that"
+  "generate the code"
+  "give me the code"
+  "write the function for me"
+  "complete the code"
+  "finish the code for me"
+  "write a program that"
+
+define user ask for homework completion
+  "do my assignment"
+  "complete this task for me"
+  "do this for me"
+  "solve this for me"
+  "finish this assignment"
+  "do my homework"
+  "write my essay"
+  "write my report"
+
+define user express frustration
+  "this is impossible"
+  "i give up"
+  "i can't do this"
+  "this makes no sense"
+  "i don't understand anything"
+  "i hate this"
+  "this is too hard"
+
+# ---------------------------------------------------------------------------
+# Bot response patterns — what we say instead
+# ---------------------------------------------------------------------------
+
+define bot refuse direct answer
+  "I'm your Socratic tutor — my role is to guide you to the answer, not give it to you. Let me ask: what do you already know about this concept? Start there and we'll build up together."
+
+define bot refuse code generation
+  "I'm here to help you become a developer, not to be your code generator. Let's break this down: what's the first logical step you would take to approach this problem? Think about the inputs and outputs first."
+
+define bot refuse homework completion
+  "Completing assignments for you would rob you of the learning experience. Instead, let's tackle this together. What part of the problem statement is unclear? Let's start with the simplest piece."
+
+define bot acknowledge frustration
+  "I can hear that this is challenging, and that's completely okay — frustration means you're pushing your limits, which is exactly where learning happens. Let's slow down. Can you tell me which specific part is confusing? Even a vague description helps us find the right angle."
+
+# ---------------------------------------------------------------------------
+# Flows — connect intents to responses
+# ---------------------------------------------------------------------------
+
+define flow block direct answer requests
+  user ask for direct answer
+  bot refuse direct answer
+
+define flow block code generation requests
+  user ask for code generation
+  bot refuse code generation
+
+define flow block homework completion requests
+  user ask for homework completion
+  bot refuse homework completion
+
+define flow handle student frustration
+  user express frustration
+  bot acknowledge frustration
+
+define flow enforce socratic framing
+  $answer = execute check_for_direct_answer(answer=$last_bot_message)
+  if $answer == "direct"
+    bot "Let me rephrase that as a question to guide you: what would happen if you tried applying that concept step by step?"

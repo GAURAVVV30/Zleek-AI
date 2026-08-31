@@ -1,0 +1,847 @@
+{
+  "domain_id": "frontend_engineer",
+  "domain_name": "Frontend Engineer",
+  "total_nodes": 12,
+  "nodes": [
+    {
+      "id": "fe_01_internet_and_web_foundations",
+      "name": "Internet, HTTP, and Web Foundations",
+      "domain": "frontend_engineer",
+      "category": "Web Foundations",
+      "tier": 1,
+      "difficulty_level": "basic",
+      "estimated_hours": 8,
+      "prerequisites": {
+        "hard": [],
+        "soft": []
+      },
+      "transferable_to": [
+        "fullstack_developer",
+        "backend_engineer",
+        "product_engineer",
+        "software_architect"
+      ],
+      "core_concepts": [
+        "How the internet works",
+        "HTTP and HTTPS fundamentals",
+        "DNS, hosting, and domain names",
+        "Browsers, rendering, and networking basics",
+        "Client-server model",
+        "Web delivery and browser architecture"
+      ],
+      "resources": [
+        {
+          "type": "article",
+          "title": "How the Internet Works",
+          "url": "https://developer.mozilla.org/en-US/docs/Learn/Common_questions/Web_mechanics/How_does_the_Internet_work",
+          "provider": "MDN",
+          "authority_score": 0.96
+        },
+        {
+          "type": "article",
+          "title": "HTTP Overview",
+          "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Overview",
+          "provider": "MDN",
+          "authority_score": 0.97
+        },
+        {
+          "type": "video",
+          "title": "Internet and DNS Explained",
+          "url": "https://www.youtube.com/results?search_query=internet+dns+explained",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Explain the request path for a browser loading a page, from DNS resolution through the server response and browser rendering pipeline.",
+        "socratic_prompt": "Why do front-end performance and correctness depend on network behavior, even when the application code itself appears sound?",
+        "key_evaluation_criteria": [
+          "Knows the basic web request flow",
+          "Understands HTTP and networking terminology",
+          "Links browser behavior to end-user experience"
+        ],
+        "remediation_hint": "Trace a request step by step from browser to origin server and back; understanding the path usually reveals both performance and debugging issues."
+      },
+      "version": "1.0",
+      "keywords": [
+        "internet",
+        "http",
+        "dns",
+        "browser",
+        "web",
+        "networking"
+      ],
+      "active": true
+    },
+    {
+      "id": "fe_02_html_css_foundations",
+      "name": "HTML, CSS, and Semantic Layout Foundations",
+      "domain": "frontend_engineer",
+      "category": "Web UI Fundamentals",
+      "tier": 1,
+      "difficulty_level": "basic",
+      "estimated_hours": 16,
+      "prerequisites": {
+        "hard": ["fe_01_internet_and_web_foundations"],
+        "soft": []
+      },
+      "transferable_to": [
+        "fullstack_developer",
+        "product_engineer",
+        "ux_engineer",
+        "backend_engineer"
+      ],
+      "core_concepts": [
+        "Semantic HTML structure",
+        "Forms, validation, and accessibility",
+        "SEO basics and document semantics",
+        "CSS fundamentals and layout models",
+        "Responsive design and media queries",
+        "Visual hierarchy and design basics"
+      ],
+      "resources": [
+        {
+          "type": "documentation",
+          "title": "MDN HTML Guide",
+          "url": "https://developer.mozilla.org/en-US/docs/Web/HTML",
+          "provider": "MDN",
+          "authority_score": 0.97
+        },
+        {
+          "type": "documentation",
+          "title": "MDN CSS Guide",
+          "url": "https://developer.mozilla.org/en-US/docs/Web/CSS",
+          "provider": "MDN",
+          "authority_score": 0.97
+        },
+        {
+          "type": "video",
+          "title": "HTML and CSS Fundamentals",
+          "url": "https://www.youtube.com/results?search_query=html+css+for+beginners",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Build a small responsive landing page using semantic HTML and CSS, and explain how your structure supports accessibility, responsiveness, and maintainability.",
+        "socratic_prompt": "Why can a visually attractive page still be poor user experience if the semantics and accessibility are weak?",
+        "key_evaluation_criteria": [
+          "Uses semantic and accessible markup",
+          "Creates responsive, maintainable layout styles",
+          "Understands semantics and usability trade-offs"
+        ],
+        "remediation_hint": "Start by planning the content structure and the visual hierarchy, then implement the styles to support the intent rather than decorating arbitrarily."
+      },
+      "version": "1.0",
+      "keywords": [
+        "html",
+        "css",
+        "responsive-design",
+        "accessibility",
+        "semantic-html",
+        "seo"
+      ],
+      "active": true
+    },
+    {
+      "id": "fe_03_javascript_basics",
+      "name": "JavaScript Fundamentals and DOM Manipulation",
+      "domain": "frontend_engineer",
+      "category": "Language Fundamentals",
+      "tier": 1,
+      "difficulty_level": "basic",
+      "estimated_hours": 18,
+      "prerequisites": {
+        "hard": ["fe_02_html_css_foundations"],
+        "soft": []
+      },
+      "transferable_to": [
+        "backend_engineer",
+        "fullstack_developer",
+        "ai_engineer",
+        "product_engineer"
+      ],
+      "core_concepts": [
+        "JavaScript syntax and execution model",
+        "Variables, functions, scope, and closures",
+        "DOM manipulation and events",
+        "Fetch API and XHR patterns",
+        "Async programming and promises",
+        "Dynamic front-end behavior"
+      ],
+      "resources": [
+        {
+          "type": "documentation",
+          "title": "MDN JavaScript Guide",
+          "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide",
+          "provider": "MDN",
+          "authority_score": 0.98
+        },
+        {
+          "type": "article",
+          "title": "JavaScript for Beginners",
+          "url": "https://javascript.info/",
+          "provider": "JavaScript.info",
+          "authority_score": 0.93
+        },
+        {
+          "type": "video",
+          "title": "JavaScript Basics",
+          "url": "https://www.youtube.com/results?search_query=javascript+for+beginners",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Create a small interactive UI that loads data from an API and updates the DOM safely when the user clicks or submits a form.",
+        "socratic_prompt": "Why do async operations and event handlers often cause subtle bugs when variables, state, and timing are not managed carefully?",
+        "key_evaluation_criteria": [
+          "Understands core JS syntax and async behavior",
+          "Can manipulate DOM and handle events correctly",
+          "Builds dynamic UI logic without brittle code"
+        ],
+        "remediation_hint": "Separate data fetching, state updates, and rendering so each step stays testable and easier to reason about."
+      },
+      "version": "1.0",
+      "keywords": [
+        "javascript",
+        "dom",
+        "fetch",
+        "async",
+        "events",
+        "web-apps"
+      ],
+      "active": true
+    },
+    {
+      "id": "fe_04_version_control_and_tooling",
+      "name": "Version Control, Package Managers, and Tooling",
+      "domain": "frontend_engineer",
+      "category": "Developer Workflow",
+      "tier": 1,
+      "difficulty_level": "basic",
+      "estimated_hours": 10,
+      "prerequisites": {
+        "hard": ["fe_03_javascript_basics"],
+        "soft": []
+      },
+      "transferable_to": [
+        "backend_engineer",
+        "fullstack_developer",
+        "devops_engineer",
+        "platform_engineer"
+      ],
+      "core_concepts": [
+        "Git basics and collaboration workflows",
+        "GitHub, GitLab, and Bitbucket workflows",
+        "npm, pnpm, and yarn",
+        "Package management and dependency control",
+        "Project scaffolding and scripts",
+        "Dev workflow reliability"
+      ],
+      "resources": [
+        {
+          "type": "documentation",
+          "title": "Git Documentation",
+          "url": "https://git-scm.com/doc",
+          "provider": "Git",
+          "authority_score": 0.98
+        },
+        {
+          "type": "documentation",
+          "title": "npm Docs",
+          "url": "https://docs.npmjs.com/",
+          "provider": "npm",
+          "authority_score": 0.95
+        },
+        {
+          "type": "video",
+          "title": "Git and npm Fundamentals",
+          "url": "https://www.youtube.com/results?search_query=git+npm+for+beginners",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Explain how you would structure a team project so that dependency updates, feature branches, and production releases remain safe and reviewable for front-end changes.",
+        "socratic_prompt": "Why do small workflow inconsistencies in package management and version control often become expensive bottlenecks in a growing product team?",
+        "key_evaluation_criteria": [
+          "Uses version control workflows correctly",
+          "Understands dependency and package tooling",
+          "Builds consistent project collaboration habits"
+        ],
+        "remediation_hint": "Keep branch and dependency management disciplined, because a strong workflow is as important as a strong UI in a team environment."
+      },
+      "version": "1.0",
+      "keywords": [
+        "git",
+        "github",
+        "npm",
+        "pnpm",
+        "yarn",
+        "tooling"
+      ],
+      "active": true
+    },
+    {
+      "id": "fe_05_css_architecture_and_design_systems",
+      "name": "CSS Architecture, Utility Styling, and Design Systems",
+      "domain": "frontend_engineer",
+      "category": "Styling & Design Systems",
+      "tier": 2,
+      "difficulty_level": "intermediate",
+      "estimated_hours": 14,
+      "prerequisites": {
+        "hard": ["fe_02_html_css_foundations"],
+        "soft": ["fe_03_javascript_basics"]
+      },
+      "transferable_to": [
+        "fullstack_developer",
+        "ui_engineer",
+        "product_engineer",
+        "design_system_engineer"
+      ],
+      "core_concepts": [
+        "BEM, CSS Modules, and component styling",
+        "CSS preprocessors and post-processing",
+        "Tailwind and utility-first patterns",
+        "Design tokens and reusable UI systems",
+        "Scalable styling architecture",
+        "CSS-in-JS and component composition"
+      ],
+      "resources": [
+        {
+          "type": "article",
+          "title": "BEM Methodology",
+          "url": "https://en.bem.info/methodology/",
+          "provider": "BEM",
+          "authority_score": 0.92
+        },
+        {
+          "type": "documentation",
+          "title": "Tailwind CSS Documentation",
+          "url": "https://tailwindcss.com/docs",
+          "provider": "Tailwind CSS",
+          "authority_score": 0.97
+        },
+        {
+          "type": "video",
+          "title": "CSS Architecture Patterns",
+          "url": "https://www.youtube.com/results?search_query=css+architecture+bem+tailwind",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Explain how you would structure a multi-page product UI so that styling remains maintainable across components, teams, and design changes without creating CSS duplication or fragile overrides.",
+        "socratic_prompt": "Why do large front-end codebases become difficult to scale when styles are tied to structure instead of design intent?",
+        "key_evaluation_criteria": [
+          "Understands scalable styling methods",
+          "Can articulate design-system principles",
+          "Chooses styling architecture based on codebase needs"
+        ],
+        "remediation_hint": "Prefer predictable, composable styling systems over one-off class overrides and ad hoc visual tweaks."
+      },
+      "version": "1.0",
+      "keywords": [
+        "css-architecture",
+        "bem",
+        "tailwind",
+        "design-system",
+        "sass",
+        "styled-components"
+      ],
+      "active": true
+    },
+    {
+      "id": "fe_06_typescript_and_toolchain",
+      "name": "TypeScript, Tooling, and Frontend Build Systems",
+      "domain": "frontend_engineer",
+      "category": "Application Toolchain",
+      "tier": 2,
+      "difficulty_level": "intermediate",
+      "estimated_hours": 16,
+      "prerequisites": {
+        "hard": ["fe_04_version_control_and_tooling", "fe_03_javascript_basics"],
+        "soft": ["fe_05_css_architecture_and_design_systems"]
+      },
+      "transferable_to": [
+        "backend_engineer",
+        "fullstack_developer",
+        "ai_engineer",
+        "software_architect"
+      ],
+      "core_concepts": [
+        "TypeScript types and interfaces",
+        "Tooling: Vite, Webpack, Rollup, esbuild, Parcel",
+        "Linters and formatters",
+        "Build optimization and dev workflow",
+        "Module systems and bundling",
+        "Type-safe component development"
+      ],
+      "resources": [
+        {
+          "type": "documentation",
+          "title": "TypeScript Handbook",
+          "url": "https://www.typescriptlang.org/docs/",
+          "provider": "TypeScript",
+          "authority_score": 0.99
+        },
+        {
+          "type": "documentation",
+          "title": "Vite Documentation",
+          "url": "https://vite.dev/guide/",
+          "provider": "Vite",
+          "authority_score": 0.96
+        },
+        {
+          "type": "video",
+          "title": "TypeScript and Vite Basics",
+          "url": "https://www.youtube.com/results?search_query=typescript+vite+frontend",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Explain how TypeScript and a bundler improve developer velocity and reduction of production bugs in a medium-size front-end application.",
+        "socratic_prompt": "Why can a team sometimes ship smaller, fewer bugs, and better refactoring speed by choosing a typed system and well-tuned build pipeline?",
+        "key_evaluation_criteria": [
+          "Understands type safety and build tooling",
+          "Knows bundler trade-offs and developer ergonomics",
+          "Can explain why tooling choices affect reliability"
+        ],
+        "remediation_hint": "Use tooling to support maintainability and predictable builds; do not add layers of tooling without clear developer or runtime benefit."
+      },
+      "version": "1.0",
+      "keywords": [
+        "typescript",
+        "vite",
+        "webpack",
+        "eslint",
+        "prettier",
+        "build-tools"
+      ],
+      "active": true
+    },
+    {
+      "id": "fe_07_frontend_frameworks",
+      "name": "Frontend Frameworks and Component Architecture",
+      "domain": "frontend_engineer",
+      "category": "Frameworks",
+      "tier": 2,
+      "difficulty_level": "intermediate",
+      "estimated_hours": 20,
+      "prerequisites": {
+        "hard": ["fe_06_typescript_and_toolchain"],
+        "soft": ["fe_05_css_architecture_and_design_systems"]
+      },
+      "transferable_to": [
+        "fullstack_developer",
+        "product_engineer",
+        "software_architect",
+        "ui_engineer"
+      ],
+      "core_concepts": [
+        "React, Vue, Angular, Svelte, and Solid principles",
+        "Component-based UI composition",
+        "Routing, state, and props",
+        "Server/client rendering trade-offs",
+        "Framework selection and project structure",
+        "Modern app architecture"
+      ],
+      "resources": [
+        {
+          "type": "documentation",
+          "title": "React Documentation",
+          "url": "https://react.dev/learn",
+          "provider": "React",
+          "authority_score": 0.99
+        },
+        {
+          "type": "documentation",
+          "title": "Vue Documentation",
+          "url": "https://vuejs.org/guide/",
+          "provider": "Vue",
+          "authority_score": 0.96
+        },
+        {
+          "type": "video",
+          "title": "React and Frontend Frameworks Overview",
+          "url": "https://www.youtube.com/results?search_query=react+framework+comparison",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Choose a front-end framework for a product with routing, complex shared state, and rapidly changing UI requirements, and explain your reasoning in terms of maintainability and developer productivity.",
+        "socratic_prompt": "Why do framework choices matter less when a team is small and more when the app grows to multiple teams, features, and data flows?",
+        "key_evaluation_criteria": [
+          "Understands component architecture and state management",
+          "Can compare framework trade-offs meaningfully",
+          "Selects architecture based on product complexity"
+        ],
+        "remediation_hint": "Evaluate frameworks by the actual product constraints, not by hype, and prefer strong conventions over ad hoc decisions."
+      },
+      "version": "1.0",
+      "keywords": [
+        "react",
+        "vue",
+        "angular",
+        "svelte",
+        "framework",
+        "components"
+      ],
+      "active": true
+    },
+    {
+      "id": "fe_08_testing_and_quality",
+      "name": "Testing, Quality Gates, and Frontend Reliability",
+      "domain": "frontend_engineer",
+      "category": "Quality & Testing",
+      "tier": 2,
+      "difficulty_level": "intermediate",
+      "estimated_hours": 14,
+      "prerequisites": {
+        "hard": ["fe_07_frontend_frameworks"],
+        "soft": ["fe_06_typescript_and_toolchain"]
+      },
+      "transferable_to": [
+        "fullstack_developer",
+        "backend_engineer",
+        "qa_engineer",
+        "product_engineer"
+      ],
+      "core_concepts": [
+        "Unit testing and component tests",
+        "Vitest, Jest, Playwright, and Cypress",
+        "Accessibility and interaction testing",
+        "Linting, formatting, and pre-commit quality",
+        "Regression prevention and CI checks",
+        "Test strategy in front-end systems"
+      ],
+      "resources": [
+        {
+          "type": "documentation",
+          "title": "Vitest Documentation",
+          "url": "https://vitest.dev/guide/",
+          "provider": "Vitest",
+          "authority_score": 0.95
+        },
+        {
+          "type": "documentation",
+          "title": "Playwright Documentation",
+          "url": "https://playwright.dev/docs/intro",
+          "provider": "Microsoft",
+          "authority_score": 0.97
+        },
+        {
+          "type": "video",
+          "title": "Testing Frontend Applications",
+          "url": "https://www.youtube.com/results?search_query=frontend+testing+playwright+vitest",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Design a testing strategy for a UI that includes authentication flows, form validation, and dynamic data updates, and explain which tests protect against regressions most effectively.",
+        "socratic_prompt": "Why is a front-end test suite only useful when it checks the behavior that users actually care about, not just component internals?",
+        "key_evaluation_criteria": [
+          "Knows how to test different behavior layers",
+          "Understands regression prevention and CI quality gates",
+          "Builds confidence in user-visible interactions"
+        ],
+        "remediation_hint": "Use the smallest realistic test that captures user intent, and prefer real interactions over brittle implementation details where possible."
+      },
+      "version": "1.0",
+      "keywords": [
+        "vitest",
+        "jest",
+        "playwright",
+        "cypress",
+        "testing",
+        "quality-gates"
+      ],
+      "active": true
+    },
+    {
+      "id": "fe_09_web_security_and_auth",
+      "name": "Web Security, Auth, and Browser Safety",
+      "domain": "frontend_engineer",
+      "category": "Security",
+      "tier": 3,
+      "difficulty_level": "intermediate",
+      "estimated_hours": 12,
+      "prerequisites": {
+        "hard": ["fe_03_javascript_basics", "fe_07_frontend_frameworks"],
+        "soft": ["fe_08_testing_and_quality"]
+      },
+      "transferable_to": [
+        "backend_engineer",
+        "security_engineer",
+        "fullstack_developer",
+        "product_engineer"
+      ],
+      "core_concepts": [
+        "CORS, HTTPS, CSP, and browser security model",
+        "JWT, OAuth, SSO, Basic Auth, session auth",
+        "OWASP front-end risks and mitigations",
+        "Secure data handling and auth flows",
+        "Trust boundaries and browser APIs",
+        "Safe API integration patterns"
+      ],
+      "resources": [
+        {
+          "type": "article",
+          "title": "Web Security Fundamentals",
+          "url": "https://developer.mozilla.org/en-US/docs/Web/Security",
+          "provider": "MDN",
+          "authority_score": 0.97
+        },
+        {
+          "type": "article",
+          "title": "OWASP Top 10",
+          "url": "https://owasp.org/www-project-top-ten/",
+          "provider": "OWASP",
+          "authority_score": 0.99
+        },
+        {
+          "type": "video",
+          "title": "Web Security for Frontend Developers",
+          "url": "https://www.youtube.com/results?search_query=web+security+for+frontend+developers",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Explain how you would secure a front-end application that calls a third-party API and needs user authentication without exposing tokens or allowing cross-site abuse.",
+        "socratic_prompt": "Why do front-end security failures often come from trusting browser behavior too much, even when the app is technically correct?",
+        "key_evaluation_criteria": [
+          "Knows browser security and auth trade-offs",
+          "Understands risk boundaries and API trust",
+          "Can propose secure patterns for sessions and tokens"
+        ],
+        "remediation_hint": "Security design starts with explicit trust boundaries and minimal privileges, not with final polishing or convenience at runtime."
+      },
+      "version": "1.0",
+      "keywords": [
+        "security",
+        "oauth",
+        "jwt",
+        "cors",
+        "csp",
+        "auth"
+      ],
+      "active": true
+    },
+    {
+      "id": "fe_10_performance_and_browser_apis",
+      "name": "Performance, Web APIs, and Browser Optimization",
+      "domain": "frontend_engineer",
+      "category": "Performance & Browser Platform",
+      "tier": 3,
+      "difficulty_level": "intermediate",
+      "estimated_hours": 12,
+      "prerequisites": {
+        "hard": ["fe_07_frontend_frameworks"],
+        "soft": ["fe_09_web_security_and_auth"]
+      },
+      "transferable_to": [
+        "fullstack_developer",
+        "product_engineer",
+        "platform_engineer",
+        "backend_engineer"
+      ],
+      "core_concepts": [
+        "RAIL model and performance metrics",
+        "Lighthouse and browser dev tools",
+        "Service workers, notifications, storage, and device APIs",
+        "Web sockets and server-sent events",
+        "Rendering and network optimization",
+        "Progressive enhancement and perceived performance"
+      ],
+      "resources": [
+        {
+          "type": "documentation",
+          "title": "Web Performance Guide",
+          "url": "https://web.dev/learn/web-performance/",
+          "provider": "web.dev",
+          "authority_score": 0.96
+        },
+        {
+          "type": "documentation",
+          "title": "MDN Web APIs",
+          "url": "https://developer.mozilla.org/en-US/docs/Web/API",
+          "provider": "MDN",
+          "authority_score": 0.97
+        },
+        {
+          "type": "video",
+          "title": "Web Performance Fundamentals",
+          "url": "https://www.youtube.com/results?search_query=web+performance+lighthouse",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "You are seeing poor performance on a product page with large assets and interactivity. Explain what measurements and browser tools you would use to identify the bottleneck and how you would improve the user experience.",
+        "socratic_prompt": "Why do front-end performance issues often appear as a combination of network, rendering, and interaction bottlenecks rather than a single code defect?",
+        "key_evaluation_criteria": [
+          "Knows how to measure and diagnose performance",
+          "Understands browser APIs and optimization opportunities",
+          "Can connect technical improvements to user experience"
+        ],
+        "remediation_hint": "Measure first and optimize the largest bottleneck with the highest user impact, rather than guessing based on anecdotal slowness."
+      },
+      "version": "1.0",
+      "keywords": [
+        "performance",
+        "lighthouse",
+        "web-api",
+        "service-worker",
+        "devtools",
+        "optimization"
+      ],
+      "active": true
+    },
+    {
+      "id": "fe_11_ssr_ssg_and_fullstack_patterns",
+      "name": "SSR, SSG, and Modern Frontend Delivery Patterns",
+      "domain": "frontend_engineer",
+      "category": "Full-stack & Delivery",
+      "tier": 3,
+      "difficulty_level": "intermediate",
+      "estimated_hours": 14,
+      "prerequisites": {
+        "hard": ["fe_10_performance_and_browser_apis", "fe_07_frontend_frameworks"],
+        "soft": ["fe_06_typescript_and_toolchain"]
+      },
+      "transferable_to": [
+        "fullstack_developer",
+        "backend_engineer",
+        "software_architect",
+        "product_engineer"
+      ],
+      "core_concepts": [
+        "Server-side rendering and static generation",
+        "Next.js, Nuxt, SvelteKit, Astro",
+        "Routing, data fetching, and edge delivery",
+        "GraphQL with Apollo and Relay",
+        "PWAs and mobile-first experiences",
+        "Hybrid client/server solutions"
+      ],
+      "resources": [
+        {
+          "type": "documentation",
+          "title": "Next.js Documentation",
+          "url": "https://nextjs.org/docs",
+          "provider": "Next.js",
+          "authority_score": 0.98
+        },
+        {
+          "type": "documentation",
+          "title": "Astro Documentation",
+          "url": "https://docs.astro.build/",
+          "provider": "Astro",
+          "authority_score": 0.95
+        },
+        {
+          "type": "video",
+          "title": "SSR and SSG Explained",
+          "url": "https://www.youtube.com/results?search_query=ssr+ssg+nextjs+astro",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "A product has both marketing pages and authenticated user pages. Explain how you would choose between client-only rendering, SSR, and static generation to balance speed, SEO, and user experience.",
+        "socratic_prompt": "Why do the best rendering decisions depend on what the page is for, not just on the framework’s default behavior?",
+        "key_evaluation_criteria": [
+          "Understands different delivery models",
+          "Can align rendering strategy with product needs",
+          "Balances SEO, performance, and interactivity in design"
+        ],
+        "remediation_hint": "Choose the rendering model based on content freshness, interactivity, and SEO needs, then optimize the page accordingly."
+      },
+      "version": "1.0",
+      "keywords": [
+        "ssr",
+        "ssg",
+        "nextjs",
+        "astro",
+        "graphql",
+        "pwa"
+      ],
+      "active": true
+    },
+    {
+      "id": "fe_12_frontend_strategy_and_product_craft",
+      "name": "Frontend Strategy, Product Craft, and Advanced Engineering",
+      "domain": "frontend_engineer",
+      "category": "Strategy & Delivery",
+      "tier": 4,
+      "difficulty_level": "advanced",
+      "estimated_hours": 12,
+      "prerequisites": {
+        "hard": ["fe_11_ssr_ssg_and_fullstack_patterns", "fe_09_web_security_and_auth"],
+        "soft": ["fe_08_testing_and_quality"]
+      },
+      "transferable_to": [
+        "engineering_manager",
+        "fullstack_developer",
+        "product_engineer",
+        "software_architect"
+      ],
+      "core_concepts": [
+        "Design systems and product thinking",
+        "Frontend architecture governance",
+        "Performance budgets and product trade-offs",
+        "Platform decisions and developer experience",
+        "Cross-functional collaboration",
+        "Scaling UI engineering practices"
+      ],
+      "resources": [
+        {
+          "type": "article",
+          "title": "Frontend Architecture Guide",
+          "url": "https://www.patterns.dev/posts/front-end-architecture/",
+          "provider": "Patterns.dev",
+          "authority_score": 0.92
+        },
+        {
+          "type": "article",
+          "title": "Design Systems Handbook",
+          "url": "https://www.designsystemsrepo.com/",
+          "provider": "Design Systems Repo",
+          "authority_score": 0.9
+        },
+        {
+          "type": "video",
+          "title": "Frontend Engineering Leadership",
+          "url": "https://www.youtube.com/results?search_query=frontend+engineering+leadership",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Describe how you would scale a front-end platform across multiple teams while protecting performance, design consistency, and development velocity without strangling autonomy.",
+        "socratic_prompt": "Why does great front-end architecture require balancing product goals, team ergonomics, and long-term maintainability instead of optimizing only for short-term delivery speed?",
+        "key_evaluation_criteria": [
+          "Understands platform and product trade-offs",
+          "Can design scalable front-end engineering practices",
+          "Balances usability, quality, and velocity at organization level"
+        ],
+        "remediation_hint": "Use clear standards, reusable building blocks, and measurable quality goals so teams can move quickly without creating fragmented product experiences."
+      },
+      "version": "1.0",
+      "keywords": [
+        "architecture",
+        "design-system",
+        "performance-budget",
+        "strategy",
+        "team-scale",
+        "frontend-craft"
+      ],
+      "active": true
+    }
+  ]
+}

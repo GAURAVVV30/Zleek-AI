@@ -2,76 +2,51 @@ package application
 
 import (
 	"context"
+	"time"
 
 	"github.com/hcl-backend/services/api-go/internal/knowledge/domain"
 )
 
+// KnowledgeRepository is the persistence port.
 type KnowledgeRepository interface {
 	ListDomains(ctx context.Context) ([]domain.Domain, error)
+	GetDomainBySlug(ctx context.Context, slug string) (*domain.Domain, error)
+	GetDomainByStructure(ctx context.Context, structureID string) (slug, name string, err error)
 	GetConcept(ctx context.Context, id string) (*domain.Concept, error)
-	ListKnowledgeStructures(ctx context.Context) ([]domain.KnowledgeStructure, error)
-	GetKnowledgeStructure(ctx context.Context, id string) (*domain.KnowledgeStructure, error)
-	CreateKnowledgeStructure(ctx context.Context, structure *domain.KnowledgeStructure) error
-	UpdateKnowledgeStructure(ctx context.Context, structure *domain.KnowledgeStructure) error
+	ListStructures(ctx context.Context) ([]domain.KnowledgeStructure, error)
+	GetStructure(ctx context.Context, id string) (*domain.KnowledgeStructure, error)
+	GetPublishedStructureForDomain(ctx context.Context, slug string) (*domain.KnowledgeStructure, error)
+	CreateStructure(ctx context.Context, s *domain.KnowledgeStructure) error
+	UpdateStructure(ctx context.Context, s *domain.KnowledgeStructure, status string, now time.Time) error
+	CountConcepts(ctx context.Context, structureID string) (int, error)
+	ListConcepts(ctx context.Context, structureID string) ([]domain.Concept, error)
+	ListConceptResources(ctx context.Context, conceptID string) ([]domain.Resource, error)
+	ListEdges(ctx context.Context, structureID string) ([]domain.Edge, error)
+	GetFormatPrefs(ctx context.Context, userID string) ([]string, error)
+	LookupUserName(ctx context.Context, userID string) (string, error)
+	GetConceptState(ctx context.Context, userID, conceptID string) (string, error)
 }
 
-type AIClient interface {
-	ValidateKnowledgeStructure(ctx context.Context, structure interface{}) (bool, string, error)
+type RAGService interface {
+	GetRAGContext(domainID, nodeID string) []string
 }
 
-type KnowledgeService struct {
-	repo     KnowledgeRepository
-	aiClient AIClient
+// ConceptMetaProvider exposes authoritative roadmap.sh graph metadata for a
+// concept node (difficulty, category, estimated effort, prerequisites and
+// successors).
+type ConceptMetaProvider interface {
+	Meta(ctx context.Context, conceptID string) (*ConceptMeta, bool)
 }
 
-func NewKnowledgeService(repo KnowledgeRepository, aiClient AIClient) *KnowledgeService {
-	return &KnowledgeService{repo: repo, aiClient: aiClient}
-}
-
-func (s *KnowledgeService) ListDomains(ctx context.Context) ([]domain.Domain, error) {
-	return s.repo.ListDomains(ctx)
-}
-
-func (s *KnowledgeService) GetConcept(ctx context.Context, id string) (*domain.Concept, error) {
-	return s.repo.GetConcept(ctx, id)
-}
-
-func (s *KnowledgeService) ListKnowledgeStructures(ctx context.Context) ([]domain.KnowledgeStructure, error) {
-	return s.repo.ListKnowledgeStructures(ctx)
-}
-
-func (s *KnowledgeService) CreateKnowledgeStructure(ctx context.Context, structure *domain.KnowledgeStructure) error {
-	return s.repo.CreateKnowledgeStructure(ctx, structure)
-}
-
-func (s *KnowledgeService) UpdateKnowledgeStructure(ctx context.Context, structure *domain.KnowledgeStructure) error {
-	return s.repo.UpdateKnowledgeStructure(ctx, structure)
-}
-
-func (s *KnowledgeService) ValidateKnowledgeStructure(ctx context.Context, id string) (bool, string, error) {
-	structure, err := s.repo.GetKnowledgeStructure(ctx, id)
-	if err != nil {
-		return false, "", err
-	}
-	return s.aiClient.ValidateKnowledgeStructure(ctx, structure)
-}
-
-// Ensure the KnowledgeService implements the interface that Roadmap and Assessment need.
-// We should check what those mocks needed:
-// mockKnowledgeService: ValidatePrerequisites(ctx context.Context, structureID string, orderedConceptIDs []string) error
-// GetConceptCount? No, that was Goals.
-
-func (s *KnowledgeService) ValidatePrerequisites(ctx context.Context, structureID string, orderedConceptIDs []string) error {
-	// For now, return nil to fulfill interface. Full DAG validation involves checking concept_prerequisites.
-	return nil
-}
-
-func (s *KnowledgeService) ValidateStructure(ctx context.Context, structureID string) error {
-	_, err := s.repo.GetKnowledgeStructure(ctx, structureID)
-	return err
-}
-
-func (s *KnowledgeService) ValidateConcept(ctx context.Context, conceptID string) error {
-	_, err := s.repo.GetConcept(ctx, conceptID)
-	return err
+type ConceptMeta struct {
+	DomainID       string
+	DomainName     string
+	ID             string
+	Name           string
+	Category       string
+	Difficulty     string
+	EstimatedHours int
+	CoreConcepts   []string
+	Prereqs        []string
+	Successors     []string
 }

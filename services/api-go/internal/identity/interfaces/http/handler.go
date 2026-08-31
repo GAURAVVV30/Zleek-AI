@@ -7,6 +7,7 @@ import (
 
 	"github.com/hcl-backend/services/api-go/internal/identity/application"
 	"github.com/hcl-backend/services/api-go/internal/identity/domain"
+	"github.com/hcl-backend/services/api-go/internal/platform/httpx"
 )
 
 type Handler struct {
@@ -17,72 +18,69 @@ func NewHandler(authService *application.AuthService) *Handler {
 	return &Handler{authService: authService}
 }
 
+type SignupRequest struct {
+	Email    string `json:"email"`
+	Password string `json:"password"`
+	FullName string `json:"fullName"`
+}
+
+type LoginRequest struct {
+	Email    string `json:"email"`
+	Password string `json:"password"`
+}
+
 func (h *Handler) RegisterRoutes(mux *http.ServeMux) {
 	mux.HandleFunc("POST /auth/signup", h.handleSignup)
 	mux.HandleFunc("POST /auth/login", h.handleLogin)
 	mux.HandleFunc("POST /auth/refresh", h.handleRefresh)
 	mux.HandleFunc("POST /auth/logout", h.handleLogout)
 	mux.HandleFunc("GET /auth/me", h.handleGetMe)
-}
-
-type authRequest struct {
-	Email    string `json:"email"`
-	Password string `json:"password"`
-}
-
-type authResponse struct {
-	AccessToken  string `json:"accessToken"`
-	RefreshToken string `json:"refreshToken"`
-	User         struct {
-		ID    string `json:"id"`
-		Email string `json:"email"`
-		Role  string `json:"role"`
-	} `json:"user"`
+	mux.HandleFunc("POST /auth/change-password", h.handleChangePassword)
 }
 
 func (h *Handler) handleSignup(w http.ResponseWriter, r *http.Request) {
-	var req authRequest
+	var req SignupRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		h.errorResponse(w, http.StatusBadRequest, "Invalid request body")
+		httpx.Error(w, http.StatusBadRequest, "Invalid request body")
 		return
 	}
-
 	if req.Email == "" || req.Password == "" {
-		h.errorResponse(w, http.StatusBadRequest, "Email and password are required")
+		httpx.Error(w, http.StatusBadRequest, "Email and password are required")
 		return
 	}
 
-	resp, err := h.authService.Signup(r.Context(), req.Email, req.Password, domain.RoleLearner)
+	resp, err := h.authService.Signup(r.Context(), req.Email, req.Password, req.FullName)
 	if err != nil {
-		if errors.Is(err, domain.ErrUserAlreadyExists) {
-			h.errorResponse(w, http.StatusConflict, err.Error())
-			return
+		switch {
+		case errors.Is(err, domain.ErrInvalidEmail), errors.Is(err, domain.ErrWeakPassword):
+			httpx.Error(w, http.StatusBadRequest, err.Error())
+		case errors.Is(err, domain.ErrUserAlreadyExists):
+			httpx.Error(w, http.StatusConflict, err.Error())
+		default:
+			httpx.Error(w, http.StatusInternalServerError, "Internal server error")
 		}
-		h.errorResponse(w, http.StatusInternalServerError, "Internal server error")
 		return
 	}
-
-	h.successResponse(w, http.StatusCreated, resp)
+	httpx.Envelope(w, http.StatusCreated, authResponsePayload(resp))
 }
 
 func (h *Handler) handleLogin(w http.ResponseWriter, r *http.Request) {
-	var req authRequest
+	var req LoginRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		h.errorResponse(w, http.StatusBadRequest, "Invalid request body")
+		httpx.Error(w, http.StatusBadRequest, "Invalid request body")
 		return
 	}
 
 	resp, err := h.authService.Login(r.Context(), req.Email, req.Password)
 	if err != nil {
 		if errors.Is(err, domain.ErrInvalidCredentials) {
-			h.errorResponse(w, http.StatusUnauthorized, err.Error())
+			httpx.Error(w, http.StatusUnauthorized, err.Error())
 			return
 		}
-		h.errorResponse(w, http.StatusInternalServerError, "Internal server error")
+		httpx.Error(w, http.StatusInternalServerError, "Internal server error")
 		return
 	}
-
-	h.successResponse(w, http.StatusOK, resp)
+	httpx.Envelope(w, http.StatusOK, authResponsePayload(resp))
 }
 
 type refreshRequest struct {
@@ -92,80 +90,100 @@ type refreshRequest struct {
 func (h *Handler) handleRefresh(w http.ResponseWriter, r *http.Request) {
 	var req refreshRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		h.errorResponse(w, http.StatusBadRequest, "Invalid request body")
+		httpx.Error(w, http.StatusBadRequest, "Invalid request body")
 		return
 	}
 
 	resp, err := h.authService.Refresh(r.Context(), req.RefreshToken)
 	if err != nil {
-		if errors.Is(err, domain.ErrInvalidCredentials) {
-			h.errorResponse(w, http.StatusUnauthorized, err.Error())
-			return
-		}
-		h.errorResponse(w, http.StatusInternalServerError, "Internal server error")
+		httpx.Error(w, http.StatusUnauthorized, "Invalid refresh token")
 		return
 	}
-
-	h.successResponse(w, http.StatusOK, resp)
+	httpx.Envelope(w, http.StatusOK, authResponsePayload(resp))
 }
 
 func (h *Handler) handleLogout(w http.ResponseWriter, r *http.Request) {
-	// For stateless JWT, logout is often handled client side or with a token blacklist.
-	// Contract says return 204 No Content
-	w.WriteHeader(http.StatusNoContent)
+	if actorID := r.Header.Get("X-User-ID"); actorID != "" {
+		_ = h.authService.Logout(r.Context(), actorID)
+	}
+	httpx.NoContent(w)
 }
 
 func (h *Handler) handleGetMe(w http.ResponseWriter, r *http.Request) {
 	userID := r.Header.Get("X-User-ID")
 	if userID == "" {
-		h.errorResponse(w, http.StatusUnauthorized, "Unauthorized")
+		httpx.Error(w, http.StatusUnauthorized, "Unauthorized")
 		return
 	}
 
 	user, err := h.authService.GetUser(r.Context(), userID)
 	if err != nil {
 		if errors.Is(err, domain.ErrUserNotFound) {
-			h.errorResponse(w, http.StatusNotFound, "User not found")
+			httpx.Error(w, http.StatusNotFound, "User not found")
 			return
 		}
-		h.errorResponse(w, http.StatusInternalServerError, "Internal server error")
+		httpx.Error(w, http.StatusInternalServerError, "Internal server error")
 		return
 	}
-
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(map[string]interface{}{
-		"id":    user.ID,
-		"email": user.Email,
-		"role":  string(user.Role),
-	})
+	httpx.Envelope(w, http.StatusOK, userPayload(user))
 }
 
-func (h *Handler) successResponse(w http.ResponseWriter, status int, data *application.AuthResponse) {
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(status)
-	json.NewEncoder(w).Encode(authResponse{
-		AccessToken:  data.AccessToken,
-		RefreshToken: data.RefreshToken,
-		User: struct {
-			ID    string `json:"id"`
-			Email string `json:"email"`
-			Role  string `json:"role"`
-		}{
-			ID:    data.User.ID,
-			Email: data.User.Email,
-			Role:  string(data.User.Role),
-		},
-	})
+type changePasswordRequest struct {
+	CurrentPassword string `json:"currentPassword"`
+	NewPassword     string `json:"newPassword"`
 }
 
-func (h *Handler) errorResponse(w http.ResponseWriter, status int, message string) {
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(status)
-	json.NewEncoder(w).Encode(map[string]interface{}{
-		"error": map[string]interface{}{
-			"code":    status,
-			"message": message,
-		},
-	})
+func (h *Handler) handleChangePassword(w http.ResponseWriter, r *http.Request) {
+	userID := r.Header.Get("X-User-ID")
+	if userID == "" {
+		httpx.Error(w, http.StatusUnauthorized, "Unauthorized")
+		return
+	}
+	var req changePasswordRequest
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		httpx.Error(w, http.StatusBadRequest, "Invalid request body")
+		return
+	}
+	if req.CurrentPassword == "" || req.NewPassword == "" {
+		httpx.Error(w, http.StatusBadRequest, "currentPassword and newPassword are required")
+		return
+	}
+	if err := h.authService.ChangePassword(r.Context(), userID, req.CurrentPassword, req.NewPassword); err != nil {
+		switch {
+		case errors.Is(err, domain.ErrInvalidCredentials):
+			httpx.Error(w, http.StatusBadRequest, "Current password is incorrect")
+		case errors.Is(err, domain.ErrWeakPassword):
+			httpx.Error(w, http.StatusBadRequest, err.Error())
+		default:
+			httpx.Error(w, http.StatusInternalServerError, "Internal server error")
+		}
+		return
+	}
+	httpx.NoContent(w)
+}
+
+// mapUser converts a domain user into the JSON shape the React client reads.
+func mapUser(u *domain.User) map[string]any {
+	return map[string]any{
+		"id":        u.ID,
+		"email":     u.Email,
+		"fullName":  u.FullName,
+		"role":      string(u.Role),
+		"status":    string(u.Status),
+		"timezone":  u.Timezone,
+		"theme":     u.Theme,
+		"createdAt": u.CreatedAt,
+	}
+}
+
+func userPayload(u *domain.User) map[string]any {
+	return mapUser(u)
+}
+
+func authResponsePayload(resp *application.AuthResponse) map[string]any {
+	return map[string]any{
+		"accessToken":  resp.AccessToken,
+		"refreshToken": resp.RefreshToken,
+		"user":         mapUser(&resp.User),
+	}
 }

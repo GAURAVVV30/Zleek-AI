@@ -1,11 +1,11 @@
 package http
 
 import (
-	"encoding/json"
 	"net/http"
 
 	"github.com/hcl-backend/services/api-go/internal/notifications/application"
 	"github.com/hcl-backend/services/api-go/internal/notifications/domain"
+	"github.com/hcl-backend/services/api-go/internal/platform/httpx"
 )
 
 type Handler struct {
@@ -17,61 +17,49 @@ func NewHandler(
 	getNotifications *application.GetNotificationsUseCase,
 	markRead *application.MarkNotificationReadUseCase,
 ) *Handler {
-	return &Handler{
-		getNotifications: getNotifications,
-		markRead:         markRead,
-	}
+	return &Handler{getNotifications: getNotifications, markRead: markRead}
 }
 
 func (h *Handler) GetNotifications(w http.ResponseWriter, r *http.Request) {
 	learnerID := r.Header.Get("X-User-ID")
 	if learnerID == "" {
-		http.Error(w, `{"error": "unauthorized"}`, http.StatusUnauthorized)
+		httpx.Error(w, http.StatusUnauthorized, "Unauthorized")
 		return
 	}
-
 	notifications, err := h.getNotifications.Execute(r.Context(), learnerID)
 	if err != nil {
-		http.Error(w, `{"error": "internal error"}`, http.StatusInternalServerError)
+		httpx.Error(w, http.StatusInternalServerError, "Internal server error")
 		return
 	}
-
-	w.Header().Set("Content-Type", "application/json")
 	if notifications == nil {
-		notifications = []domain.Notification{} // Return empty array instead of null
+		notifications = []domain.Notification{}
 	}
-	json.NewEncoder(w).Encode(notifications)
+	httpx.Envelope(w, http.StatusOK, notifications)
 }
 
 func (h *Handler) MarkRead(w http.ResponseWriter, r *http.Request) {
 	learnerID := r.Header.Get("X-User-ID")
 	if learnerID == "" {
-		http.Error(w, `{"error": "unauthorized"}`, http.StatusUnauthorized)
+		httpx.Error(w, http.StatusUnauthorized, "Unauthorized")
 		return
 	}
-
 	notificationID := r.PathValue("id")
 	if notificationID == "" {
-		http.Error(w, `{"error": "notification id required"}`, http.StatusBadRequest)
+		httpx.Error(w, http.StatusBadRequest, "Notification id required")
 		return
 	}
-
 	if err := h.markRead.Execute(r.Context(), learnerID, notificationID); err != nil {
-		if err == domain.ErrNotificationNotFound {
-			http.Error(w, `{"error": "`+err.Error()+`"}`, http.StatusNotFound)
-			return
+		switch err {
+		case domain.ErrNotificationNotFound:
+			httpx.Error(w, http.StatusNotFound, "Notification not found")
+		case domain.ErrUnauthorized:
+			httpx.Error(w, http.StatusForbidden, "Forbidden")
+		default:
+			httpx.Error(w, http.StatusInternalServerError, "Internal server error")
 		}
-		if err == domain.ErrUnauthorized {
-			http.Error(w, `{"error": "`+err.Error()+`"}`, http.StatusForbidden)
-			return
-		}
-		http.Error(w, `{"error": "internal error"}`, http.StatusInternalServerError)
 		return
 	}
-
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(map[string]string{"status": "read"})
+	httpx.Envelope(w, http.StatusOK, map[string]string{"status": "read"})
 }
 
 func (h *Handler) RegisterRoutes(mux *http.ServeMux) {

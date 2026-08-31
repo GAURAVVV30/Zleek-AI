@@ -1,0 +1,847 @@
+{
+  "domain_id": "mobile_engineer",
+  "domain_name": "Mobile Engineer",
+  "total_nodes": 12,
+  "nodes": [
+    {
+      "id": "me_01_mobile_platform_and_language",
+      "name": "Mobile Platform Fundamentals and Language Choice",
+      "domain": "mobile_engineer",
+      "category": "Platform Basics",
+      "tier": 1,
+      "difficulty_level": "basic",
+      "estimated_hours": 10,
+      "prerequisites": {
+        "hard": [],
+        "soft": []
+      },
+      "transferable_to": [
+        "frontend_engineer",
+        "full_stack",
+        "software_architect",
+        "platform_engineer"
+      ],
+      "core_concepts": [
+        "Android and mobile platform basics",
+        "Kotlin versus Java",
+        "IDE and development workflow",
+        "Application lifecycle overview",
+        "Mobile app ecosystem",
+        "Build and run flow"
+      ],
+      "resources": [
+        {
+          "type": "documentation",
+          "title": "Android Developer Docs",
+          "url": "https://developer.android.com/guide",
+          "provider": "Android Developers",
+          "authority_score": 0.99
+        },
+        {
+          "type": "documentation",
+          "title": "Kotlin Language Documentation",
+          "url": "https://kotlinlang.org/docs/home.html",
+          "provider": "JetBrains",
+          "authority_score": 0.98
+        },
+        {
+          "type": "video",
+          "title": "Android and Kotlin fundamentals",
+          "url": "https://www.youtube.com/results?search_query=android+kotlin+for+beginners",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Explain how the Android app model differs from a traditional web app and why language and toolchain choices matter for mobile development.",
+        "socratic_prompt": "Why do mobile platforms require different mental models than desktop or browser-based development?",
+        "key_evaluation_criteria": [
+          "Understands mobile platform basics",
+          "Can choose main tooling/language deliberately",
+          "Sees the app lifecycle in platform context"
+        ],
+        "remediation_hint": "Learn the platform model first, then adapt the language and tooling around that model instead of treating mobile as a web app in disguise."
+      },
+      "version": "1.0",
+      "keywords": [
+        "android",
+        "kotlin",
+        "java",
+        "mobile-platform",
+        "ide",
+        "app-ecosystem"
+      ],
+      "active": true
+    },
+    {
+      "id": "me_02_kotlin_oop_and_datastructures",
+      "name": "Kotlin Fundamentals, OOP, and Data Structures",
+      "domain": "mobile_engineer",
+      "category": "Language Fundamentals",
+      "tier": 1,
+      "difficulty_level": "basic",
+      "estimated_hours": 16,
+      "prerequisites": {
+        "hard": ["me_01_mobile_platform_and_language"],
+        "soft": []
+      },
+      "transferable_to": [
+        "backend_engineer",
+        "full_stack",
+        "software_architect",
+        "ai_engineer"
+      ],
+      "core_concepts": [
+        "Kotlin basics and syntax",
+        "Variables, functions, and classes",
+        "OOP fundamentals and encapsulation",
+        "Collections and data structures",
+        "Algorithms and problem solving",
+        "Debugging and clean code habits"
+      ],
+      "resources": [
+        {
+          "type": "documentation",
+          "title": "Kotlin Basics",
+          "url": "https://kotlinlang.org/docs/basic-syntax.html",
+          "provider": "JetBrains",
+          "authority_score": 0.98
+        },
+        {
+          "type": "article",
+          "title": "Data Structures and Algorithms for Kotlin",
+          "url": "https://www.geeksforgeeks.org/data-structures/",
+          "provider": "GeeksforGeeks",
+          "authority_score": 0.88
+        },
+        {
+          "type": "video",
+          "title": "Kotlin OOP and collections basics",
+          "url": "https://www.youtube.com/results?search_query=kotlin+oop+collections+for+beginners",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Build a small Kotlin utility app that models a common domain object and performs data processing using clean classes and collection operations.",
+        "socratic_prompt": "Why do good object model and collection choices make a mobile app easier to maintain as the feature set grows?",
+        "key_evaluation_criteria": [
+          "Understands Kotlin basics and OOP",
+          "Can reason about data structures",
+          "Builds clean and testable logic"
+        ],
+        "remediation_hint": "Practice the fundamentals in small, domain-driven examples so that language syntax and design patterns become reliable rather than memorized."
+      },
+      "version": "1.0",
+      "keywords": [
+        "kotlin",
+        "oop",
+        "data-structures",
+        "collections",
+        "algorithms",
+        "clean-code"
+      ],
+      "active": true
+    },
+    {
+      "id": "me_03_android_hello_world_and_gradle",
+      "name": "Android Hello World, Gradle, and Build Tools",
+      "domain": "mobile_engineer",
+      "category": "Build & Setup",
+      "tier": 1,
+      "difficulty_level": "basic",
+      "estimated_hours": 12,
+      "prerequisites": {
+        "hard": ["me_02_kotlin_oop_and_datastructures"],
+        "soft": []
+      },
+      "transferable_to": [
+        "full_stack",
+        "backend_engineer",
+        "devops_sre",
+        "software_architect"
+      ],
+      "core_concepts": [
+        "Android project structure",
+        "Gradle and build lifecycle",
+        "Hello World app creation",
+        "SDK setup and run flow",
+        "Dependencies and project configuration",
+        "Build troubleshooting"
+      ],
+      "resources": [
+        {
+          "type": "documentation",
+          "title": "Android Studio and Gradle Documentation",
+          "url": "https://developer.android.com/studio/build",
+          "provider": "Android Developers",
+          "authority_score": 0.98
+        },
+        {
+          "type": "article",
+          "title": "Gradle tutorial",
+          "url": "https://docs.gradle.org/current/userguide/userguide.html",
+          "provider": "Gradle",
+          "authority_score": 0.94
+        },
+        {
+          "type": "video",
+          "title": "Android Studio setup and Gradle basics",
+          "url": "https://www.youtube.com/results?search_query=android+studio+gradle+tutorial",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Set up a basic Android project from scratch, explain the role of Gradle, and identify how app modules and dependencies are organized.",
+        "socratic_prompt": "Why do build systems matter so much in mobile development, especially when every change must be compiled and validated on device or emulator?",
+        "key_evaluation_criteria": [
+          "Can configure Android projects",
+          "Understands Gradle basics",
+          "Knows the build and run flow"
+        ],
+        "remediation_hint": "Keep the build tooling simple and understand the lifecycle; many mobile issues come from project configuration rather than business logic."
+      },
+      "version": "1.0",
+      "keywords": [
+        "gradle",
+        "android-studio",
+        "build-tools",
+        "project-setup",
+        "sdk",
+        "compile"
+      ],
+      "active": true
+    },
+    {
+      "id": "me_04_version_control_and_collaboration",
+      "name": "Version Control and Team Collaboration",
+      "domain": "mobile_engineer",
+      "category": "Developer Workflow",
+      "tier": 1,
+      "difficulty_level": "basic",
+      "estimated_hours": 8,
+      "prerequisites": {
+        "hard": ["me_03_android_hello_world_and_gradle"],
+        "soft": []
+      },
+      "transferable_to": [
+        "frontend_engineer",
+        "backend_engineer",
+        "full_stack",
+        "devops_sre"
+      ],
+      "core_concepts": [
+        "Git and branching",
+        "GitHub/GitLab/Bitbucket usage",
+        "Pull requests and code reviews",
+        "Collaborative app development",
+        "Versioning and release tags",
+        "Safe feature delivery"
+      ],
+      "resources": [
+        {
+          "type": "documentation",
+          "title": "Git Documentation",
+          "url": "https://git-scm.com/doc",
+          "provider": "Git",
+          "authority_score": 0.98
+        },
+        {
+          "type": "article",
+          "title": "GitHub Flow",
+          "url": "https://docs.github.com/en/get-started/quickstart/github-flow",
+          "provider": "GitHub",
+          "authority_score": 0.94
+        },
+        {
+          "type": "video",
+          "title": "Git for mobile developers",
+          "url": "https://www.youtube.com/results?search_query=git+for+mobile+developers",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Describe how a team should manage feature branches, reviews, and release tagging for an Android app used by multiple developers.",
+        "socratic_prompt": "Why can outdated collaboration habits break equally well-written mobile code quickly as a team scales?",
+        "key_evaluation_criteria": [
+          "Uses Git consistently",
+          "Understands team PR workflows",
+          "Values safe delivery over speed alone"
+        ],
+        "remediation_hint": "Practice branch, review, and merge flows on a small team project so the process becomes reliable before the app becomes complex."
+      },
+      "version": "1.0",
+      "keywords": [
+        "git",
+        "github",
+        "bitbucket",
+        "gitlab",
+        "version-control",
+        "review"
+      ],
+      "active": true
+    },
+    {
+      "id": "me_05_android_ui_and_navigation",
+      "name": "UI Components, Layouts, Navigation, and Lifecycle",
+      "domain": "mobile_engineer",
+      "category": "UI & Navigation",
+      "tier": 2,
+      "difficulty_level": "intermediate",
+      "estimated_hours": 18,
+      "prerequisites": {
+        "hard": ["me_03_android_hello_world_and_gradle"],
+        "soft": ["me_02_kotlin_oop_and_datastructures"]
+      },
+      "transferable_to": [
+        "frontend_engineer",
+        "full_stack",
+        "product_engineer",
+        "ui_engineer"
+      ],
+      "core_concepts": [
+        "Activity, fragments, intents, and navigation",
+        "Layout systems: Frame, Linear, Relative, Constraint",
+        "RecyclerView and list patterns",
+        "Lifecycle and state changes",
+        "Backstack and task management",
+        "UI composition and user flows"
+      ],
+      "resources": [
+        {
+          "type": "documentation",
+          "title": "Android UI Documentation",
+          "url": "https://developer.android.com/guide/topics/ui",
+          "provider": "Android Developers",
+          "authority_score": 0.99
+        },
+        {
+          "type": "documentation",
+          "title": "Navigation Component",
+          "url": "https://developer.android.com/guide/navigation",
+          "provider": "Android Developers",
+          "authority_score": 0.98
+        },
+        {
+          "type": "video",
+          "title": "Android UI and navigation basics",
+          "url": "https://www.youtube.com/results?search_query=android+ui+navigation+layout+tutorial",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Design an Android screen flow with multiple states and explain how lifecycle events, navigation, and view hierarchy influence user experience.",
+        "socratic_prompt": "Why can a screen appear fine in one state and fail in another if lifecycle and state management are not treated carefully?",
+        "key_evaluation_criteria": [
+          "Designs workable UI structure",
+          "Knows lifecycle and navigation principles",
+          "Maintains state and flow predictably"
+        ],
+        "remediation_hint": "Map the app’s user journey and lifecycle states first, then align your layout and navigation with that flow."
+      },
+      "version": "1.0",
+      "keywords": [
+        "android-ui",
+        "fragment",
+        "navigation",
+        "lifecycle",
+        "recyclerview",
+        "constraint-layout"
+      ],
+      "active": true
+    },
+    {
+      "id": "me_06_architecture_patterns_and_state",
+      "name": "Architecture Patterns and State Management",
+      "domain": "mobile_engineer",
+      "category": "Architecture",
+      "tier": 2,
+      "difficulty_level": "intermediate",
+      "estimated_hours": 20,
+      "prerequisites": {
+        "hard": ["me_05_android_ui_and_navigation"],
+        "soft": ["me_02_kotlin_oop_and_datastructures"]
+      },
+      "transferable_to": [
+        "software_architect",
+        "full_stack",
+        "backend_engineer",
+        "product_engineer"
+      ],
+      "core_concepts": [
+        "MVVM, MVP, MVC, MVI",
+        "Repository patterns",
+        "Flow and LiveData",
+        "State holders and UI state",
+        "Observer and reactive patterns",
+        "Separation of concerns"
+      ],
+      "resources": [
+        {
+          "type": "article",
+          "title": "Android Architecture Guide",
+          "url": "https://developer.android.com/topic/architecture",
+          "provider": "Android Developers",
+          "authority_score": 0.99
+        },
+        {
+          "type": "article",
+          "title": "State and architecture patterns in Android",
+          "url": "https://developer.android.com/topic/architecture/ui-layer",
+          "provider": "Android Developers",
+          "authority_score": 0.97
+        },
+        {
+          "type": "video",
+          "title": "MVVM and state management in Android",
+          "url": "https://www.youtube.com/results?search_query=mvvm+android+architecture+tutorial",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Choose and explain a suitable Android architecture pattern for a feature that fetches data, updates UI state, and handles errors gracefully.",
+        "socratic_prompt": "Why do architecture patterns become necessary once a mobile app has real data, multiple screens, and asynchronous behavior?",
+        "key_evaluation_criteria": [
+          "Understands prominent Android architecture patterns",
+          "Separates state, UI, and business logic",
+          "Can justify pattern choice for complexity"
+        ],
+        "remediation_hint": "Start with the simplest architecture that keeps responsibilities clear, then evolve it only when complexity demands it."
+      },
+      "version": "1.0",
+      "keywords": [
+        "mvvm",
+        "mvp",
+        "mvi",
+        "repository",
+        "livedata",
+        "flow"
+      ],
+      "active": true
+    },
+    {
+      "id": "me_07_persistence_and_networking",
+      "name": "Storage, Data Persistence, and Network Communication",
+      "domain": "mobile_engineer",
+      "category": "Data & Networking",
+      "tier": 2,
+      "difficulty_level": "intermediate",
+      "estimated_hours": 18,
+      "prerequisites": {
+        "hard": ["me_06_architecture_patterns_and_state"],
+        "soft": ["me_05_android_ui_and_navigation"]
+      },
+      "transferable_to": [
+        "full_stack",
+        "backend_engineer",
+        "data_engineer",
+        "software_architect"
+      ],
+      "core_concepts": [
+        "Shared Preferences and DataStore",
+        "Room database and persistence",
+        "Retrofit, OkHttp, and API access",
+        "Threads, coroutines, and async work",
+        "Caching and offline strategies",
+        "Secure data handling"
+      ],
+      "resources": [
+        {
+          "type": "documentation",
+          "title": "Room Persistence Library",
+          "url": "https://developer.android.com/training/data-storage/room",
+          "provider": "Android Developers",
+          "authority_score": 0.99
+        },
+        {
+          "type": "documentation",
+          "title": "Retrofit Documentation",
+          "url": "https://square.github.io/retrofit/",
+          "provider": "Square",
+          "authority_score": 0.96
+        },
+        {
+          "type": "video",
+          "title": "Room and Retrofit basics",
+          "url": "https://www.youtube.com/results?search_query=android+room+retrofit+tutorial",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Explain how you would design a mobile app’s data layer to support local persistence, API access, and offline resilience without leaking state across screens.",
+        "socratic_prompt": "Why do local and remote data responsibilities need deliberate boundaries in mobile apps?",
+        "key_evaluation_criteria": [
+          "Can model persistence and network layers",
+          "Understands async flows and API integration",
+          "Balances offline access with correctness"
+        ],
+        "remediation_hint": "Separate storage, retrieval, and transformation steps so the app does not entangle UI logic with raw network or database details."
+      },
+      "version": "1.0",
+      "keywords": [
+        "room",
+        "datastore",
+        "retrofit",
+        "okhttp",
+        "coroutines",
+        "persistence"
+      ],
+      "active": true
+    },
+    {
+      "id": "me_08_dependency_injection_and_services",
+      "name": "Dependency Injection and Common Android Services",
+      "domain": "mobile_engineer",
+      "category": "App Infrastructure",
+      "tier": 2,
+      "difficulty_level": "intermediate",
+      "estimated_hours": 16,
+      "prerequisites": {
+        "hard": ["me_07_persistence_and_networking"],
+        "soft": ["me_06_architecture_patterns_and_state"]
+      },
+      "transferable_to": [
+        "backend_engineer",
+        "software_architect",
+        "full_stack",
+        "platform_engineer"
+      ],
+      "core_concepts": [
+        "Dependency injection basics",
+        "Hilt, Koin, and Dagger",
+        "Services, workers, and background tasks",
+        "Firebase and cloud messaging",
+        "App-level infrastructure",
+        "Reusable service composition"
+      ],
+      "resources": [
+        {
+          "type": "documentation",
+          "title": "Hilt Documentation",
+          "url": "https://developer.android.com/training/dependency-injection/hilt",
+          "provider": "Android Developers",
+          "authority_score": 0.99
+        },
+        {
+          "type": "documentation",
+          "title": "WorkManager Documentation",
+          "url": "https://developer.android.com/topic/libraries/architecture/workmanager",
+          "provider": "Android Developers",
+          "authority_score": 0.98
+        },
+        {
+          "type": "video",
+          "title": "Hilt and WorkManager overview",
+          "url": "https://www.youtube.com/results?search_query=hilt+workmanager+android+tutorial",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Explain how you would structure dependency injection and background work for a mobile app that needs secure API access, offline sync, and periodic processing.",
+        "socratic_prompt": "Why do infrastructure concerns like dependency setup and background execution become business-critical in real user-facing apps?",
+        "key_evaluation_criteria": [
+          "Understands DI and app services",
+          "Can design background work responsibly",
+          "Balances correctness and maintainability"
+        ],
+        "remediation_hint": "Inject dependencies and isolate background tasks so lifecycle and platform constraints are explicit rather than hidden inside screens."
+      },
+      "version": "1.0",
+      "keywords": [
+        "hilt",
+        "koin",
+        "dagger",
+        "workmanager",
+        "services",
+        "firebase"
+      ],
+      "active": true
+    },
+    {
+      "id": "me_09_testing_debugging_and_quality",
+      "name": "Testing, Debugging, and Quality Gates",
+      "domain": "mobile_engineer",
+      "category": "Quality & Reliability",
+      "tier": 3,
+      "difficulty_level": "intermediate",
+      "estimated_hours": 14,
+      "prerequisites": {
+        "hard": ["me_08_dependency_injection_and_services"],
+        "soft": ["me_06_architecture_patterns_and_state"]
+      },
+      "transferable_to": [
+        "frontend_engineer",
+        "backend_engineer",
+        "qa_engineer",
+        "software_architect"
+      ],
+      "core_concepts": [
+        "JUnit, Espresso, and Android testing",
+        "Debugging tools and leak detection",
+        "Linting and static checks",
+        "Performance benchmarking",
+        "Crash reporting and analytics",
+        "Quality gates in CI"
+      ],
+      "resources": [
+        {
+          "type": "documentation",
+          "title": "Android Testing Docs",
+          "url": "https://developer.android.com/training/testing",
+          "provider": "Android Developers",
+          "authority_score": 0.99
+        },
+        {
+          "type": "article",
+          "title": "LeakCanary and debugging tools",
+          "url": "https://square.github.io/leakcanary/",
+          "provider": "Square",
+          "authority_score": 0.92
+        },
+        {
+          "type": "video",
+          "title": "Android testing and debugging",
+          "url": "https://www.youtube.com/results?search_query=android+testing+debugging+espresso+junit",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Design a testing strategy for an Android app with multiple screens, API calls, and state-dependent behavior, and explain how you would prevent regressions.",
+        "socratic_prompt": "Why can tests do more than document behavior—they can also reveal whether the architecture is too fragile to change safely?",
+        "key_evaluation_criteria": [
+          "Knows relevant testing tools and patterns",
+          "Can diagnose and prevent quality issues",
+          "Builds confidence for reliable delivery"
+        ],
+        "remediation_hint": "Test the real user flows and key state transitions first, then add deeper coverage only where the risk or failure cost is high."
+      },
+      "version": "1.0",
+      "keywords": [
+        "testing",
+        "espresso",
+        "junit",
+        "lint",
+        "debugging",
+        "quality"
+      ],
+      "active": true
+    },
+    {
+      "id": "me_10_distribution_and_release",
+      "name": "Distribution, App Release, and Store Deployment",
+      "domain": "mobile_engineer",
+      "category": "Release & Distribution",
+      "tier": 3,
+      "difficulty_level": "intermediate",
+      "estimated_hours": 10,
+      "prerequisites": {
+        "hard": ["me_09_testing_debugging_and_quality"],
+        "soft": ["me_08_dependency_injection_and_services"]
+      },
+      "transferable_to": [
+        "devops_sre",
+        "software_architect",
+        "product_engineer",
+        "platform_engineer"
+      ],
+      "core_concepts": [
+        "Signed APKs and app signing",
+        "Google Play release flow",
+        "Firebase distribution",
+        "Versioning and release strategy",
+        "Store compliance and rollout",
+        "Gradual rollout and monitoring"
+      ],
+      "resources": [
+        {
+          "type": "documentation",
+          "title": "Android App Signing",
+          "url": "https://developer.android.com/studio/publish",
+          "provider": "Android Developers",
+          "authority_score": 0.99
+        },
+        {
+          "type": "documentation",
+          "title": "Firebase App Distribution",
+          "url": "https://firebase.google.com/docs/app-distribution",
+          "provider": "Firebase",
+          "authority_score": 0.96
+        },
+        {
+          "type": "video",
+          "title": "Google Play release and app distribution",
+          "url": "https://www.youtube.com/results?search_query=google+play+app+distribution+android",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Outline the production release process for an Android app, including signing, distribution, rollout, and rollback considerations.",
+        "socratic_prompt": "Why does trust in the release process matter as much as the app’s technical correctness?",
+        "key_evaluation_criteria": [
+          "Understands release and signing flow",
+          "Can explain rollout and rollback logic",
+          "Connects distribution to product confidence"
+        ],
+        "remediation_hint": "Build a repeatable release checklist and treat signing, rollout, and monitoring as one operating system for app quality."
+      },
+      "version": "1.0",
+      "keywords": [
+        "app-signing",
+        "play-store",
+        "firebase-distribution",
+        "release",
+        "rollout",
+        "deployment"
+      ],
+      "active": true
+    },
+    {
+      "id": "me_11_jetpack_compose_and_modern_ui",
+      "name": "Jetpack Compose and Modern UI Development",
+      "domain": "mobile_engineer",
+      "category": "Modern UI",
+      "tier": 3,
+      "difficulty_level": "intermediate",
+      "estimated_hours": 16,
+      "prerequisites": {
+        "hard": ["me_05_android_ui_and_navigation"],
+        "soft": ["me_06_architecture_patterns_and_state"]
+      },
+      "transferable_to": [
+        "frontend_engineer",
+        "ui_engineer",
+        "full_stack",
+        "software_architect"
+      ],
+      "core_concepts": [
+        "Declarative UI patterns",
+        "Compose state and recomposition",
+        "Navigation and theming in Compose",
+        "Modern app components",
+        "Composable architecture",
+        "UI toolkit modernization"
+      ],
+      "resources": [
+        {
+          "type": "documentation",
+          "title": "Jetpack Compose Documentation",
+          "url": "https://developer.android.com/jetpack/compose",
+          "provider": "Android Developers",
+          "authority_score": 0.99
+        },
+        {
+          "type": "article",
+          "title": "Compose state and architecture",
+          "url": "https://developer.android.com/jetpack/compose/state",
+          "provider": "Android Developers",
+          "authority_score": 0.97
+        },
+        {
+          "type": "video",
+          "title": "Jetpack Compose fundamentals",
+          "url": "https://www.youtube.com/results?search_query=jetpack+compose+tutorial",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Build a Compose-based screen and explain how state changes, recomposition, and screen architecture affect performance and maintainability.",
+        "socratic_prompt": "Why do declarative UI systems force a more direct relationship between state and presentation than older imperative patterns?",
+        "key_evaluation_criteria": [
+          "Can build modern Compose UIs",
+          "Understands state and recomposition",
+          "Designs UI with maintainability in mind"
+        ],
+        "remediation_hint": "Model state explicitly and separate UI concerns to avoid subtle recomposition bugs and hard-to-debug interface behavior."
+      },
+      "version": "1.0",
+      "keywords": [
+        "compose",
+        "declarative-ui",
+        "recomposition",
+        "theming",
+        "modern-ui",
+        "navigate"
+      ],
+      "active": true
+    },
+    {
+      "id": "me_12_platform_strategy_and_advanced_mobile_engineering",
+      "name": "Platform Strategy and Advanced Mobile Engineering",
+      "domain": "mobile_engineer",
+      "category": "Strategy & Delivery",
+      "tier": 4,
+      "difficulty_level": "advanced",
+      "estimated_hours": 14,
+      "prerequisites": {
+        "hard": ["me_11_jetpack_compose_and_modern_ui", "me_10_distribution_and_release"],
+        "soft": ["me_09_testing_debugging_and_quality"]
+      },
+      "transferable_to": [
+        "engineering_manager",
+        "software_architect",
+        "platform_engineer",
+        "product_engineer"
+      ],
+      "core_concepts": [
+        "Platform strategy and product trade-offs",
+        "Cross-screen architecture governance",
+        "Performance budgets and quality at scale",
+        "Mobile platform evolution",
+        "Team patterns and developer experience",
+        "Reliable delivery at scale"
+      ],
+      "resources": [
+        {
+          "type": "article",
+          "title": "Android architecture and performance guidance",
+          "url": "https://developer.android.com/topic/performance",
+          "provider": "Android Developers",
+          "authority_score": 0.99
+        },
+        {
+          "type": "article",
+          "title": "Mobile platform engineering patterns",
+          "url": "https://developer.android.com/topic/architecture",
+          "provider": "Android Developers",
+          "authority_score": 0.98
+        },
+        {
+          "type": "video",
+          "title": "Advanced mobile platform engineering",
+          "url": "https://www.youtube.com/results?search_query=advanced+android+platform+engineering",
+          "provider": "YouTube",
+          "authority_score": 0.8
+        }
+      ],
+      "assessment_rubric": {
+        "diagnostic_question": "Explain how a mobile platform team should scale architecture, quality, and release processes while maintaining a strong user experience across many app features and teams.",
+        "socratic_prompt": "Why does advanced mobile engineering depend on both product thinking and engineering discipline, not just on technical code quality?",
+        "key_evaluation_criteria": [
+          "Understands scale, architecture, and product trade-offs",
+          "Can operate a healthy mobile platform strategy",
+          "Balances delivery speed with reliability"
+        ],
+        "remediation_hint": "Create strong standards, measurement, and review loops across the mobile platform so the app can evolve without becoming fragile or inconsistent."
+      },
+      "version": "1.0",
+      "keywords": [
+        "platform-strategy",
+        "performance-budget",
+        "mobile-architecture",
+        "quality-at-scale",
+        "team-standards",
+        "engineering-leadership"
+      ],
+      "active": true
+    }
+  ]
+}

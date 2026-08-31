@@ -63,11 +63,11 @@ class GraphEngine:
 
             nodes = payload.get("nodes", [])
             if not isinstance(nodes, list):
-                raise ValueError(f"Domain '{domain_id}' has an invalid 'nodes' payload; expected a list.")
+                raise TypeError(f"Domain '{domain_id}' has an invalid 'nodes' payload; expected a list.")
 
             for node in nodes:
                 if not isinstance(node, dict):
-                    raise ValueError(f"Domain '{domain_id}' contains a non-object node entry in '{graph_file}'.")
+                    raise TypeError(f"Domain '{domain_id}' contains a non-object node entry in '{graph_file}'.")
 
                 node_id = node.get("id")
                 if not node_id or not isinstance(node_id, str):
@@ -85,19 +85,19 @@ class GraphEngine:
                 node_id = node.get("id")
                 prerequisites = node.get("prerequisites", {})
                 if not isinstance(prerequisites, dict):
-                    raise ValueError(
+                    raise TypeError(
                         f"Node '{node_id}' in domain '{domain_id}' has an invalid 'prerequisites' payload."
                     )
 
                 hard_prereqs = prerequisites.get("hard", [])
                 if not isinstance(hard_prereqs, list):
-                    raise ValueError(
+                    raise TypeError(
                         f"Node '{node_id}' in domain '{domain_id}' has a non-list 'prerequisites.hard' value."
                     )
 
                 for dependency in hard_prereqs:
                     if not isinstance(dependency, str):
-                        raise ValueError(
+                        raise TypeError(
                             f"Node '{node_id}' in domain '{domain_id}' contains a non-string prerequisite ID."
                         )
                     if dependency not in graph.nodes:

@@ -5,80 +5,67 @@ import (
 	"net/http"
 
 	"github.com/hcl-backend/services/api-go/internal/assessment/application"
+	"github.com/hcl-backend/services/api-go/internal/assessment/domain"
+	"github.com/hcl-backend/services/api-go/internal/platform/httpx"
 )
 
 type Handler struct {
-	getAssessmentUseCase    *application.GetAssessmentUseCase
-	submitAssessmentUseCase *application.SubmitAssessmentUseCase
+	getUseCase    *application.GetAssessmentUseCase
+	submitUseCase *application.SubmitAssessmentUseCase
 }
 
-func NewHandler(getAssessment *application.GetAssessmentUseCase, submitAssessment *application.SubmitAssessmentUseCase) *Handler {
-	return &Handler{
-		getAssessmentUseCase:    getAssessment,
-		submitAssessmentUseCase: submitAssessment,
-	}
+func NewHandler(getUseCase *application.GetAssessmentUseCase, submitUseCase *application.SubmitAssessmentUseCase) *Handler {
+	return &Handler{getUseCase: getUseCase, submitUseCase: submitUseCase}
 }
 
 func (h *Handler) GetAssessment(w http.ResponseWriter, r *http.Request) {
-	// Simple path param extraction since we don't have a robust router in this scaffold yet.
-	// We simulate the conceptID extraction.
-	conceptID := r.URL.Query().Get("id") // Assume /concepts/assessment?id=... for simple mounting, or custom parsing
+	conceptID := r.PathValue("conceptId")
 	if conceptID == "" {
-		// Try to extract from path like /concepts/{id}/assessment
-		// Very naive extraction:
-		// Example: /concepts/123/assessment
-		// Parts: "", "concepts", "123", "assessment"
-		// For the sake of this implementation we assume standard mounting or path value if Go 1.22+ is used.
-		conceptID = r.PathValue("id")
-	}
-
-	if conceptID == "" {
-		http.Error(w, `{"error": "concept id required"}`, http.StatusBadRequest)
+		httpx.Error(w, http.StatusBadRequest, "conceptId required")
 		return
 	}
-
-	assessment, err := h.getAssessmentUseCase.Execute(r.Context(), conceptID)
+	quiz, err := h.getUseCase.Execute(r.Context(), conceptID)
 	if err != nil {
-		http.Error(w, `{"error": "`+err.Error()+`"}`, http.StatusNotFound)
+		httpx.Error(w, http.StatusNotFound, "Assessment not found for concept")
 		return
 	}
-
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(assessment)
+	httpx.Envelope(w, http.StatusOK, quiz)
 }
 
 func (h *Handler) SubmitAssessment(w http.ResponseWriter, r *http.Request) {
-	conceptID := r.PathValue("id")
+	conceptID := r.PathValue("conceptId")
 	if conceptID == "" {
-		http.Error(w, `{"error": "concept id required"}`, http.StatusBadRequest)
+		httpx.Error(w, http.StatusBadRequest, "conceptId required")
 		return
 	}
-
-	learnerID := r.Header.Get("X-Learner-ID")
+	learnerID := r.Header.Get("X-User-ID")
 	if learnerID == "" {
-		learnerID = "default-learner-id"
+		httpx.Error(w, http.StatusUnauthorized, "Unauthorized")
+		return
 	}
-
 	var submission json.RawMessage
 	if err := json.NewDecoder(r.Body).Decode(&submission); err != nil {
-		http.Error(w, `{"error": "bad request: invalid JSON payload"}`, http.StatusBadRequest)
+		httpx.Error(w, http.StatusBadRequest, "Invalid JSON payload")
 		return
 	}
-
-	result, err := h.submitAssessmentUseCase.Execute(r.Context(), learnerID, conceptID, submission)
+	result, err := h.submitUseCase.Execute(r.Context(), learnerID, conceptID, submission)
 	if err != nil {
-		http.Error(w, `{"error": "`+err.Error()+`"}`, http.StatusBadRequest)
+		switch err {
+		case domain.ErrInvalidSubmission:
+			httpx.Error(w, http.StatusBadRequest, "Invalid submission payload")
+		case domain.ErrConceptNotFound, domain.ErrAssessmentNotFound:
+			httpx.Error(w, http.StatusNotFound, "Concept or assessment not found")
+		case domain.ErrAIUnavailable:
+			httpx.Error(w, http.StatusServiceUnavailable, "AI evaluation unavailable")
+		default:
+			httpx.Error(w, http.StatusBadRequest, "Evaluation failed")
+		}
 		return
 	}
-
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(result)
+	httpx.Envelope(w, http.StatusOK, result)
 }
 
 func (h *Handler) RegisterRoutes(mux *http.ServeMux) {
-	// Uses Go 1.22+ path values
-	mux.HandleFunc("GET /concepts/{id}/assessment", h.GetAssessment)
-	mux.HandleFunc("POST /concepts/{id}/assessment/submit", h.SubmitAssessment)
+	mux.HandleFunc("GET /concepts/{conceptId}/assessment", h.GetAssessment)
+	mux.HandleFunc("POST /concepts/{conceptId}/assessment/submit", h.SubmitAssessment)
 }

@@ -1,5 +1,6 @@
-from pathlib import Path
 import json
+from pathlib import Path
+from typing import Any
 
 ROOT = Path(__file__).resolve().parent.parent
 DOMAIN_DIR = ROOT / "knowledge" / "domains"
@@ -9,7 +10,7 @@ def ingest_domain_json(domain: str):
     domain_path = DOMAIN_DIR / domain
     domain_path.mkdir(parents=True, exist_ok=True)
 
-    sample_data = {
+    sample_data: dict[str, list[Any]] = {
         "nodes": [],
         "edges": [],
     }
