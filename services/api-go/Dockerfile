@@ -1,6 +1,8 @@
-FROM golang:1.22-alpine AS builder
+FROM golang:alpine AS builder
 
 WORKDIR /app
+
+ENV GOTOOLCHAIN=auto
 
 # Copy go.mod and go.sum first for caching
 COPY go.mod go.sum ./
