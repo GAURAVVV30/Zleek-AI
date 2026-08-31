@@ -46,25 +46,6 @@ services:
       - IS_PERSISTENT=TRUE
       - PERSIST_DIRECTORY=/chroma/chroma_data
 
-  ai-fastapi:
-    build:
-      context: "../../services/ai-fastapi"
-      dockerfile: Dockerfile
-    image: wtfwizz30/amplified-ai-fastapi:latest
-    container_name: amplified_ai_fastapi
-    restart: always
-    ports:
-      - "8000:8000"
-    environment:
-      - CHROMA_SERVER_HOST=chroma
-      - CHROMA_SERVER_HTTP_PORT=8000
-      - GEMINI_API_KEY=${GEMINI_API_KEY}
-      - GROQ_API_KEY=${GROQ_API_KEY}
-      - NVIDIA_API_KEY=${NVIDIA_API_KEY}
-      - OPENAI_API_KEY=${OPENAI_API_KEY}
-    depends_on:
-      - chroma
-
   api-go:
     build:
       context: "../../services/api-go"
@@ -84,7 +65,6 @@ services:
       - REDIS_PORT=6379
       - CHROMA_HOST=chroma
       - CHROMA_PORT=8000
-      - AI_SERVICE_URL=http://ai-fastapi:8000
       - GEMINI_API_KEY=${GEMINI_API_KEY}
       - GROQ_API_KEY=${GROQ_API_KEY}
       - NVIDIA_API_KEY=${NVIDIA_API_KEY}
@@ -95,8 +75,6 @@ services:
       redis:
         condition: service_healthy
       chroma:
-        condition: service_started
-      ai-fastapi:
         condition: service_started
 
   web:
