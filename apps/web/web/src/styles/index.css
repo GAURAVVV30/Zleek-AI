@@ -1,0 +1,73 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --bg-page: #f8faff;
+    --hero-gradient-start: #edf4fe;
+    --hero-gradient-mid: #f5f9ff;
+    --hero-gradient-end: #ffffff;
+  }
+
+  body {
+    background-image: url('/saas_galaxy_background.png');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-color: #000000;
+    color: #e2e8f0;
+    overflow-x: hidden;
+  }
+}
+
+/* Seamless Image Masking and Soft Edge Blending */
+.hero-image-blend {
+  mask-image: radial-gradient(circle at 65% 50%, black 50%, transparent 85%);
+  -webkit-mask-image: radial-gradient(circle at 65% 50%, black 50%, transparent 85%);
+}
+
+.hero-fade-left {
+  mask-image: linear-gradient(to right, transparent 0%, black 20%, black 85%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 20%, black 85%, transparent 100%);
+}
+
+/* Custom Smooth Transitions & Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0f172a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #475569;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #64748b;
+}
+
+/* Pulsing Badge Animation */
+@keyframes pulse-subtle {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+.animate-float {
+  animation: pulse-subtle 4s ease-in-out infinite;
+}
+
+.animate-float-delayed {
+  animation: pulse-subtle 4.5s ease-in-out 1.5s infinite;
+}
