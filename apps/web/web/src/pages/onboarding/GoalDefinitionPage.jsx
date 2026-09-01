@@ -9,6 +9,7 @@ export default function GoalDefinitionPage() {
   const [goalText, setGoalText] = useState('I want to become a Data Scientist and build real-world ML projects.');
   const [gender, setGender] = useState(null);
   const [selectedAvatar, setSelectedAvatar] = useState(null);
+  const [selectedDomainId, setSelectedDomainId] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { user } = useAuth();
   const username = user?.fullName?.split(' ')[0] || 'Learner';
@@ -51,6 +52,12 @@ export default function GoalDefinitionPage() {
         if (res?.success && Array.isArray(res.data)) {
           setDomains(res.data);
           setError(null);
+        } else if (Array.isArray(res)) {
+          setDomains(res);
+          setError(null);
+        } else if (Array.isArray(res?.data?.data)) {
+          setDomains(res.data.data);
+          setError(null);
         } else {
           throw new Error('Invalid domains response format');
         }
@@ -82,6 +89,7 @@ export default function GoalDefinitionPage() {
     try {
       await apiClient.post(ENDPOINTS.GOALS.BASE, {
         goalText,
+        domainId: selectedDomainId,
       });
       localStorage.setItem("onboardingGender", gender);
       localStorage.setItem("selectedLearningAvatar", selectedAvatar);
@@ -147,7 +155,10 @@ export default function GoalDefinitionPage() {
               <button
                 key={domain.id}
                 type="button"
-                onClick={() => setGoalText(`I want to master ${domain.name} from the ground up.`)}
+                onClick={() => {
+                  setGoalText(`I want to master ${domain.name} from the ground up.`);
+                  setSelectedDomainId(domain.id);
+                }}
                 className="px-3.5 py-1.5 rounded-full text-xs font-medium bg-black/30 backdrop-blur-md hover:bg-indigo-900/40 backdrop-blur-sm hover:text-indigo-400 border border-white/10 hover:border-blue-200 transition animate-in fade-in duration-300"
               >
                 {domain.name}

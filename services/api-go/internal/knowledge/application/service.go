@@ -94,6 +94,20 @@ type ResolvedStructure struct {
 func (s *KnowledgeService) ResolveStructure(ctx context.Context, ref string) (*ResolvedStructure, error) {
 	structure, err := s.repo.GetPublishedStructureForDomain(ctx, ref)
 	if err != nil {
+		altRef := ""
+		if ref == "software_architect" {
+			altRef = "software_architecture"
+		} else if ref == "software_architecture" {
+			altRef = "software_architect"
+		}
+		if altRef != "" {
+			if altStruct, altErr := s.repo.GetPublishedStructureForDomain(ctx, altRef); altErr == nil {
+				structure = altStruct
+				err = nil
+			}
+		}
+	}
+	if err != nil {
 		if !errors.Is(err, domain.ErrKnowledgeStructureNotFound) {
 			return nil, err
 		}

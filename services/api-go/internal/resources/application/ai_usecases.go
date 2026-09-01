@@ -82,7 +82,7 @@ func (uc *GetAlternateResourcesUseCase) Execute(ctx context.Context, conceptID s
 					sourceFile = "ai-data-scientist.pdf"
 				} else if domainSlug == "ai_engineer" {
 					sourceFile = "ai-engineer.pdf"
-				} else if domainSlug == "software_architect" {
+				} else if domainSlug == "software_architect" || domainSlug == "software_architecture" {
 					sourceFile = "software-architect.pdf"
 				} else if domainSlug == "machine_learning" {
 					sourceFile = "machine-learning.pdf"
