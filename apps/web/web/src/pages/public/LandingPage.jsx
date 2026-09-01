@@ -11,7 +11,6 @@ import {
   ShieldCheck,
   Zap,
   Award,
-  Bot,
   Brain,
   Sparkles,
 } from 'lucide-react';
@@ -41,9 +40,6 @@ export default function LandingPage() {
             </a>
             <a href="#how-it-works" className="hover:text-indigo-400 transition font-semibold text-white">
               How it works
-            </a>
-            <a href="#companions" className="hover:text-indigo-400 transition">
-              3D AI Companions
             </a>
             <a href="#about" className="hover:text-indigo-400 transition">
               About
@@ -125,127 +121,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* 3. Pedagogical 3D AI Companions Showcase Section */}
-      <section id="companions" className="w-full bg-gradient-to-b from-[#edf4fe] via-white to-white py-20 border-t border-blue-100/60">
-        <div className="max-w-7xl mx-auto px-4 sm:px-8">
-          <div className="text-center max-w-3xl mx-auto mb-16 space-y-3">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-purple-50 text-purple-700 text-xs font-bold uppercase tracking-wider">
-              <Bot className="w-4 h-4 text-purple-600" />
-              Pedagogical AI Learning Personas
-            </div>
-            <h2 className="font-display text-3xl sm:text-4xl font-extrabold text-white">
-              Why 3D AI Study Companions?
-            </h2>
-            <p className="text-slate-300 text-sm leading-relaxed">
-              Our 3D Companions aren’t just avatars — each is an <strong>active cognitive assistant</strong> engineered with specific pedagogical mechanisms to accelerate learning retention, shield focus, and prevent burnout.
-            </p>
-          </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {/* Robot */}
-            <div className="bg-black/40 backdrop-blur-xl border border-white/10 rounded-3xl p-6 shadow-[0_0_10px_rgba(79,70,229,0.1)] hover:shadow-[0_0_15px_rgba(79,70,229,0.2)] transition space-y-4">
-              <div className="w-12 h-12 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center font-bold text-xl">
-                🤖
-              </div>
-              <div>
-                <div className="flex items-center justify-between">
-                  <h3 className="font-bold text-base text-white">Cyber Mecha-01 (Robot)</h3>
-                  <span className="text-[10px] font-bold px-2 py-0.5 bg-amber-50 text-amber-700 rounded-full">Socratic Logic</span>
-                </div>
-                <p className="text-xs font-semibold text-indigo-400 mt-0.5">Use Case: Algorithmic Scaffolding & Quiz Guidance</p>
-              </div>
-              <p className="text-xs text-slate-300 leading-relaxed">
-                When you get stuck on a diagnostic or assessment question, the Robot intervenes with <strong>step-by-step Socratic hints</strong> instead of giving away answers, training first-principles problem-solving.
-              </p>
-            </div>
-
-            {/* Astronaut */}
-            <div className="bg-black/40 backdrop-blur-xl border border-white/10 rounded-3xl p-6 shadow-[0_0_10px_rgba(79,70,229,0.1)] hover:shadow-[0_0_15px_rgba(79,70,229,0.2)] transition space-y-4">
-              <div className="w-12 h-12 rounded-2xl bg-indigo-900/40 backdrop-blur-sm text-indigo-400 flex items-center justify-center font-bold text-xl">
-                🧑‍🚀
-              </div>
-              <div>
-                <div className="flex items-center justify-between">
-                  <h3 className="font-bold text-base text-white">Astro Vanguard (Astronaut)</h3>
-                  <span className="text-[10px] font-bold px-2 py-0.5 bg-indigo-900/40 backdrop-blur-sm text-indigo-400 rounded-full">Deep Focus Shield</span>
-                </div>
-                <p className="text-xs font-semibold text-indigo-400 mt-0.5">Use Case: Cognitive Load & Flow States</p>
-              </div>
-              <p className="text-xs text-slate-300 leading-relaxed">
-                Condenses 40-minute long video tutorials into <strong>3 high-impact takeaways</strong> and suppresses non-essential platform noise to keep you in an uninterrupted flow state.
-              </p>
-            </div>
-
-            {/* Mococo */}
-            <div className="bg-black/40 backdrop-blur-xl border border-white/10 rounded-3xl p-6 shadow-[0_0_10px_rgba(79,70,229,0.1)] hover:shadow-[0_0_15px_rgba(79,70,229,0.2)] transition space-y-4">
-              <div className="w-12 h-12 rounded-2xl bg-purple-50 text-purple-600 flex items-center justify-center font-bold text-xl">
-                🐺
-              </div>
-              <div>
-                <div className="flex items-center justify-between">
-                  <h3 className="font-bold text-base text-white">Abyss Assassin (Mococo)</h3>
-                  <span className="text-[10px] font-bold px-2 py-0.5 bg-purple-50 text-purple-700 rounded-full">Architecture Scout</span>
-                </div>
-                <p className="text-xs font-semibold text-indigo-400 mt-0.5">Use Case: Production Code & Edge-Cases</p>
-              </div>
-              <p className="text-xs text-slate-300 leading-relaxed">
-                Injects real-world <strong>production pitfalls and architecture patterns</strong> into Capstone Project requirements, preparing you for real-world enterprise engineering interviews.
-              </p>
-            </div>
-
-            {/* Fox */}
-            <div className="bg-black/40 backdrop-blur-xl border border-white/10 rounded-3xl p-6 shadow-[0_0_10px_rgba(79,70,229,0.1)] hover:shadow-[0_0_15px_rgba(79,70,229,0.2)] transition space-y-4">
-              <div className="w-12 h-12 rounded-2xl bg-orange-50 text-orange-600 flex items-center justify-center font-bold text-xl">
-                🦊
-              </div>
-              <div>
-                <div className="flex items-center justify-between">
-                  <h3 className="font-bold text-base text-white">Cyber Kitsune (Fox)</h3>
-                  <span className="text-[10px] font-bold px-2 py-0.5 bg-orange-50 text-orange-700 rounded-full">Fast-Track Navigator</span>
-                </div>
-                <p className="text-xs font-semibold text-indigo-400 mt-0.5">Use Case: Dynamic Prerequisite Skipping</p>
-              </div>
-              <p className="text-xs text-slate-300 leading-relaxed">
-                Analyzes your diagnostic responses to <strong>fast-track roadmap milestones</strong> by up to 40%, automatically bypassing basic syntax drills if you demonstrate existing mastery.
-              </p>
-            </div>
-
-            {/* Horse */}
-            <div className="bg-black/40 backdrop-blur-xl border border-white/10 rounded-3xl p-6 shadow-[0_0_10px_rgba(79,70,229,0.1)] hover:shadow-[0_0_15px_rgba(79,70,229,0.2)] transition space-y-4">
-              <div className="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold text-xl">
-                🐴
-              </div>
-              <div>
-                <div className="flex items-center justify-between">
-                  <h3 className="font-bold text-base text-white">Steed of Chronos (Horse)</h3>
-                  <span className="text-[10px] font-bold px-2 py-0.5 bg-emerald-50 text-emerald-700 rounded-full">Spaced Repetition</span>
-                </div>
-                <p className="text-xs font-semibold text-indigo-400 mt-0.5">Use Case: Memory Retention & Burnout Guard</p>
-              </div>
-              <p className="text-xs text-slate-300 leading-relaxed">
-                Calculates your Ebbinghaus forgetting curve and triggers <strong>2-minute refresher micro-quizzes</strong> 3 days and 7 days after milestone completion to lock in permanent retention.
-              </p>
-            </div>
-
-            {/* Brain Stem */}
-            <div className="bg-black/40 backdrop-blur-xl border border-white/10 rounded-3xl p-6 shadow-[0_0_10px_rgba(79,70,229,0.1)] hover:shadow-[0_0_15px_rgba(79,70,229,0.2)] transition space-y-4">
-              <div className="w-12 h-12 rounded-2xl bg-fuchsia-50 text-fuchsia-600 flex items-center justify-center font-bold text-xl">
-                🧠
-              </div>
-              <div>
-                <div className="flex items-center justify-between">
-                  <h3 className="font-bold text-base text-white">Cortex Core (Brain Stem)</h3>
-                  <span className="text-[10px] font-bold px-2 py-0.5 bg-fuchsia-50 text-fuchsia-700 rounded-full">First-Principles</span>
-                </div>
-                <p className="text-xs font-semibold text-indigo-400 mt-0.5">Use Case: Deep Mental Model Synthesis</p>
-              </div>
-              <p className="text-xs text-slate-300 leading-relaxed">
-                Connects disparate milestones (e.g. Pandas DataFrames ➔ Linear Algebra Matrices ➔ ML Loss Functions) with <strong>root architectural mental models</strong>.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* 4. The 4-Step Adaptive Loop Section */}
       <section id="how-it-works" className="max-w-7xl mx-auto px-4 sm:px-8 py-20 border-t border-white/10 bg-black/40 backdrop-blur-xl">
