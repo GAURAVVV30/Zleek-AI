@@ -51,6 +51,12 @@ export default function GoalDefinitionPage() {
         if (res?.success && Array.isArray(res.data)) {
           setDomains(res.data);
           setError(null);
+        } else if (Array.isArray(res)) {
+          setDomains(res);
+          setError(null);
+        } else if (Array.isArray(res?.data?.data)) {
+          setDomains(res.data.data);
+          setError(null);
         } else {
           throw new Error('Invalid domains response format');
         }
@@ -167,26 +173,24 @@ export default function GoalDefinitionPage() {
             Select your gender to generate personalized learning avatar options.
           </p>
         </div>
-        
+
         <div className="grid grid-cols-2 gap-3 max-w-[280px] mx-auto">
           <button
             onClick={() => { setGender('female'); setSelectedAvatar(null); }}
-            className={`py-2 px-4 rounded-xl border flex items-center justify-center transition-all ${
-              gender === 'female' 
+            className={`py-2 px-4 rounded-xl border flex items-center justify-center transition-all ${gender === 'female'
                 ? 'bg-indigo-900/40 border-indigo-400 shadow-[0_0_20px_rgba(79,70,229,0.3)] scale-[1.02]'
                 : 'bg-black/30 border-white/10 hover:border-white/30 hover:bg-slate-900/60'
-            }`}
+              }`}
           >
             <span className="text-sm font-bold text-white">Female</span>
           </button>
-          
+
           <button
             onClick={() => { setGender('male'); setSelectedAvatar(null); }}
-            className={`py-2 px-4 rounded-xl border flex items-center justify-center transition-all ${
-              gender === 'male' 
+            className={`py-2 px-4 rounded-xl border flex items-center justify-center transition-all ${gender === 'male'
                 ? 'bg-indigo-900/40 border-indigo-400 shadow-[0_0_20px_rgba(79,70,229,0.3)] scale-[1.02]'
                 : 'bg-black/30 border-white/10 hover:border-white/30 hover:bg-slate-900/60'
-            }`}
+              }`}
           >
             <span className="text-sm font-bold text-white">Male</span>
           </button>
@@ -206,11 +210,10 @@ export default function GoalDefinitionPage() {
                         <button
                           key={avatar.id}
                           onClick={() => setSelectedAvatar(avatar.id)}
-                          className={`relative aspect-[4/5] rounded-xl border transition-all duration-300 flex items-center justify-center p-2 outline-none focus-visible:ring-4 focus-visible:ring-indigo-500/50 ${
-                            isSelected
+                          className={`relative aspect-[4/5] rounded-xl border transition-all duration-300 flex items-center justify-center p-2 outline-none focus-visible:ring-4 focus-visible:ring-indigo-500/50 ${isSelected
                               ? 'bg-indigo-900/40 border-indigo-400 shadow-[0_0_20px_rgba(79,70,229,0.3)] scale-[1.03]'
                               : 'bg-black/30 border-white/10 hover:border-white/30 hover:bg-slate-900/60'
-                          }`}
+                            }`}
                         >
                           <img src={avatar.src} alt="Avatar option" className="w-[90%] h-[90%] object-contain drop-shadow-[0_10px_20px_rgba(0,0,0,0.5)] pointer-events-none" />
                           {isSelected && (
@@ -225,26 +228,26 @@ export default function GoalDefinitionPage() {
               </>
             ) : (
               <div className="flex flex-col items-center justify-center space-y-4 py-4 animate-in fade-in zoom-in duration-500">
-                <span 
-                  style={{ fontFamily: "'Cormorant Garamond', serif", letterSpacing: '0.05em' }} 
+                <span
+                  style={{ fontFamily: "'Cormorant Garamond', serif", letterSpacing: '0.05em' }}
                   className="text-2xl sm:text-3xl text-white/90 italic font-light"
                 >
                   Hellooo, {username}!
                 </span>
-                
+
                 <div className="relative w-32 h-32 flex items-center justify-center group">
                   {/* Subtle glow */}
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="w-24 h-24 bg-indigo-500/30 blur-[30px] rounded-full pointer-events-none transition-all duration-500 group-hover:bg-indigo-400/40 group-hover:blur-[40px]"></div>
                   </div>
-                  <img 
-                    src={learningAvatars.find(a => a.id === selectedAvatar)?.src} 
-                    alt="Selected learning avatar" 
-                    className="relative w-full h-full object-contain pointer-events-none drop-shadow-[0_10px_20px_rgba(0,0,0,0.5)] transition-transform duration-500 group-hover:scale-105" 
+                  <img
+                    src={learningAvatars.find(a => a.id === selectedAvatar)?.src}
+                    alt="Selected learning avatar"
+                    className="relative w-full h-full object-contain pointer-events-none drop-shadow-[0_10px_20px_rgba(0,0,0,0.5)] transition-transform duration-500 group-hover:scale-105"
                   />
                 </div>
-                
-                <button 
+
+                <button
                   onClick={() => setSelectedAvatar(null)}
                   className="text-xs text-slate-400 hover:text-white transition underline underline-offset-4 mt-4"
                 >
