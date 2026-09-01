@@ -13,8 +13,9 @@ import (
 )
 
 type LocalAIClientService struct {
-	App    *aiengine.App
-	DbPool *pgxpool.Pool
+	App     *aiengine.App
+	DbPool  *pgxpool.Pool
+	GroqLLM *aiengine.LLMClient
 }
 
 // GenerateRoadmapProposal maps the learner's goal text to a domain and returns
@@ -29,7 +30,11 @@ func (s *LocalAIClientService) GenerateRoadmapProposal(ctx context.Context, req 
 		domain = s.App.Graph.MatchDomainByKeywords(req.GoalText)
 		if domain == "" {
 			// Last-resort: LLM mapping (same contract as goal analysis).
-			mapped := s.App.Graph.AnalyzeUserIntent(req.GoalText, s.App.LLM)
+			llm := s.GroqLLM
+			if llm == nil {
+				llm = s.App.LLM
+			}
+			mapped := s.App.Graph.AnalyzeUserIntent(req.GoalText, llm)
 			if id, ok := mapped["mapped_domain_id"].(string); ok && s.App.Graph.DomainExists(id) {
 				domain = id
 			}
@@ -74,7 +79,12 @@ func (s *LocalAIClientService) GetConceptExplanation(_ context.Context, conceptI
 		return nil, fmt.Errorf("concept '%s' not found in any seeded domain", conceptID)
 	}
 
-	explanation := s.App.LLM.GenerateText(
+	llm := s.GroqLLM
+	if llm == nil {
+		llm = s.App.LLM
+	}
+
+	explanation := llm.GenerateText(
 		"You are a concise, friendly technical instructor.",
 		fmt.Sprintf("Explain the concept '%s': %s", node.Name, conceptID),
 		0.3, 250,

@@ -78,6 +78,47 @@ func NewLLMClient(modelOverride string) *LLMClient {
 	return c
 }
 
+func NewLLMClientForProvider(providerName, modelOverride string) *LLMClient {
+	nvidiaKey := strings.TrimSpace(os.Getenv("NVIDIA_API_KEY"))
+	groqKey := strings.TrimSpace(os.Getenv("GROQ_API_KEY"))
+	geminiKey := strings.TrimSpace(os.Getenv("GEMINI_API_KEY"))
+
+	var p llmProvider
+	switch strings.ToLower(providerName) {
+	case "nvidia", "nvidia_nim":
+		if nvidiaKey != "" {
+			p = llmProvider{"nvidia_nim", nvidiaKey, "https://integrate.api.nvidia.com/v1", "meta/llama-3.2-11b-vision-instruct"}
+		}
+	case "groq":
+		if groqKey != "" {
+			p = llmProvider{"groq", groqKey, "https://api.groq.com/openai/v1", "llama-3.3-70b-versatile"}
+		}
+	case "gemini":
+		if geminiKey != "" {
+			p = llmProvider{"gemini", geminiKey, "https://generativelanguage.googleapis.com/v1beta/openai", "gemini-2.5-flash"}
+		}
+	}
+
+	if p.name == "" {
+		p = detectProvider()
+	}
+
+	if e := strings.TrimSpace(os.Getenv("AI_LLM_BASE_URL")); e != "" && p.name != "none" {
+		p.base = strings.TrimSuffix(e, "/")
+	}
+	model := p.model
+	if modelOverride != "" {
+		model = modelOverride
+	}
+	return &LLMClient{
+		provider: p.name,
+		apiKey:   p.key,
+		baseURL:  p.base,
+		model:    model,
+		client:   &http.Client{Timeout: defaultHTTPTimeout},
+	}
+}
+
 // DefaultLLM returns the shared singleton mirroring Python's module-level use.
 func DefaultLLM() *LLMClient {
 	return NewLLMClient("")

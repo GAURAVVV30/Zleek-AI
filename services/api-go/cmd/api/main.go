@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"strconv"
 	"strings"
 	"syscall"
 	"time"
@@ -213,7 +214,11 @@ func main() {
 	roadmapRepo := roadmapInfra.NewPostgresRoadmapRepository(dbPool)
 	roadmapGoalsSvc := &roadmapGoalsService{repo: goalRepo}
 	roadmapCompetencySvc := &roadmapCompetencyService{repo: competencyRepo}
-	roadmapAILocal := &roadmapApp.LocalAIClientService{App: aiApp, DbPool: dbPool}
+	roadmapAILocal := &roadmapApp.LocalAIClientService{
+		App:     aiApp,
+		DbPool:  dbPool,
+		GroqLLM: aiengine.NewLLMClientForProvider("groq", ""),
+	}
 	regenerateRoadmapUseCase := roadmapApp.NewRegenerateRoadmapUseCase(
 		txManager, roadmapRepo, roadmapGoalsSvc, roadmapCompetencySvc, roadmapAILocal,
 	)
@@ -229,7 +234,10 @@ func main() {
 	diagResolver := &diagResolver{svc: knowledgeService}
 	diagGraph := &diagGraphService{engine: aiApp.Graph}
 	diagProfile := &diagProfileService{db: dbPool}
-	diagLLM := &diagLLMService{llm: aiApp.LLM}
+	diagLLM := &diagLLMService{
+		nvidiaLLM: aiengine.NewLLMClientForProvider("nvidia", ""),
+		groqLLM:   aiengine.NewLLMClientForProvider("groq", ""),
+	}
 	diagCompetency := &diagCompetencyService{repo: competencyRepo}
 	startDiagnosticUseCase := diagApp.NewStartDiagnosticUseCase(diagStore, diagGoals, diagResolver, diagGraph, diagProfile, diagLLM)
 	answerDiagnosticUseCase := diagApp.NewAnswerDiagnosticUseCase(diagStore)
@@ -500,17 +508,22 @@ func (g *diagGraphService) TopoConcepts(ctx context.Context, domainSlug string) 
 	order := dg.TopoOrder()
 	refs := make([]diagApp.NodeRef, 0, len(order))
 	for _, id := range order {
+		cleanID := strings.TrimSpace(id)
 		node, ok := dg.NodeByID[id]
 		if !ok {
-			continue
+			node, ok = dg.NodeByID[cleanID]
+			if !ok {
+				continue
+			}
 		}
-		refs = append(refs, diagApp.NodeRef{NodeID: id, Name: node.Name})
+		refs = append(refs, diagApp.NodeRef{NodeID: cleanID, Name: node.Name})
 	}
 	return refs, nil
 }
 
 func (g *diagGraphService) GetResources(domainSlug, nodeID string) []string {
-	resources := g.engine.GetResourcesForNode(domainSlug, nodeID, 2)
+	cleanID := strings.TrimSpace(nodeID)
+	resources := g.engine.GetResourcesForNode(domainSlug, cleanID, 2)
 	var textChunks []string
 	for _, r := range resources {
 		if txt, ok := r.Metadata["document_text"].(string); ok && txt != "" {
@@ -566,47 +579,24 @@ func (s *knowledgeRAGService) GetRAGContext(domainID, nodeID string) []string {
 }
 
 type diagLLMService struct {
-	llm *aiengine.LLMClient
+	nvidiaLLM *aiengine.LLMClient
+	groqLLM   *aiengine.LLMClient
 }
 
 func (s *diagLLMService) GenerateQuestionPrompt(ctx context.Context, role, priorLevel, conceptName, ragContext string) (*diagApp.QuestionData, error) {
 	systemPrompt := "You are a professional technical interviewer assessing a candidate."
 	level := strings.ToLower(priorLevel)
-	var userPrompt string
 
-	if level == "beginner" {
-		userPrompt = fmt.Sprintf(`Generate a single basic yes/no concept knowledge question to gauge if the candidate knows the concept: %q.
+	userPrompt := fmt.Sprintf(`Generate a single multiple choice diagnostic question to gauge the candidate's understanding of the concept: %q.
 Role: %s
+Experience Level: %s
 Authoritative Reference Text (RAG Context):
 %s
 
 Instructions:
-1. Formulate a basic question asking if they know the concept (e.g. "Do you know how to declare a list in Python?" or similar basic question).
-2. The options must be exactly ["Yes", "No"].
-3. Set correct_option to 0 (which corresponds to "Yes", indicating they know it).`, conceptName, role, ragContext)
-	} else if level == "intermediate" {
-		userPrompt = fmt.Sprintf(`Generate a single syntax or code logic multiple choice question to gauge the candidate's understanding of the concept: %q.
-Role: %s
-Authoritative Reference Text (RAG Context):
-%s
-
-Instructions:
-1. Formulate a concrete syntax or logic question with 5 options.
-2. The question must be related to the role and concept based on the reference text.
-3. Provide exactly 5 options. One must be correct, the other four must be plausible but incorrect options.
-4. Set correct_option to the 0-based index of the correct option (0 to 4).`, conceptName, role, ragContext)
-	} else {
-		userPrompt = fmt.Sprintf(`Generate a single advanced concept multiple choice question to gauge the candidate's understanding of the concept: %q.
-Role: %s
-Authoritative Reference Text (RAG Context):
-%s
-
-Instructions:
-1. Formulate an advanced, deep concept question with 5 options.
-2. The question must be strictly based on the reference text and highly specific to advanced scenarios of the role.
-3. Provide exactly 5 options. One must be correct, the other four must be plausible but incorrect options.
-4. Set correct_option to the 0-based index of the correct option (0 to 4).`, conceptName, role, ragContext)
-	}
+1. Formulate a concrete, role-specific diagnostic question suitable for a %s level candidate based on the reference text.
+2. Provide EXACTLY 3 human-readable options: 1 correct option and 2 plausible but incorrect distractor options.
+3. Set correct_option to the 0-based index of the correct option (0, 1, or 2).`, conceptName, role, level, ragContext, level)
 
 	responseSchema := map[string]any{
 		"prompt": map[string]any{
@@ -618,15 +608,20 @@ Instructions:
 			"items": map[string]any{
 				"type": "string",
 			},
-			"description": "The list of option choices.",
+			"description": "The list of 3 option choices.",
 		},
 		"correct_option": map[string]any{
 			"type":        "integer",
-			"description": "The 0-based index of the correct option.",
+			"description": "The 0-based index of the correct option (0, 1, or 2).",
 		},
 	}
 
-	result := s.llm.GenerateStructuredJSON(systemPrompt, userPrompt, responseSchema)
+	llm := s.nvidiaLLM
+	if llm == nil {
+		llm = aiengine.DefaultLLM()
+	}
+
+	result := llm.GenerateStructuredJSON(systemPrompt, userPrompt, responseSchema)
 	prompt, _ := result["prompt"].(string)
 	if prompt == "" {
 		if errStr, ok := result["error"].(string); ok {
@@ -638,20 +633,24 @@ Instructions:
 	var options []string
 	if optsRaw, ok := result["options"].([]any); ok {
 		for _, o := range optsRaw {
-			if sVal, ok := o.(string); ok {
-				options = append(options, sVal)
+			if sVal, ok := o.(string); ok && strings.TrimSpace(sVal) != "" {
+				options = append(options, strings.TrimSpace(sVal))
 			}
 		}
 	} else if optsRawStr, ok := result["options"].([]string); ok {
-		options = optsRawStr
+		for _, sVal := range optsRawStr {
+			if strings.TrimSpace(sVal) != "" {
+				options = append(options, strings.TrimSpace(sVal))
+			}
+		}
 	}
 
-	if len(options) == 0 {
-		if level == "beginner" {
-			options = []string{"Yes", "No"}
-		} else {
-			options = []string{"Option A", "Option B", "Option C", "Option D", "Option E"}
+	if len(options) < 3 {
+		for len(options) < 3 {
+			options = append(options, fmt.Sprintf("Additional conceptual option %d", len(options)+1))
 		}
+	} else if len(options) > 3 {
+		options = options[:3]
 	}
 
 	correctIdx := 0
@@ -659,6 +658,14 @@ Instructions:
 		correctIdx = int(fIdx)
 	} else if iIdx, ok := result["correct_option"].(int); ok {
 		correctIdx = iIdx
+	} else if num, ok := result["correct_option"].(json.Number); ok {
+		if val, err := num.Int64(); err == nil {
+			correctIdx = int(val)
+		}
+	} else if sIdx, ok := result["correct_option"].(string); ok {
+		if val, err := strconv.Atoi(strings.TrimSpace(sIdx)); err == nil {
+			correctIdx = val
+		}
 	}
 
 	if correctIdx < 0 || correctIdx >= len(options) {
@@ -696,7 +703,12 @@ Instructions:
 		},
 	}
 
-	result := s.llm.GenerateStructuredJSON(systemPrompt, userPrompt, responseSchema)
+	llm := s.groqLLM
+	if llm == nil {
+		llm = aiengine.DefaultLLM()
+	}
+
+	result := llm.GenerateStructuredJSON(systemPrompt, userPrompt, responseSchema)
 	if explanation, ok := result["explanation"].(string); ok && explanation != "" {
 		return explanation, nil
 	}
