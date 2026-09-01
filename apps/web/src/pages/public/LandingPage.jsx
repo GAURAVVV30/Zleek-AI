@@ -1,4 +1,5 @@
 import React from 'react';
+import { RandomLetterSwap } from '../../components/ui/random-letter-swap';
 import { useNavigate } from 'react-router-dom';
 import {
   Compass,
@@ -11,7 +12,6 @@ import {
   ShieldCheck,
   Zap,
   Award,
-  Bot,
   Brain,
   Sparkles,
 } from 'lucide-react';
@@ -36,31 +36,22 @@ export default function LandingPage() {
 
           {/* Center Links */}
           <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-300">
-            <a href="#features" className="hover:text-indigo-400 transition">
-              Features
-            </a>
-            <a href="#how-it-works" className="hover:text-indigo-400 transition font-semibold text-white">
-              How it works
-            </a>
-            <a href="#companions" className="hover:text-indigo-400 transition">
-              3D AI Companions
-            </a>
-            <a href="#about" className="hover:text-indigo-400 transition">
-              About
-            </a>
+            <RandomLetterSwap href="#features" className="hover:text-indigo-400 transition inline-block w-[64px]" label="Features" />
+            <RandomLetterSwap href="#how-it-works" className="hover:text-indigo-400 transition font-semibold text-white inline-block w-[88px]" label="How it works" />
+            <RandomLetterSwap href="#about" className="hover:text-indigo-400 transition inline-block w-[40px]" label="About" />
           </nav>
 
           {/* Auth Buttons */}
           <div className="flex items-center gap-3">
             <button
               onClick={() => navigate('/login')}
-              className="px-5 py-2 rounded-xl text-sm font-semibold text-white bg-black/40 backdrop-blur-xl/80 hover:bg-black/40 backdrop-blur-xl border border-white/10 shadow-[0_0_10px_rgba(79,70,229,0.1)] transition"
+              className="px-5 py-2 rounded-xl text-sm font-semibold text-white bg-white/5 hover:bg-white/10 backdrop-blur-lg border border-white/10 shadow-[0_4px_24px_-1px_rgba(0,0,0,0.2)] transition-all duration-300"
             >
               Login
             </button>
             <button
               onClick={() => navigate('/signup')}
-              className="px-5 py-2 rounded-xl text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-700 shadow-[0_0_15px_rgba(79,70,229,0.2)] shadow-blue-500/25 transition transform hover:-translate-y-0.5"
+              className="px-5 py-2 rounded-xl text-sm font-semibold text-white bg-indigo-500/20 hover:bg-indigo-500/30 backdrop-blur-lg border border-indigo-400/30 shadow-[0_4px_24px_-1px_rgba(79,70,229,0.3)] transition-all duration-300 transform hover:-translate-y-0.5"
             >
               Sign Up
             </button>
@@ -69,8 +60,8 @@ export default function LandingPage() {
       </header>
 
       {/* 2. Full-Bleed Seamless Hero Section (Zero Side Spaces, 100% Responsive) */}
-      <section className="w-full bg-black/20 backdrop-blur-sm relative overflow-hidden pt-4 pb-12 sm:pt-8 sm:pb-16 lg:pb-24">
-        <div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+      <section className="w-full bg-black/20 backdrop-blur-sm relative overflow-hidden py-16 md:py-24">
+        <div className="container mx-auto px-6 md:px-12 max-w-7xl grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
           {/* Left Column: Heading & CTAs */}
           <div className="lg:col-span-5 z-20 space-y-6 pt-4 lg:pt-0">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-indigo-900/60 backdrop-blur-md/60 border border-blue-200/80 text-indigo-300 text-xs font-semibold">
@@ -104,18 +95,13 @@ export default function LandingPage() {
             </div>
           </div>
 
-          {/* Right Column: Full-Bleed Mountain Canvas (Zero Box, Zero Side Margins) */}
-          <div className="lg:col-span-7 relative flex items-center justify-center lg:justify-end -mr-4 sm:-mr-8 lg:-mr-12">
-            <div className="relative w-full max-w-2xl lg:max-w-none">
+          {/* Right Column: Hero Graphic */}
+          <div className="lg:col-span-7 relative flex items-center justify-center lg:justify-end">
+            <div className="relative w-full max-w-2xl lg:max-w-none bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-4 sm:p-6 shadow-[0_8px_30px_rgb(0,0,0,0.12)]">
               <img
                 src="/illustrations/hero-mountain.png"
                 alt="Adaptive learning path to mastery"
-                className="w-full h-auto object-contain select-none pointer-events-none"
-                style={{
-                  // Perfectly dissolve the left edge into the pale blue background
-                  maskImage: 'linear-gradient(to right, transparent 0%, rgba(0,0,0,0.5) 5%, black 20%)',
-                  WebkitMaskImage: 'linear-gradient(to right, transparent 0%, rgba(0,0,0,0.5) 5%, black 20%)',
-                }}
+                className="w-full h-auto object-contain select-none pointer-events-none rounded-xl"
                 onError={(e) => {
                   e.target.src = '/illustrations/media_1787759050661.jpg';
                 }}
@@ -125,131 +111,12 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* 3. Pedagogical 3D AI Companions Showcase Section */}
-      <section id="companions" className="w-full bg-gradient-to-b from-[#edf4fe] via-white to-white py-20 border-t border-blue-100/60">
-        <div className="max-w-7xl mx-auto px-4 sm:px-8">
-          <div className="text-center max-w-3xl mx-auto mb-16 space-y-3">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-purple-50 text-purple-700 text-xs font-bold uppercase tracking-wider">
-              <Bot className="w-4 h-4 text-purple-600" />
-              Pedagogical AI Learning Personas
-            </div>
-            <h2 className="font-display text-3xl sm:text-4xl font-extrabold text-white">
-              Why 3D AI Study Companions?
-            </h2>
-            <p className="text-slate-300 text-sm leading-relaxed">
-              Our 3D Companions aren’t just avatars — each is an <strong>active cognitive assistant</strong> engineered with specific pedagogical mechanisms to accelerate learning retention, shield focus, and prevent burnout.
-            </p>
-          </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {/* Robot */}
-            <div className="bg-black/40 backdrop-blur-xl border border-white/10 rounded-3xl p-6 shadow-[0_0_10px_rgba(79,70,229,0.1)] hover:shadow-[0_0_15px_rgba(79,70,229,0.2)] transition space-y-4">
-              <div className="w-12 h-12 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center font-bold text-xl">
-                🤖
-              </div>
-              <div>
-                <div className="flex items-center justify-between">
-                  <h3 className="font-bold text-base text-white">Cyber Mecha-01 (Robot)</h3>
-                  <span className="text-[10px] font-bold px-2 py-0.5 bg-amber-50 text-amber-700 rounded-full">Socratic Logic</span>
-                </div>
-                <p className="text-xs font-semibold text-indigo-400 mt-0.5">Use Case: Algorithmic Scaffolding & Quiz Guidance</p>
-              </div>
-              <p className="text-xs text-slate-300 leading-relaxed">
-                When you get stuck on a diagnostic or assessment question, the Robot intervenes with <strong>step-by-step Socratic hints</strong> instead of giving away answers, training first-principles problem-solving.
-              </p>
-            </div>
-
-            {/* Astronaut */}
-            <div className="bg-black/40 backdrop-blur-xl border border-white/10 rounded-3xl p-6 shadow-[0_0_10px_rgba(79,70,229,0.1)] hover:shadow-[0_0_15px_rgba(79,70,229,0.2)] transition space-y-4">
-              <div className="w-12 h-12 rounded-2xl bg-indigo-900/40 backdrop-blur-sm text-indigo-400 flex items-center justify-center font-bold text-xl">
-                🧑‍🚀
-              </div>
-              <div>
-                <div className="flex items-center justify-between">
-                  <h3 className="font-bold text-base text-white">Astro Vanguard (Astronaut)</h3>
-                  <span className="text-[10px] font-bold px-2 py-0.5 bg-indigo-900/40 backdrop-blur-sm text-indigo-400 rounded-full">Deep Focus Shield</span>
-                </div>
-                <p className="text-xs font-semibold text-indigo-400 mt-0.5">Use Case: Cognitive Load & Flow States</p>
-              </div>
-              <p className="text-xs text-slate-300 leading-relaxed">
-                Condenses 40-minute long video tutorials into <strong>3 high-impact takeaways</strong> and suppresses non-essential platform noise to keep you in an uninterrupted flow state.
-              </p>
-            </div>
-
-            {/* Mococo */}
-            <div className="bg-black/40 backdrop-blur-xl border border-white/10 rounded-3xl p-6 shadow-[0_0_10px_rgba(79,70,229,0.1)] hover:shadow-[0_0_15px_rgba(79,70,229,0.2)] transition space-y-4">
-              <div className="w-12 h-12 rounded-2xl bg-purple-50 text-purple-600 flex items-center justify-center font-bold text-xl">
-                🐺
-              </div>
-              <div>
-                <div className="flex items-center justify-between">
-                  <h3 className="font-bold text-base text-white">Abyss Assassin (Mococo)</h3>
-                  <span className="text-[10px] font-bold px-2 py-0.5 bg-purple-50 text-purple-700 rounded-full">Architecture Scout</span>
-                </div>
-                <p className="text-xs font-semibold text-indigo-400 mt-0.5">Use Case: Production Code & Edge-Cases</p>
-              </div>
-              <p className="text-xs text-slate-300 leading-relaxed">
-                Injects real-world <strong>production pitfalls and architecture patterns</strong> into Capstone Project requirements, preparing you for real-world enterprise engineering interviews.
-              </p>
-            </div>
-
-            {/* Fox */}
-            <div className="bg-black/40 backdrop-blur-xl border border-white/10 rounded-3xl p-6 shadow-[0_0_10px_rgba(79,70,229,0.1)] hover:shadow-[0_0_15px_rgba(79,70,229,0.2)] transition space-y-4">
-              <div className="w-12 h-12 rounded-2xl bg-orange-50 text-orange-600 flex items-center justify-center font-bold text-xl">
-                🦊
-              </div>
-              <div>
-                <div className="flex items-center justify-between">
-                  <h3 className="font-bold text-base text-white">Cyber Kitsune (Fox)</h3>
-                  <span className="text-[10px] font-bold px-2 py-0.5 bg-orange-50 text-orange-700 rounded-full">Fast-Track Navigator</span>
-                </div>
-                <p className="text-xs font-semibold text-indigo-400 mt-0.5">Use Case: Dynamic Prerequisite Skipping</p>
-              </div>
-              <p className="text-xs text-slate-300 leading-relaxed">
-                Analyzes your diagnostic responses to <strong>fast-track roadmap milestones</strong> by up to 40%, automatically bypassing basic syntax drills if you demonstrate existing mastery.
-              </p>
-            </div>
-
-            {/* Horse */}
-            <div className="bg-black/40 backdrop-blur-xl border border-white/10 rounded-3xl p-6 shadow-[0_0_10px_rgba(79,70,229,0.1)] hover:shadow-[0_0_15px_rgba(79,70,229,0.2)] transition space-y-4">
-              <div className="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold text-xl">
-                🐴
-              </div>
-              <div>
-                <div className="flex items-center justify-between">
-                  <h3 className="font-bold text-base text-white">Steed of Chronos (Horse)</h3>
-                  <span className="text-[10px] font-bold px-2 py-0.5 bg-emerald-50 text-emerald-700 rounded-full">Spaced Repetition</span>
-                </div>
-                <p className="text-xs font-semibold text-indigo-400 mt-0.5">Use Case: Memory Retention & Burnout Guard</p>
-              </div>
-              <p className="text-xs text-slate-300 leading-relaxed">
-                Calculates your Ebbinghaus forgetting curve and triggers <strong>2-minute refresher micro-quizzes</strong> 3 days and 7 days after milestone completion to lock in permanent retention.
-              </p>
-            </div>
-
-            {/* Brain Stem */}
-            <div className="bg-black/40 backdrop-blur-xl border border-white/10 rounded-3xl p-6 shadow-[0_0_10px_rgba(79,70,229,0.1)] hover:shadow-[0_0_15px_rgba(79,70,229,0.2)] transition space-y-4">
-              <div className="w-12 h-12 rounded-2xl bg-fuchsia-50 text-fuchsia-600 flex items-center justify-center font-bold text-xl">
-                🧠
-              </div>
-              <div>
-                <div className="flex items-center justify-between">
-                  <h3 className="font-bold text-base text-white">Cortex Core (Brain Stem)</h3>
-                  <span className="text-[10px] font-bold px-2 py-0.5 bg-fuchsia-50 text-fuchsia-700 rounded-full">First-Principles</span>
-                </div>
-                <p className="text-xs font-semibold text-indigo-400 mt-0.5">Use Case: Deep Mental Model Synthesis</p>
-              </div>
-              <p className="text-xs text-slate-300 leading-relaxed">
-                Connects disparate milestones (e.g. Pandas DataFrames ➔ Linear Algebra Matrices ➔ ML Loss Functions) with <strong>root architectural mental models</strong>.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* 4. The 4-Step Adaptive Loop Section */}
-      <section id="how-it-works" className="max-w-7xl mx-auto px-4 sm:px-8 py-20 border-t border-white/10 bg-black/40 backdrop-blur-xl">
-        <div className="text-center max-w-2xl mx-auto mb-16">
+      <section id="how-it-works" className="w-full border-t border-white/10 bg-black/40 backdrop-blur-xl py-16 md:py-24">
+        <div className="container mx-auto px-6 md:px-12 max-w-7xl">
+          <div className="text-center max-w-2xl mx-auto mb-16">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-900/40 backdrop-blur-sm text-indigo-400 text-xs font-semibold mb-3">
             <RefreshCw className="w-3.5 h-3.5" />
             The Competency Engine
@@ -311,6 +178,7 @@ export default function LandingPage() {
             </p>
           </div>
         </div>
+        </div>
       </section>
 
       {/* 5. Product Principles / Features Section */}
@@ -359,17 +227,14 @@ export default function LandingPage() {
 
       {/* 6. Bottom CTA Banner */}
       <section className="max-w-7xl mx-auto px-4 sm:px-8 py-16 text-center">
-        <div className="bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 rounded-3xl p-10 sm:p-14 text-white shadow-elevated relative overflow-hidden">
-          <div className="relative z-10 max-w-2xl mx-auto space-y-5">
+        <div className="bg-black/30 backdrop-blur-md border border-white/10 rounded-3xl p-10 sm:p-14 text-white shadow-[0_0_15px_rgba(79,70,229,0.15)] relative overflow-hidden">
+          <div className="relative z-10 max-w-2xl mx-auto space-y-6">
             <h2 className="font-display text-3xl sm:text-4xl font-extrabold tracking-tight">
               Ready to climb your path to mastery?
             </h2>
-            <p className="text-blue-100 text-sm sm:text-base leading-relaxed">
-              Define your goal in 30 seconds, choose your 3D study companion, and let our adaptive engine build your personalized journey.
-            </p>
             <button
               onClick={() => navigate('/signup')}
-              className="px-8 py-4 bg-black/40 backdrop-blur-xl text-indigo-400 hover:bg-indigo-900/40 backdrop-blur-sm font-bold rounded-xl text-sm shadow-lg transition transform hover:-translate-y-0.5"
+              className="px-8 py-4 bg-indigo-600 hover:bg-indigo-700 font-bold rounded-xl text-sm shadow-[0_0_15px_rgba(79,70,229,0.3)] transition transform hover:-translate-y-0.5"
             >
               Start Free Assessment
             </button>
