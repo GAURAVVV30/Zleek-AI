@@ -2,8 +2,9 @@ package domain
 
 // QuestionOption is one answer choice of a diagnostic question.
 type QuestionOption struct {
-	ID   string `json:"id"`
-	Text string `json:"text"`
+	ID        string `json:"id"`
+	Text      string `json:"text"`
+	IsCorrect bool   `json:"isCorrect,omitempty"`
 }
 
 // Question is one diagnostic question payload.
@@ -37,8 +38,11 @@ type Concept struct {
 
 // AnswerResponse is the per-answer payload.
 type AnswerResponse struct {
-	IsComplete   bool      `json:"isComplete"`
-	NextQuestion *Question `json:"nextQuestion"`
+	IsComplete       bool      `json:"isComplete"`
+	IsCorrect        bool      `json:"isCorrect"`
+	CorrectOptionID  string    `json:"correctOptionId"`
+	SelectedOptionID string    `json:"selectedOptionId"`
+	NextQuestion     *Question `json:"nextQuestion,omitempty"`
 }
 
 // CoverageRow is one concept row of the baseline results.

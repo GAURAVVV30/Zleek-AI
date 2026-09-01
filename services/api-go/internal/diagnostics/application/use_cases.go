@@ -49,7 +49,8 @@ func (uc *StartDiagnosticUseCase) Execute(ctx context.Context, learnerID string)
 
 	concepts := make([]domain.Concept, 0, len(refs))
 	for _, r := range refs {
-		concepts = append(concepts, domain.Concept{NodeID: r.NodeID, Name: r.Name})
+		cleanID := strings.TrimSpace(r.NodeID)
+		concepts = append(concepts, domain.Concept{NodeID: cleanID, Name: r.Name})
 	}
 
 	priorLevel, err := uc.profile.GetPriorExperience(ctx, learnerID)
@@ -67,46 +68,57 @@ func (uc *StartDiagnosticUseCase) Execute(ctx context.Context, learnerID string)
 	correctAnswers := make(map[string]string)
 
 	for i, c := range concepts {
-		ragResources := uc.graph.GetResources(slug, c.NodeID)
+		cleanID := strings.TrimSpace(c.NodeID)
+		ragResources := uc.graph.GetResources(slug, cleanID)
 		ragContext := strings.Join(ragResources, "\n---\n")
 
-		qData, err := uc.llm.GenerateQuestionPrompt(ctx, role, priorLevel, c.Name, ragContext)
-		if err == nil && qData != nil {
-			prompts[c.NodeID] = qData.Prompt
-			opts := make([]domain.QuestionOption, 0, len(qData.Options))
-			for idx, optText := range qData.Options {
-				opts = append(opts, domain.QuestionOption{
-					ID:   fmt.Sprintf("opt_familiar_%d", idx+1),
-					Text: optText,
-				})
+		var qData *QuestionData
+		var genErr error
+		for attempt := 0; attempt < 3; attempt++ {
+			qData, genErr = uc.llm.GenerateQuestionPrompt(ctx, role, priorLevel, c.Name, ragContext)
+			if genErr == nil && qData != nil && strings.TrimSpace(qData.Prompt) != "" && len(qData.Options) == 3 {
+				break
 			}
-			questions = append(questions, domain.Question{
-				QuestionID:     c.NodeID,
-				QuestionNumber: i + 1,
-				TotalQuestions: len(concepts),
-				ConceptID:      c.NodeID,
-				ConceptName:    c.Name,
-				Prompt:         qData.Prompt,
-				Options:        opts,
-			})
-			correctAnswers[c.NodeID] = fmt.Sprintf("opt_familiar_%d", qData.CorrectOption+1)
-		} else {
-			prompts[c.NodeID] = "How comfortable are you with " + c.Name + "?"
-			opts := []domain.QuestionOption{
-				{ID: "opt_familiar_1", Text: "Yes"},
-				{ID: "opt_familiar_2", Text: "No"},
-			}
-			questions = append(questions, domain.Question{
-				QuestionID:     c.NodeID,
-				QuestionNumber: i + 1,
-				TotalQuestions: len(concepts),
-				ConceptID:      c.NodeID,
-				ConceptName:    c.Name,
-				Prompt:         "How comfortable are you with " + c.Name + "?",
-				Options:        opts,
-			})
-			correctAnswers[c.NodeID] = "opt_familiar_1"
 		}
+
+		if qData == nil || strings.TrimSpace(qData.Prompt) == "" || len(qData.Options) != 3 {
+			qData = &QuestionData{
+				Prompt: fmt.Sprintf("Regarding %s in %s, which statement accurately describes its core implementation?", c.Name, role),
+				Options: []string{
+					fmt.Sprintf("It enforces primary architectural constraints for %s.", c.Name),
+					fmt.Sprintf("It eliminates network overhead for %s.", c.Name),
+					fmt.Sprintf("It acts exclusively as a database index for %s.", c.Name),
+				},
+				CorrectOption: 0,
+			}
+		}
+
+		correctIdx := qData.CorrectOption
+		if correctIdx < 0 || correctIdx >= 3 {
+			correctIdx = 0
+		}
+
+		prompts[cleanID] = qData.Prompt
+		opts := make([]domain.QuestionOption, 0, 3)
+		for idx := 0; idx < 3; idx++ {
+			optText := qData.Options[idx]
+			opts = append(opts, domain.QuestionOption{
+				ID:        fmt.Sprintf("opt_%d", idx+1),
+				Text:      optText,
+				IsCorrect: (idx == correctIdx),
+			})
+		}
+
+		questions = append(questions, domain.Question{
+			QuestionID:     cleanID,
+			QuestionNumber: i + 1,
+			TotalQuestions: len(concepts),
+			ConceptID:      cleanID,
+			ConceptName:    c.Name,
+			Prompt:         qData.Prompt,
+			Options:        opts,
+		})
+		correctAnswers[cleanID] = fmt.Sprintf("opt_%d", correctIdx+1)
 	}
 
 	session := &domain.Session{
@@ -118,17 +130,20 @@ func (uc *StartDiagnosticUseCase) Execute(ctx context.Context, learnerID string)
 		CorrectAnswers: correctAnswers,
 		Questions:      questions,
 	}
+
 	if err := uc.store.Create(ctx, session); err != nil {
-		return nil, err
+		return nil, fmt.Errorf("create session: %w", err)
 	}
+
+	firstQuestion := &questions[0]
 	return &StartResponse{
 		SessionID:      session.SessionID,
-		FirstQuestion:  &session.Questions[0],
-		TotalQuestions: len(session.Questions),
+		FirstQuestion:  firstQuestion,
+		TotalQuestions: len(concepts),
 	}, nil
 }
 
-// AnswerDiagnosticUseCase records one answer and advances the session.
+// AnswerDiagnosticUseCase handles single answer submission and returns next state.
 type AnswerDiagnosticUseCase struct {
 	store SessionStore
 }
@@ -138,6 +153,8 @@ func NewAnswerDiagnosticUseCase(store SessionStore) *AnswerDiagnosticUseCase {
 }
 
 func (uc *AnswerDiagnosticUseCase) Execute(ctx context.Context, learnerID, sessionID, questionID, optionID string) (*domain.AnswerResponse, error) {
+	questionID = strings.TrimSpace(questionID)
+	optionID = strings.TrimSpace(optionID)
 	session, err := uc.store.Get(ctx, sessionID)
 	if err != nil {
 		return nil, domain.ErrSessionNotFound
@@ -154,7 +171,7 @@ func (uc *AnswerDiagnosticUseCase) Execute(ctx context.Context, learnerID, sessi
 
 	var currentQuestion *domain.Question
 	for _, q := range session.Questions {
-		if q.QuestionID == questionID {
+		if strings.TrimSpace(q.QuestionID) == questionID {
 			currentQuestion = &q
 			break
 		}
@@ -162,7 +179,7 @@ func (uc *AnswerDiagnosticUseCase) Execute(ctx context.Context, learnerID, sessi
 	if currentQuestion != nil {
 		isValidOption := false
 		for _, opt := range currentQuestion.Options {
-			if opt.ID == optionID {
+			if strings.TrimSpace(opt.ID) == optionID {
 				isValidOption = true
 				break
 			}
@@ -177,6 +194,8 @@ func (uc *AnswerDiagnosticUseCase) Execute(ctx context.Context, learnerID, sessi
 	}
 
 	session.Answers[questionID] = optionID
+	correctAnsID := session.CorrectAnswers[questionID]
+	isCorrect := (optionID != "" && optionID == correctAnsID)
 
 	idx := indexOfConcept(session, questionID)
 	var next *domain.Question
@@ -197,7 +216,13 @@ func (uc *AnswerDiagnosticUseCase) Execute(ctx context.Context, learnerID, sessi
 	if err := uc.store.Save(ctx, session); err != nil {
 		return nil, err
 	}
-	return &domain.AnswerResponse{IsComplete: session.Completed, NextQuestion: next}, nil
+	return &domain.AnswerResponse{
+		IsComplete:       session.Completed,
+		IsCorrect:        isCorrect,
+		CorrectOptionID:  correctAnsID,
+		SelectedOptionID: optionID,
+		NextQuestion:     next,
+	}, nil
 }
 
 // ResultsDiagnosticUseCase computes the baseline from a completed session.
@@ -261,7 +286,7 @@ func (uc *ResultsDiagnosticUseCase) Execute(ctx context.Context, learnerID, sess
 		var nodeID string
 		for _, c := range session.Concepts {
 			if c.Name == gap {
-				nodeID = c.NodeID
+				nodeID = strings.TrimSpace(c.NodeID)
 				break
 			}
 		}
@@ -291,8 +316,9 @@ type StartResponse struct {
 }
 
 func validConcept(s *domain.Session, nodeID string) bool {
+	clean := strings.TrimSpace(nodeID)
 	for _, c := range s.Concepts {
-		if c.NodeID == nodeID {
+		if strings.TrimSpace(c.NodeID) == clean {
 			return true
 		}
 	}
@@ -300,8 +326,9 @@ func validConcept(s *domain.Session, nodeID string) bool {
 }
 
 func indexOfConcept(s *domain.Session, nodeID string) int {
+	clean := strings.TrimSpace(nodeID)
 	for i, c := range s.Concepts {
-		if c.NodeID == nodeID {
+		if strings.TrimSpace(c.NodeID) == clean {
 			return i
 		}
 	}

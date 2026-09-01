@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight, ArrowLeft, CheckCircle, HelpCircle } from 'lucide-react';
+import { ArrowRight, ArrowLeft, CheckCircle, XCircle, HelpCircle, Check } from 'lucide-react';
 import { apiClient } from '../../services/apiClient';
 import { ENDPOINTS } from '../../utils/endpoints';
 import { useToast } from '../../context/ToastContext';
@@ -9,6 +9,8 @@ export default function DiagnosticPage() {
   const [currentQuestion, setCurrentQuestion] = useState(null);
   const [sessionId, setSessionId] = useState('');
   const [selectedOption, setSelectedOption] = useState('');
+  const [checkedResult, setCheckedResult] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [questionIndex, setQuestionIndex] = useState(1);
   const [totalQuestions, setTotalQuestions] = useState(5);
   const [isLoading, setIsLoading] = useState(true);
@@ -30,42 +32,65 @@ export default function DiagnosticPage() {
       });
   }, []);
 
-  const handleNext = async () => {
+  const handleCheckAnswer = async () => {
     if (!selectedOption) {
-      addToast('Please select an answer to proceed.', 'warning');
+      addToast('Please select an answer to check.', 'warning');
       return;
     }
-
+    setIsSubmitting(true);
     try {
       const res = await apiClient.post(ENDPOINTS.DIAGNOSTIC.ANSWER(sessionId), {
         questionId: currentQuestion.questionId,
         selectedOptionId: selectedOption,
       });
 
-      if (res.data.isComplete || !res.data.nextQuestion) {
-        localStorage.setItem('diagnosticSessionId', sessionId);
-        addToast('Diagnostic complete! Computing skill baseline...', 'success');
-        navigate('/diagnostic/results');
-      } else {
-        setCurrentQuestion(res.data.nextQuestion);
-        setSelectedOption('');
-        setQuestionIndex((prev) => prev + 1);
-      }
+      setCheckedResult(res.data);
     } catch (err) {
-      addToast('Failed to submit response', 'error');
+      addToast('Failed to validate response', 'error');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleNext = () => {
+    if (!checkedResult) return;
+
+    if (checkedResult.isComplete || !checkedResult.nextQuestion) {
+      localStorage.setItem('diagnosticSessionId', sessionId);
+      addToast('Diagnostic complete! Computing skill baseline...', 'success');
+      navigate('/diagnostic/results');
+    } else {
+      setCurrentQuestion(checkedResult.nextQuestion);
+      setSelectedOption('');
+      setCheckedResult(null);
+      setQuestionIndex((prev) => prev + 1);
     }
   };
 
   if (isLoading || !currentQuestion) {
     return (
       <div className="max-w-2xl mx-auto px-4 py-20 text-center">
-        <div className="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+        <div className="w-8 h-8 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
         <p className="text-xs text-slate-400">Preparing personalized diagnostic assessment...</p>
       </div>
     );
   }
 
   const progressPercent = Math.round((questionIndex / totalQuestions) * 100);
+
+  // Derive correct option object and human-readable text robustly across shape schemas
+  const correctOptObj = checkedResult && currentQuestion && currentQuestion.options
+    ? currentQuestion.options.find((o, idx) => {
+        const oid = typeof o === 'object' && o && o.id ? o.id : `opt_${idx + 1}`;
+        return oid === checkedResult.correctOptionId;
+      })
+    : null;
+
+  const correctOptText = correctOptObj
+    ? typeof correctOptObj === 'string'
+      ? correctOptObj
+      : correctOptObj.text || correctOptObj.label || correctOptObj.optionText || correctOptObj.content || correctOptObj.value || ''
+    : '';
 
   return (
     <div className="max-w-2xl mx-auto px-4 py-12">
@@ -78,7 +103,7 @@ export default function DiagnosticPage() {
             </span>
             <span className="text-indigo-400">{progressPercent}% complete</span>
           </div>
-          <div className="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
+          <div className="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
             <div
               className="h-full bg-indigo-600 transition-all duration-300 rounded-full"
               style={{ width: `${progressPercent}%` }}
@@ -99,33 +124,95 @@ export default function DiagnosticPage() {
 
         {/* Options */}
         <div className="space-y-2.5 pt-2">
-          {currentQuestion.options.map((option) => {
-            const isSelected = selectedOption === option.id;
+          {currentQuestion.options && currentQuestion.options.map((option, idx) => {
+            const optionId = typeof option === 'object' && option && option.id ? option.id : `opt_${idx + 1}`;
+            const optionText = typeof option === 'string'
+              ? option
+              : option.text || option.label || option.optionText || option.content || option.value || '';
+            
+            const isSelected = selectedOption === optionId;
+            const letterLabel = String.fromCharCode(65 + idx); // 'A', 'B', 'C', 'D', 'E'
+
+            let optionStyles = 'border-white/10 text-white hover:bg-black/30 backdrop-blur-md hover:border-slate-300';
+
+            if (checkedResult) {
+              if (optionId === checkedResult.correctOptionId) {
+                optionStyles = 'border-emerald-500 bg-emerald-950/50 text-emerald-200 font-semibold shadow-[0_0_10px_rgba(16,185,129,0.2)]';
+              } else if (optionId === checkedResult.selectedOptionId && !checkedResult.isCorrect) {
+                optionStyles = 'border-rose-500 bg-rose-950/50 text-rose-200 font-semibold shadow-[0_0_10px_rgba(244,63,94,0.2)]';
+              } else {
+                optionStyles = 'border-white/5 text-slate-500 opacity-50 cursor-not-allowed';
+              }
+            } else if (isSelected) {
+              optionStyles = 'border-indigo-500 bg-indigo-900/40 backdrop-blur-sm text-white font-semibold shadow-[0_0_10px_rgba(79,70,229,0.2)]';
+            }
+
             return (
               <button
-                key={option.id}
+                key={optionId}
                 type="button"
-                onClick={() => setSelectedOption(option.id)}
-                className={`w-full p-4 rounded-2xl border text-left text-xs sm:text-sm font-medium transition flex items-start gap-3 ${
-                  isSelected
-                    ? 'border-blue-600 bg-indigo-900/40 backdrop-blur-sm/70 text-blue-900 font-semibold shadow-[0_0_10px_rgba(79,70,229,0.1)]'
-                    : 'border-white/10 text-white hover:bg-black/30 backdrop-blur-md hover:border-slate-300'
-                }`}
+                disabled={!!checkedResult}
+                onClick={() => setSelectedOption(optionId)}
+                className={`w-full p-4 rounded-2xl border text-left text-xs sm:text-sm font-medium transition flex items-start gap-3.5 ${optionStyles}`}
               >
+                {/* Option Letter Badge: A, B, C, D, E */}
                 <div
-                  className={`w-4 h-4 rounded-full border mt-0.5 flex items-center justify-center shrink-0 ${
-                    isSelected ? 'border-blue-600 bg-indigo-600' : 'border-slate-300'
+                  className={`w-6 h-6 rounded-lg text-xs font-bold flex items-center justify-center shrink-0 border mt-0.5 ${
+                    checkedResult && optionId === checkedResult.correctOptionId
+                      ? 'border-emerald-400 bg-emerald-500 text-black'
+                      : checkedResult && optionId === checkedResult.selectedOptionId && !checkedResult.isCorrect
+                      ? 'border-rose-400 bg-rose-500 text-white'
+                      : isSelected
+                      ? 'border-indigo-400 bg-indigo-600 text-white'
+                      : 'border-white/10 bg-white/5 text-slate-400'
                   }`}
                 >
-                  {isSelected && <div className="w-1.5 h-1.5 rounded-full bg-black/40 backdrop-blur-xl"></div>}
+                  {letterLabel}
                 </div>
-                <span className="leading-relaxed">{option.text}</span>
+
+                {/* Human Readable Option Text */}
+                <span className="leading-relaxed pt-0.5 flex-1">{optionText}</span>
+
+                {/* Status Indicator */}
+                {checkedResult && optionId === checkedResult.correctOptionId && (
+                  <Check className="w-4 h-4 text-emerald-400 shrink-0 mt-1 stroke-[3]" />
+                )}
               </button>
             );
           })}
         </div>
 
-        {/* CTAs */}
+        {/* Immediate Feedback Card after Checking */}
+        {checkedResult && (
+          <div className="pt-2 animate-fadeIn">
+            {checkedResult.isCorrect ? (
+              <div className="p-4 rounded-2xl bg-emerald-950/40 border border-emerald-500/40 text-emerald-300 flex items-center gap-3">
+                <CheckCircle className="w-5 h-5 text-emerald-400 shrink-0" />
+                <div>
+                  <p className="font-bold text-xs sm:text-sm">Correct!</p>
+                  <p className="text-[11px] sm:text-xs text-emerald-400/80 mt-0.5">
+                    Excellent work. You have demonstrated mastery of {currentQuestion.conceptName}.
+                  </p>
+                </div>
+              </div>
+            ) : (
+              <div className="p-4 rounded-2xl bg-rose-950/40 border border-rose-500/40 text-rose-300 flex items-center gap-3">
+                <XCircle className="w-5 h-5 text-rose-400 shrink-0" />
+                <div>
+                  <p className="font-bold text-xs sm:text-sm">Incorrect</p>
+                  <p className="text-[11px] sm:text-xs text-rose-200/90 mt-0.5">
+                    Correct answer:{' '}
+                    <strong className="text-white font-semibold">
+                      {correctOptText ? correctOptText : 'Option ' + checkedResult.correctOptionId}
+                    </strong>
+                  </p>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* CTAs: Check Answer vs Next Question */}
         <div className="pt-4 flex items-center justify-between border-t border-white/5">
           <button
             type="button"
@@ -134,13 +221,29 @@ export default function DiagnosticPage() {
           >
             <ArrowLeft className="w-4 h-4" /> Save & Exit
           </button>
-          <button
-            onClick={handleNext}
-            className="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-semibold text-xs shadow-[0_0_15px_rgba(79,70,229,0.2)] shadow-blue-500/20 transition flex items-center gap-1.5"
-          >
-            {questionIndex === totalQuestions ? 'Complete Diagnostic' : 'Next Question'}
-            <ArrowRight className="w-4 h-4" />
-          </button>
+
+          {!checkedResult ? (
+            <button
+              onClick={handleCheckAnswer}
+              disabled={!selectedOption || isSubmitting}
+              className={`px-6 py-2.5 rounded-xl font-semibold text-xs transition flex items-center gap-1.5 ${
+                selectedOption && !isSubmitting
+                  ? 'bg-indigo-600 hover:bg-indigo-700 text-white shadow-[0_0_15px_rgba(79,70,229,0.2)]'
+                  : 'bg-slate-800 text-slate-500 cursor-not-allowed'
+              }`}
+            >
+              {isSubmitting ? 'Checking...' : 'Check Answer'}
+              <CheckCircle className="w-4 h-4" />
+            </button>
+          ) : (
+            <button
+              onClick={handleNext}
+              className="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-semibold text-xs shadow-[0_0_15px_rgba(79,70,229,0.2)] transition flex items-center gap-1.5"
+            >
+              {checkedResult.isComplete || questionIndex === totalQuestions ? 'Complete Diagnostic' : 'Next Question'}
+              <ArrowRight className="w-4 h-4" />
+            </button>
+          )}
         </div>
       </div>
     </div>

@@ -89,24 +89,35 @@ func computeResults(s *domain.Session) *domain.BaselineResults {
 	rows := make([]domain.CoverageRow, 0, len(s.Concepts))
 	total := 0
 	for _, c := range s.Concepts {
+		cleanID := strings.TrimSpace(c.NodeID)
 		coverage := 0
 		isFamiliarity := false
 		for _, q := range s.Questions {
-			if q.QuestionID == c.NodeID && len(q.Options) > 0 && strings.Contains(q.Options[0].Text, "haven't touched") {
+			if strings.TrimSpace(q.QuestionID) == cleanID && len(q.Options) > 0 && strings.Contains(q.Options[0].Text, "haven't touched") {
 				isFamiliarity = true
 				break
 			}
 		}
 
+		userAnswer := strings.TrimSpace(s.Answers[cleanID])
+		if userAnswer == "" {
+			userAnswer = strings.TrimSpace(s.Answers[c.NodeID])
+		}
+
+		correctAnswer := strings.TrimSpace(s.CorrectAnswers[cleanID])
+		if correctAnswer == "" {
+			correctAnswer = strings.TrimSpace(s.CorrectAnswers[c.NodeID])
+		}
+
 		if !isFamiliarity && s.CorrectAnswers != nil && len(s.CorrectAnswers) > 0 {
-			if s.Answers[c.NodeID] != "" && s.Answers[c.NodeID] == s.CorrectAnswers[c.NodeID] {
+			if userAnswer != "" && userAnswer == correctAnswer {
 				coverage = 100
 			}
 		} else {
-			coverage = coverageFor(s.Answers[c.NodeID])
+			coverage = coverageFor(userAnswer)
 		}
 		rows = append(rows, domain.CoverageRow{
-			ConceptID:          c.NodeID,
+			ConceptID:          cleanID,
 			ConceptName:        c.Name,
 			CoveragePercentage: coverage,
 			Status:             statusFor(coverage),
