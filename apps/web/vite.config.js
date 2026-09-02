@@ -30,6 +30,7 @@ const STRIP_PREFIX_ROUTES = [
   'auth', 'domains', 'goals', 'concepts', 'curator', 'notifications',
   'progress', 'competency', 'admin', 'profile', 'resources', 'storage',
   'search', 'telemetry', 'diagnostics', 'assessment', 'roadmap', 'projects',
+  'gold-resources',
 ];
 
 function rewriteApiPath(path) {

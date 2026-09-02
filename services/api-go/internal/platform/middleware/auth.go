@@ -25,7 +25,7 @@ func Auth(jwtSecret string) func(http.Handler) http.Handler {
 			// AI intelligence endpoints are mirror-ported from the unauthenticated
 			// FastAPI service (goal/roadmap/mastery/adaptive/evaluate/voice/guardrails).
 			// They are registered at /api/v1/* with no auth, matching FastAPI's behavior.
-			if strings.HasPrefix(path, "/api/v1") || strings.HasPrefix(path, "/auth/login") || strings.HasPrefix(path, "/auth/signup") ||
+			if strings.HasPrefix(path, "/api/v1") || strings.HasPrefix(path, "/gold-resources") || strings.HasPrefix(path, "/auth/login") || strings.HasPrefix(path, "/auth/signup") ||
 				strings.HasPrefix(path, "/auth/refresh") || path == "/health" || path == "/ready" {
 				next.ServeHTTP(w, r)
 				return

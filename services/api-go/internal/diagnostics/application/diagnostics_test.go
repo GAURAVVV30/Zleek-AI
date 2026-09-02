@@ -102,12 +102,12 @@ func TestDiagnosticFlow(t *testing.T) {
 	if res.TotalQuestions != 3 {
 		t.Fatalf("expected 3 questions, got %d", res.TotalQuestions)
 	}
-	if res.FirstQuestion == nil || len(res.FirstQuestion.Options) != 5 {
+	if res.FirstQuestion == nil || len(res.FirstQuestion.Options) != 3 {
 		t.Fatalf("unexpected first question: %+v", res.FirstQuestion)
 	}
 
 	answer := application.NewAnswerDiagnosticUseCase(store)
-	step, err := answer.Execute(context.Background(), "l-1", res.SessionID, "ml_01", "opt_familiar_4")
+	step, err := answer.Execute(context.Background(), "l-1", res.SessionID, "ml_01", "opt_1")
 	if err != nil {
 		t.Fatalf("answer 1: %v", err)
 	}
@@ -115,8 +115,8 @@ func TestDiagnosticFlow(t *testing.T) {
 		t.Fatalf("expected a next question after first answer")
 	}
 
-	_, _ = answer.Execute(context.Background(), "l-1", res.SessionID, "ml_02", "opt_familiar_3")
-	last, err := answer.Execute(context.Background(), "l-1", res.SessionID, "ml_03", "opt_familiar_1")
+	_, _ = answer.Execute(context.Background(), "l-1", res.SessionID, "ml_02", "opt_1")
+	last, err := answer.Execute(context.Background(), "l-1", res.SessionID, "ml_03", "opt_3")
 	if err != nil {
 		t.Fatalf("answer 3: %v", err)
 	}

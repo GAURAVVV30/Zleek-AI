@@ -38,6 +38,9 @@ func (engine *GraphEngine) GetResourcesForNode(domainID, nodeID string, nResults
 	if err == nil && node != nil {
 		queryText = node.Name
 	}
+	if domainID == "data_engineer" {
+		return []RAGResource{}
+	}
 
 	// Try semantic ChromaDB search
 	embeddingGen := DefaultEmbeddingGenerator()
@@ -50,12 +53,21 @@ func (engine *GraphEngine) GetResourcesForNode(domainID, nodeID string, nResults
 			queryEmbeddings, err := embeddingGen.GenerateEmbeddings(ctx, []string{queryText})
 			if err == nil && len(queryEmbeddings) > 0 {
 				var where map[string]any
-				if domainID != "" {
-					chromaDomainID := domainID
-					if domainID == "software_architecture" {
-						chromaDomainID = "software_architect"
+				chromaDomainID := domainID
+				if domainID == "software_architecture" {
+					chromaDomainID = "software_architect"
+				}
+				if chromaDomainID != "" && nodeID != "" {
+					where = map[string]any{
+						"$and": []map[string]any{
+							{"domain_id": chromaDomainID},
+							{"node_id": nodeID},
+						},
 					}
+				} else if chromaDomainID != "" {
 					where = map[string]any{"domain_id": chromaDomainID}
+				} else if nodeID != "" {
+					where = map[string]any{"node_id": nodeID}
 				}
 				resp, err := chromaClient.Query(ctx, collectionID, queryEmbeddings, nResults, where)
 				if err == nil && resp != nil && len(resp.Documents) > 0 && len(resp.Documents[0]) > 0 {
@@ -113,43 +125,67 @@ func (engine *GraphEngine) GetResourcesForNode(domainID, nodeID string, nResults
 		log.Printf("ChromaDB semantic query unavailable: no genuine embedding provider configured. Falling back to local tag-matching.")
 	}
 
-	// Fallback logic in case ChromaDB is down or not seeded yet
-	log.Printf("ChromaDB semantic query unavailable for node %s. Falling back to local tag-matching.", nodeID)
+	// Fallback logic using Gold Tier JSON resources
+	if goldMod, ok := GetGoldResourceLookup().GetGoldModuleResources(domainID, nodeID); ok {
+		allGold := append([]GoldResource{}, goldMod.Resources.Documentation...)
+		allGold = append(allGold, goldMod.Resources.Video...)
+		allGold = append(allGold, goldMod.Resources.HandsOn...)
 
-	if node == nil {
-		// Try a cross-domain lookup by node ID
-		if cross := findNodeAcrossDomains(engine, nodeID); cross != nil {
-			node = cross
-		} else {
+		for _, r := range allGold {
+			if len(results) >= nResults {
+				break
+			}
+			results = append(results, RAGResource{
+				ID:       r.ID,
+				Title:    "[PDF] " + r.Title,
+				URL:      r.URL,
+				Provider: "Authoritative PDF Corpus",
+				Metadata: map[string]any{
+					"domain_id":     domainID,
+					"node_id":       nodeID,
+					"resource_type": r.Type,
+					"description":   r.Description,
+				},
+				EmbeddingModel: ragEmbeddingModel,
+			})
+		}
+		if len(results) > 0 {
 			return results
 		}
 	}
 
-	for idx, res := range node.NodeResources() {
-		if len(results) >= nResults {
-			break
-		}
-		title, _ := res["title"].(string)
-		url, _ := res["url"].(string)
-		provider, _ := res["provider"].(string)
-		id := nodeResID(nodeID, idx)
-		if rawID, ok := res["id"].(string); ok && rawID != "" {
-			id = rawID
-		}
-		meta := map[string]any{"node_id": nodeID}
-		for _, k := range []string{"type", "provider", "authority_score"} {
-			if v, ok := res[k]; ok {
-				meta[k] = v
+	log.Printf("ChromaDB semantic query unavailable for node %s. Falling back to local tag-matching.", nodeID)
+
+	if node == nil {
+		node = findNodeAcrossDomains(engine, nodeID)
+	}
+	if node != nil {
+		for idx, res := range node.NodeResources() {
+			if len(results) >= nResults {
+				break
 			}
+			title, _ := res["title"].(string)
+			url, _ := res["url"].(string)
+			provider, _ := res["provider"].(string)
+			id := nodeResID(nodeID, idx)
+			if rawID, ok := res["id"].(string); ok && rawID != "" {
+				id = rawID
+			}
+			meta := map[string]any{"node_id": nodeID}
+			for _, k := range []string{"type", "provider", "authority_score"} {
+				if v, ok := res[k]; ok {
+					meta[k] = v
+				}
+			}
+			results = append(results, RAGResource{
+				ID:             id,
+				Title:          title,
+				URL:            url,
+				Provider:       provider,
+				Metadata:       meta,
+				EmbeddingModel: ragEmbeddingModel,
+			})
 		}
-		results = append(results, RAGResource{
-			ID:             id,
-			Title:          title,
-			URL:            url,
-			Provider:       provider,
-			Metadata:       meta,
-			EmbeddingModel: ragEmbeddingModel,
-		})
 	}
 
 	ragDomains := []string{}

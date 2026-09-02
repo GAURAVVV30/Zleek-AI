@@ -44,6 +44,7 @@ func (h *Handler) RegisterRoutes(mux *http.ServeMux) {
 
 	// resource
 	mux.HandleFunc("GET /api/v1/resource", h.handleGetResource)
+	mux.HandleFunc("GET /api/v1/gold-resources", h.handleGetGoldResources)
 
 	// evaluate
 	mux.HandleFunc("POST /api/v1/evaluate", h.handleEvaluate)
@@ -54,6 +55,7 @@ func (h *Handler) RegisterRoutes(mux *http.ServeMux) {
 	// learning
 	mux.HandleFunc("POST /api/v1/learning/lesson", h.handleGenerateLesson)
 	mux.HandleFunc("POST /api/v1/learning/evaluate", h.handleEvaluateAnswer)
+	mux.HandleFunc("POST /api/v1/learning/module-chat", h.handleModuleChat)
 
 	// adaptive
 	mux.HandleFunc("POST /api/v1/adaptive/next-action", h.handleNextAction)
@@ -211,6 +213,52 @@ func (h *Handler) handleGetResource(w http.ResponseWriter, r *http.Request) {
 			"url":     "https://github.com/donnemartin/system-design-primer",
 			"summary": "A curated guide for architecture, scalability, and design trade-offs.",
 		},
+	})
+}
+
+func (h *Handler) handleGetGoldResources(w http.ResponseWriter, r *http.Request) {
+	role := strings.TrimSpace(r.URL.Query().Get("role"))
+	moduleQuery := strings.TrimSpace(r.URL.Query().Get("module"))
+	if moduleQuery == "" {
+		moduleQuery = r.PathValue("conceptId")
+	}
+
+	if role == "" || role == "data_engineer" || moduleQuery == "" {
+		writeJSON(w, http.StatusOK, map[string]any{
+			"status":    "unavailable",
+			"role_id":   role,
+			"module_id": moduleQuery,
+			"resources": map[string]any{
+				"documentation": []any{},
+				"video":         []any{},
+				"hands_on":      []any{},
+			},
+		})
+		return
+	}
+
+	goldMod, ok := aiengine.GetGoldResourceLookup().GetGoldModuleResources(role, moduleQuery)
+	if !ok {
+		writeJSON(w, http.StatusOK, map[string]any{
+			"status":    "unavailable",
+			"role_id":   role,
+			"module_id": moduleQuery,
+			"resources": map[string]any{
+				"documentation": []any{},
+				"video":         []any{},
+				"hands_on":      []any{},
+			},
+		})
+		return
+	}
+
+	writeJSON(w, http.StatusOK, map[string]any{
+		"status":        "success",
+		"role_id":       role,
+		"module_id":     goldMod.ModuleID,
+		"module_number": goldMod.ModuleNumber,
+		"module_name":   goldMod.ModuleName,
+		"resources":     goldMod.Resources,
 	})
 }
 
@@ -376,6 +424,81 @@ func (h *Handler) handleEvaluateAnswer(w http.ResponseWriter, r *http.Request) {
 		"blocked":           false,
 		"guardrails_method": guard.Method,
 	}, result)
+}
+
+func (h *Handler) handleModuleChat(w http.ResponseWriter, r *http.Request) {
+	var req struct {
+		RoleID      string `json:"role_id"`
+		ModuleID    string `json:"module_id"`
+		UserMessage string `json:"user_message"`
+	}
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		writeError(w, http.StatusBadRequest, "Invalid request body")
+		return
+	}
+
+	if req.RoleID == "data_engineer" {
+		writeJSON(w, http.StatusOK, map[string]any{
+			"reply": "data_engineer is excluded from the Gold Tier resource scope.",
+		})
+		return
+	}
+
+	// 1. Guardrails check
+	guard := aiengine.CheckGuardrails(req.UserMessage)
+	if guard.Blocked {
+		writeJSON(w, http.StatusOK, map[string]any{
+			"blocked":           true,
+			"reply":             guard.RefusalMessage,
+			"guardrails_method": guard.Method,
+		})
+		return
+	}
+
+	// 2. Fetch Gold Tier module details
+	goldMod, ok := aiengine.GetGoldResourceLookup().GetGoldModuleResources(req.RoleID, req.ModuleID)
+	roleName := req.RoleID
+	moduleTitle := req.ModuleID
+	resSummary := ""
+	if ok {
+		roleObj, _ := aiengine.GetGoldResourceLookup().GetRole(req.RoleID)
+		roleName = roleObj.RoleName
+		moduleTitle = fmt.Sprintf("Module %d: %s", goldMod.ModuleNumber, goldMod.ModuleName)
+
+		var resLines []string
+		for _, v := range goldMod.Resources.Video {
+			resLines = append(resLines, fmt.Sprintf("- [Video] %s (%s)", v.Title, v.URL))
+		}
+		for _, d := range goldMod.Resources.Documentation {
+			resLines = append(resLines, fmt.Sprintf("- [Doc] %s (%s)", d.Title, d.URL))
+		}
+		for _, ho := range goldMod.Resources.HandsOn {
+			resLines = append(resLines, fmt.Sprintf("- [Hands-on] %s (%s)", ho.Title, ho.URL))
+		}
+		resSummary = strings.Join(resLines, "\n")
+	}
+
+	systemPrompt := fmt.Sprintf(`You are an AI Module Learning Assistant for the role: %s.
+You are assisting the student EXCLUSIVELY on %s.
+
+Authorized Module Resources for this context:
+%s
+
+CRITICAL RULES:
+1. You MUST operate strictly within the context of %s for the role %s.
+2. You MUST NOT reference, answer questions about, or provide resources from any other module or role.
+3. If the student asks about a topic or module outside %s, politely inform them that you can only answer questions related to %s.
+4. Keep all explanations grounded in the authorized module resources listed above.`,
+		roleName, moduleTitle, resSummary, moduleTitle, roleName, moduleTitle, moduleTitle)
+
+	completion := h.App.LLM.GenerateText(systemPrompt, req.UserMessage, 0.2, 800)
+
+	writeJSON(w, http.StatusOK, map[string]any{
+		"reply":             completion,
+		"role_id":           req.RoleID,
+		"module_id":         req.ModuleID,
+		"guardrails_method": guard.Method,
+	})
 }
 
 // ---------------------------------------------------------------------------

@@ -39,7 +39,7 @@ func NewPostgresRoadmapRepository(db *pgxpool.Pool) *PostgresRoadmapRepository {
 // milestones with public node ids, titles, states and unlock hints.
 func (r *PostgresRoadmapRepository) GetRoadmap(ctx context.Context, learnerID string) (*domain.Roadmap, error) {
 	query := `
-		SELECT p.id, g.id, g.goal_text, ks.id, d.name AS domain_name,
+		SELECT p.id, g.id, g.goal_text, ks.id, d.name AS domain_name, d.slug AS domain_slug,
 		       p.status, p.created_at, p.updated_at
 		FROM platform.paths p
 		JOIN platform.goals g ON g.id = p.goal_id
@@ -49,10 +49,10 @@ func (r *PostgresRoadmapRepository) GetRoadmap(ctx context.Context, learnerID st
 		ORDER BY p.created_at DESC
 		LIMIT 1
 	`
-	var pathID, goalID, goalTitle, structureID, domainName, status string
+	var pathID, goalID, goalTitle, structureID, domainName, domainSlug, status string
 	var createdAt, updatedAt time.Time
 	err := r.db.QueryRow(ctx, query, learnerID).Scan(
-		&pathID, &goalID, &goalTitle, &structureID, &domainName, &status, &createdAt, &updatedAt)
+		&pathID, &goalID, &goalTitle, &structureID, &domainName, &domainSlug, &status, &createdAt, &updatedAt)
 	if err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
 			return nil, domain.ErrActivePathNotFound
@@ -94,7 +94,8 @@ func (r *PostgresRoadmapRepository) GetRoadmap(ctx context.Context, learnerID st
 			ID:               nodeID,
 			Title:            title,
 			Description:      desc,
-			Domain:           domainName,
+			Domain:           domainSlug,
+			DomainID:         domainSlug,
 			State:            state,
 			Order:            order,
 			EstimatedMinutes: minutes,
@@ -131,6 +132,8 @@ func (r *PostgresRoadmapRepository) GetRoadmap(ctx context.Context, learnerID st
 	return &domain.Roadmap{
 		GoalID:             goalID,
 		GoalTitle:          goalTitle,
+		Domain:             domainSlug,
+		DomainID:           domainSlug,
 		ProgressPercentage: progress,
 		CurrentNodeID:      inProgress,
 		Nodes:              nodes,

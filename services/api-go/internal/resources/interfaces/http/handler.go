@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/hcl-backend/services/api-go/internal/aiengine"
 	"github.com/hcl-backend/services/api-go/internal/resources/application"
 )
 
@@ -202,6 +203,55 @@ func (h *Handler) ExplainResourceRelevance(w http.ResponseWriter, r *http.Reques
 	json.NewEncoder(w).Encode(map[string]string{"explanation": explanation})
 }
 
+func (h *Handler) GetGoldResources(w http.ResponseWriter, r *http.Request) {
+	role := strings.TrimSpace(r.URL.Query().Get("role"))
+	moduleQuery := strings.TrimSpace(r.URL.Query().Get("module"))
+	if moduleQuery == "" {
+		// check conceptId path value if available
+		moduleQuery = r.PathValue("conceptId")
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+
+	if role == "" || role == "data_engineer" || moduleQuery == "" {
+		json.NewEncoder(w).Encode(map[string]any{
+			"status":    "unavailable",
+			"role_id":   role,
+			"module_id": moduleQuery,
+			"resources": map[string]any{
+				"documentation": []any{},
+				"video":         []any{},
+				"hands_on":      []any{},
+			},
+		})
+		return
+	}
+
+	goldMod, ok := aiengine.GetGoldResourceLookup().GetGoldModuleResources(role, moduleQuery)
+	if !ok {
+		json.NewEncoder(w).Encode(map[string]any{
+			"status":    "unavailable",
+			"role_id":   role,
+			"module_id": moduleQuery,
+			"resources": map[string]any{
+				"documentation": []any{},
+				"video":         []any{},
+				"hands_on":      []any{},
+			},
+		})
+		return
+	}
+
+	json.NewEncoder(w).Encode(map[string]any{
+		"status":        "success",
+		"role_id":       role,
+		"module_id":     goldMod.ModuleID,
+		"module_number": goldMod.ModuleNumber,
+		"module_name":   goldMod.ModuleName,
+		"resources":     goldMod.Resources,
+	})
+}
+
 func (h *Handler) RegisterRoutes(mux *http.ServeMux) {
 	mux.HandleFunc("GET /curator/resources", requireCurator(h.ListResources))
 	mux.HandleFunc("POST /curator/resources", requireCurator(h.CreateResource))
@@ -210,4 +260,6 @@ func (h *Handler) RegisterRoutes(mux *http.ServeMux) {
 	// These are learning endpoints
 	mux.HandleFunc("GET /concepts/{conceptId}/resources/alternate", h.GetAlternateResources)
 	mux.HandleFunc("GET /concepts/{conceptId}/resources/{resourceId}/why", h.ExplainResourceRelevance)
+	mux.HandleFunc("GET /gold-resources", h.GetGoldResources)
+	mux.HandleFunc("GET /concepts/{conceptId}/gold-resources", h.GetGoldResources)
 }

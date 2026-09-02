@@ -31,7 +31,6 @@ export default function GoalDefinitionPage() {
   const fallbackDomains = [
     { id: 'ai_engineer', name: 'AI Engineer' },
     { id: 'backend_engineer', name: 'Backend Engineer' },
-    { id: 'data_engineer', name: 'Data Engineer' },
     { id: 'frontend_engineer', name: 'Frontend Engineer' },
     { id: 'full_stack', name: 'Full Stack' },
     { id: 'machine_learning', name: 'Machine Learning' },
@@ -39,7 +38,7 @@ export default function GoalDefinitionPage() {
     { id: 'product_manager', name: 'Product Manager' },
     { id: 'data_analyst', name: 'Data Analyst' },
     { id: 'devops_sre', name: 'DevOps/SRE' },
-    { id: 'software_architecture', name: 'Software Architect' },
+    { id: 'software_architect', name: 'Software Architect' },
     { id: 'ai_data_scientist', name: 'AI/Data Scientist' }
   ];
 
@@ -48,21 +47,25 @@ export default function GoalDefinitionPage() {
       try {
         setLoading(true);
         const res = await apiClient.get(ENDPOINTS.DOMAINS);
+        let list = [];
         if (res?.success && Array.isArray(res.data)) {
-          setDomains(res.data);
-          setError(null);
+          list = res.data;
         } else if (Array.isArray(res)) {
-          setDomains(res);
-          setError(null);
+          list = res;
         } else if (Array.isArray(res?.data?.data)) {
-          setDomains(res.data.data);
+          list = res.data.data;
+        }
+        if (list.length > 0) {
+          setDomains(list.filter(d => d.id !== 'data_engineer'));
           setError(null);
         } else {
-          throw new Error('Invalid domains response format');
+          setDomains(fallbackDomains);
+          setError(null);
         }
       } catch (err) {
         console.error('Failed to fetch domains:', err);
         setError('Failed to load career roles. Using local fallback.');
+        setDomains(fallbackDomains);
       } finally {
         setLoading(false);
       }
