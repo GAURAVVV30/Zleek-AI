@@ -68,6 +68,7 @@ type RoadmapNode struct {
 	Title             string `json:"title"`
 	Description       string `json:"description"`
 	Domain            string `json:"domain"`
+	DomainID          string `json:"domain_id,omitempty"`
 	State             string `json:"state"`
 	Order             int    `json:"order"`
 	EstimatedMinutes  int    `json:"estimatedMinutes"`
@@ -80,6 +81,8 @@ type RoadmapNode struct {
 type Roadmap struct {
 	GoalID             string        `json:"goalId"`
 	GoalTitle          string        `json:"goalTitle"`
+	Domain             string        `json:"domain"`
+	DomainID           string        `json:"domain_id"`
 	ProgressPercentage int           `json:"progressPercentage"`
 	CurrentNodeID      string        `json:"currentNodeId"`
 	Nodes              []RoadmapNode `json:"nodes"`

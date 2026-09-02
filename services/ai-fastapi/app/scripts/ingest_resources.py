@@ -28,97 +28,65 @@ def ingest(chroma_folder_name: str = "chroma_data") -> int:
     chroma_dir = ai_fastapi_dir / chroma_folder_name
     chroma_dir.mkdir(parents=True, exist_ok=True)
 
-    domains_dir = ai_fastapi_dir / "app" / "knowledge" / "domains"
-    if not domains_dir.exists():
-        print(f"Domains folder not found at {domains_dir}")
+    gold_json_file = ai_fastapi_dir / "app" / "knowledge" / "gold_tier_resources.json"
+    if not gold_json_file.exists():
+        logger.error(f"Gold Tier dataset not found at {gold_json_file}")
         return 0
 
-    # Delay importing chromadb until after verifying domains exist to make
-    # the script easier to run for scanning/debugging when chromadb isn't installed.
     try:
         import chromadb
     except ImportError:
-        logger.warning(
-            "chromadb package not available. Install with 'pip install chromadb' to perform ingestion."
-        )
+        logger.warning("chromadb package not available.")
         return 0
 
-    # Initialize persistent ChromaDB client
     client = chromadb.PersistentClient(path=str(chroma_dir))
-
-    # Get or create collection
     try:
         collection = client.get_or_create_collection(name="gold_standard_resources")
-    except (AttributeError, TypeError) as exc:
-        # Fallback if the installed chromadb client uses a different API
-        logger.debug("get_or_create_collection not available: %s", exc)
-        try:
-            collection = client.create_collection(name="gold_standard_resources")
-        except Exception:
-            logger.exception("Failed to create or obtain 'gold_standard_resources' collection")
-            return 0
+    except Exception:
+        collection = client.create_collection(name="gold_standard_resources")
 
     total = 0
+    with open(gold_json_file, "r", encoding="utf-8") as fh:
+        dataset = json.load(fh)
 
-    for graph_file in sorted(domains_dir.rglob("*_graph.json")):
-        domain_id = graph_file.parent.name
-        try:
-            with open(graph_file, "r", encoding="utf-8") as fh:
-                data = json.load(fh)
-        except (json.JSONDecodeError, OSError):
-            logger.exception("Failed to load %s", graph_file)
+    for role_id, role_data in dataset.items():
+        if role_id == "data_engineer":
             continue
+        role_name = role_data.get("role_name", role_id)
+        for module in role_data.get("modules", []):
+            module_id = module.get("module_id")
+            module_number = module.get("module_number")
+            module_name = module.get("module_name")
+            resources = module.get("resources", {})
 
-        nodes = data.get("nodes") or data.get("graph") or []
-        if isinstance(nodes, dict):
-            nodes = nodes.get("nodes", [])
+            for rtype in ["video", "documentation", "hands_on"]:
+                r_list = resources.get(rtype, [])
+                for idx, res in enumerate(r_list):
+                    res_id = res.get("id") or f"{module_id}_{rtype}_{idx}"
+                    title = res.get("title") or ""
+                    desc = res.get("description") or ""
+                    url = res.get("url") or ""
+                    doc = f"{title}\nCategory: {rtype}\nDescription: {desc}\nURL: {url}".strip()
 
-        for n_idx, node in enumerate(nodes):
-            node_id = node.get("id") or node.get("node_id") or f"{domain_id}_node_{n_idx}"
-            node_name = node.get("name") or node.get("title") or ""
-            resources = node.get("resources", []) or []
+                    metadata = {
+                        "domain_id": role_id,
+                        "role": role_name,
+                        "node_id": module_id,
+                        "module_number": module_number,
+                        "module_name": module_name,
+                        "resource_type": rtype,
+                        "title": title,
+                        "description": desc,
+                        "url": url,
+                        "provider": res.get("provider", ""),
+                        "authority_score": 1.0,
+                    }
 
-            for r_idx, res in enumerate(resources):
-                res_id = f"{node_id}_res_{r_idx}"
-                title = res.get("title") or res.get("name") or ""
-                rtype = res.get("type") or res.get("resource_type") or ""
-                document = f"{title}\nType: {rtype}".strip()
-
-                metadata = {
-                    "domain_id": domain_id,
-                    "node_id": node_id,
-                    "node_name": node_name,
-                    "url": res.get("url"),
-                    "provider": res.get("provider"),
-                    "authority_score": res.get("authority_score"),
-                }
-
-                try:
-                    collection.add(documents=[document], metadatas=[metadata], ids=[res_id])
-                    total += 1
-                except (TypeError, AttributeError) as e:
-                    # Signature mismatch between chromadb versions; try client-level API
-                    logger.debug("collection.add failed, trying client.add: %s", e)
-                    add_func = getattr(client, "add", None)
-                    if callable(add_func):
-                        try:
-                            add_func(
-                                collection_name="gold_standard_resources",
-                                documents=[document],
-                                metadatas=[metadata],
-                                ids=[res_id],
-                            )
-                            total += 1
-                        except Exception:
-                            logger.exception("Failed to add resource %s from %s", res_id, graph_file)
-                    else:
-                        logger.error(
-                            "chromadb client has no 'add' method; cannot add resource %s from %s",
-                            res_id,
-                            graph_file,
-                        )
-                except Exception:
-                    logger.exception("Unexpected error adding resource %s from %s", res_id, graph_file)
+                    try:
+                        collection.add(documents=[doc], metadatas=[metadata], ids=[res_id])
+                        total += 1
+                    except Exception as e:
+                        logger.debug("Failed adding resource %s: %s", res_id, e)
 
     logger.info("Ingested %d resources into 'gold_standard_resources' at %s", total, chroma_dir)
     return total
@@ -130,3 +98,4 @@ if __name__ == "__main__":
         logger.info("Ingestion completed successfully.")
     else:
         logger.info("No resources were ingested.")
+

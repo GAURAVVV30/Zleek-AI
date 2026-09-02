@@ -19,7 +19,6 @@ var pdfToDomain = map[string]string{
 	"ai-engineer.pdf":        "ai_engineer",
 	"backend_engineer.pdf":   "backend_engineer",
 	"data-analyst.pdf":       "data_analyst",
-	"data-engineer.pdf":      "data_engineer",
 	"devops_sre.pdf":         "devops_sre",
 	"frontend_enginner.pdf":  "frontend_engineer",
 	"full-stack.pdf":         "full_stack",

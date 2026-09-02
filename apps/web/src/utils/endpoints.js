@@ -40,6 +40,8 @@ export const ENDPOINTS = {
     PROJECT: (id) => `/concepts/${id}/project`,
     SUBMIT_PROJECT: (id) => `/concepts/${id}/project/submit`,
     PROJECT_STATUS: (id) => `/concepts/${id}/project/status`,
+    GOLD: (role, module) => `/gold-resources?role=${encodeURIComponent(role)}&module=${encodeURIComponent(module)}`,
+    MODULE_CHAT: '/api/v1/learning/module-chat',
   },
   RESOURCES: {
     FEEDBACK: (id) => `/resources/${id}/feedback`,

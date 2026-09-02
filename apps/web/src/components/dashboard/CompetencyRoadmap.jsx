@@ -1,9 +1,43 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Layers, CheckCircle2, PlayCircle, AlertTriangle, Lock } from 'lucide-react';
 import { NODE_STATES, NODE_CONFIG } from '../../utils/constants';
 
+const DOMAIN_UUID_MAP = {
+  'f9ec7df2-79d6-52b1-9786-2be23e1738ee': 'ai_data_scientist',
+  'ffc78d4c-4ed7-5f25-a82c-52c38181bafd': 'ai_engineer',
+  '3e5fea96-c7e9-5817-a396-daacbbafeb7b': 'backend_engineer',
+  'c46c25c9-44c3-581e-b903-d217a9c8c03c': 'data_analyst',
+  '4a9bcbcf-0459-531f-856d-b20c270c376b': 'full_stack',
+  '66a1c5de-4d1a-5303-bce1-5439aad10da2': 'devops_sre',
+  '9190cc21-9768-5b94-850e-3a28f66c4055': 'frontend_engineer',
+  '5e728fa9-b31e-5170-9dce-dec79630dd21': 'full_stack',
+  '3f02aad3-d57b-5129-9cf2-b914ed7e313e': 'machine_learning',
+  '2e0c2a7f-e1e1-534c-8501-4074196f0915': 'mobile_engineer',
+  '714b074c-43b9-5ecc-861d-f1f3bab7663f': 'product_manager',
+  '1296678f-0912-5d9e-8d1a-5d331d2b1cd7': 'software_architect',
+};
+
+const normalizeRoleSlug = (role) => {
+  if (!role) return '';
+  const clean = role.trim().toLowerCase();
+  if (DOMAIN_UUID_MAP[clean]) return DOMAIN_UUID_MAP[clean];
+  if (clean === 'data_engineer') return 'full_stack';
+  return clean;
+};
+
 export default function CompetencyRoadmap({ roadmap, selectedConcept, onSelectConcept }) {
+  const navigate = useNavigate();
   if (!roadmap || !roadmap.nodes) return null;
+
+  const handleModuleClick = (node, index) => {
+    if (onSelectConcept) onSelectConcept(node);
+    const rawRole = roadmap?.domain || roadmap?.domain_id || node?.domain || node?.domain_id || localStorage.getItem('userActiveRole');
+    let activeRole = normalizeRoleSlug(rawRole);
+    if (!activeRole) activeRole = 'full_stack';
+    const moduleQuery = node?.id || `${index + 1}`;
+    navigate(`/learn?role=${encodeURIComponent(activeRole)}&module=${encodeURIComponent(moduleQuery)}`);
+  };
 
   return (
     <div className="bg-black/40 backdrop-blur-xl border border-white/10 rounded-[20px] p-6 lg:p-8 shadow-[0_0_20px_rgba(79,70,229,0.15)] w-full">
@@ -28,7 +62,7 @@ export default function CompetencyRoadmap({ roadmap, selectedConcept, onSelectCo
               )}
 
               <div
-                onClick={() => onSelectConcept && onSelectConcept(node)}
+                onClick={() => handleModuleClick(node, index)}
                 className={`relative z-10 h-full flex flex-col justify-start p-5 gap-4 rounded-3xl border transition cursor-pointer group ${
                   isSelected
                     ? 'border-indigo-400 bg-indigo-900/40 backdrop-blur-sm/50 shadow-[0_0_20px_rgba(79,70,229,0.25)] ring-2 ring-indigo-500/30'

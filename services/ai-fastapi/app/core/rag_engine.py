@@ -159,22 +159,22 @@ class ResourceRetriever:
             self._collection = self._client.create_collection(name=collection_name)
             self._using_nvidia_embed = False
 
-    def get_resources_for_node(self, node_id: str, n_results: int = 3) -> list[dict]:
+    def get_resources_for_node(self, node_id: str, n_results: int = 3, domain_id: str | None = None) -> list[dict]:
         """Return up to ``n_results`` resources for a given ``node_id``.
 
         Uses NVIDIA NV-Embed-powered semantic search when available,
         otherwise falls back to ChromaDB's metadata filter.
-
-        Args:
-            node_id:   The node identifier to filter resources by.
-            n_results: Maximum resources to return.
-
-        Returns:
-            A list of resource dicts: ``{id, title, url, provider, metadata}``.
         """
+        if domain_id == "data_engineer":
+            return []
+
+        where_filter: dict[str, Any] = {"node_id": node_id}
+        if domain_id:
+            where_filter = {"$and": [{"domain_id": domain_id}, {"node_id": node_id}]}
+
         try:
             query_result = self._collection.query(
-                where={"node_id": node_id}, n_results=n_results
+                where=where_filter, n_results=n_results
             )
             ids: list[Any] = list(query_result.get("ids", []) or [])
             metadatas: list[Any] = list(query_result.get("metadatas", []) or [])
