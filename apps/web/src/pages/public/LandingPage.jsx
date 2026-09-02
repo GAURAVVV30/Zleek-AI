@@ -1,6 +1,7 @@
 import React from 'react';
 import { RandomLetterSwap } from '../../components/ui/random-letter-swap';
 import { useNavigate } from 'react-router-dom';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import {
   Compass,
   ArrowRight,
@@ -8,243 +9,277 @@ import {
   ClipboardList,
   GraduationCap,
   Star,
-  RefreshCw,
   ShieldCheck,
   Zap,
   Award,
-  Brain,
-  Sparkles,
 } from 'lucide-react';
+
+const FADE_UP = {
+  hidden: { opacity: 0, y: 40 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
+};
+
+const STAGGER = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { staggerChildren: 0.1 } }
+};
 
 export default function LandingPage() {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-black/20 backdrop-blur-sm text-white overflow-x-hidden font-sans">
-      {/* 1. Top Navigation Bar - Full Width with Container */}
-      <header className="w-full bg-black/20 backdrop-blur-sm border-b border-blue-100/50 sticky top-0 z-30">
-        <div className="max-w-7xl mx-auto px-4 sm:px-8 py-4 flex items-center justify-between">
-          {/* Brand */}
-          <div className="flex items-center gap-3 cursor-pointer" onClick={() => navigate('/')}>
-            <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-white font-bold shadow-[0_0_15px_rgba(79,70,229,0.2)] shadow-blue-500/20">
-              <Compass className="w-5 h-5" />
+    <div className="w-full overflow-x-hidden">
+      
+      {/* Animated Subtle Background */}
+      <motion.div 
+        className="fixed inset-0 z-0 pointer-events-none"
+      >
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-indigo-900/15 via-[#050505]/0 to-[#050505]/0"></div>
+      </motion.div>
+
+      {/* Header */}
+      <motion.header 
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+        className="w-full bg-black/40 backdrop-blur-md border-b border-white/5 sticky top-0 z-50"
+      >
+        <div className="max-w-7xl mx-auto px-6 md:px-12 py-4 flex items-center justify-between">
+          <div className="flex items-center gap-3 cursor-pointer group" onClick={() => navigate('/')}>
+            <div className="w-8 h-8 rounded-xl bg-white/10 flex items-center justify-center text-white font-bold transition-transform group-hover:scale-105">
+              <Compass className="w-4 h-4" />
             </div>
-            <span className="font-display font-bold text-xl tracking-tight text-white">
+            <span className="font-display font-bold text-lg tracking-tight text-white">
               Amplified<span className="text-indigo-400">.AI</span>
             </span>
           </div>
 
-          {/* Center Links */}
-          <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-300">
-            <RandomLetterSwap href="#features" className="hover:text-indigo-400 transition inline-block w-[64px]" label="Features" />
-            <RandomLetterSwap href="#how-it-works" className="hover:text-indigo-400 transition font-semibold text-white inline-block w-[88px]" label="How it works" />
-            <RandomLetterSwap href="#about" className="hover:text-indigo-400 transition inline-block w-[40px]" label="About" />
+          <nav className="hidden md:flex items-center gap-10 text-sm font-medium text-slate-400">
+            <RandomLetterSwap href="#features" className="hover:text-white transition-colors inline-block w-[64px]" label="Features" />
+            <RandomLetterSwap href="#how-it-works" className="hover:text-white transition-colors inline-block w-[88px]" label="How it works" />
+            <RandomLetterSwap href="#about" className="hover:text-white transition-colors inline-block w-[40px]" label="About" />
           </nav>
 
-          {/* Auth Buttons */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-4">
             <button
               onClick={() => navigate('/login')}
-              className="px-5 py-2 rounded-xl text-sm font-semibold text-white bg-white/5 hover:bg-white/10 backdrop-blur-lg border border-white/10 shadow-[0_4px_24px_-1px_rgba(0,0,0,0.2)] transition-all duration-300"
+              className="text-sm font-semibold text-slate-300 hover:text-white transition-colors"
             >
               Login
             </button>
             <button
               onClick={() => navigate('/signup')}
-              className="px-5 py-2 rounded-xl text-sm font-semibold text-white bg-indigo-500/20 hover:bg-indigo-500/30 backdrop-blur-lg border border-indigo-400/30 shadow-[0_4px_24px_-1px_rgba(79,70,229,0.3)] transition-all duration-300 transform hover:-translate-y-0.5"
+              className="px-5 py-2 rounded-full text-sm font-semibold text-[#050505] bg-white hover:bg-slate-200 transition-transform transform hover:-translate-y-0.5"
             >
               Sign Up
             </button>
           </div>
         </div>
-      </header>
+      </motion.header>
 
-      {/* 2. Full-Bleed Seamless Hero Section (Zero Side Spaces, 100% Responsive) */}
-      <section className="w-full bg-black/20 backdrop-blur-sm relative overflow-hidden py-16 md:py-24">
-        <div className="container mx-auto px-6 md:px-12 max-w-7xl grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-          {/* Left Column: Heading & CTAs */}
-          <div className="lg:col-span-5 z-20 space-y-6 pt-4 lg:pt-0">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-indigo-900/60 backdrop-blur-md/60 border border-blue-200/80 text-indigo-300 text-xs font-semibold">
-              <Sparkles className="w-3.5 h-3.5 text-indigo-400" />
-              Evidence-Backed Adaptive Intelligence
-            </div>
-
-            <h1 className="font-display text-4xl sm:text-5xl lg:text-[3.5rem] font-extrabold text-white tracking-tight leading-[1.1]">
-              Your path to <br />
-              real competence.
-            </h1>
-
-            <p className="text-base sm:text-lg text-slate-300 leading-relaxed max-w-md font-normal">
-              Adaptive learning that focuses on what you can <strong>actually do</strong> — paired with a personalized 3D AI study companion.
-            </p>
-
-            <div className="flex flex-wrap items-center gap-4 pt-2">
-              <button
-                onClick={() => navigate('/signup')}
-                className="px-8 py-3.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold text-sm shadow-lg shadow-blue-500/25 transition transform hover:-translate-y-0.5 flex items-center gap-2"
-              >
-                <span>Get Started</span>
-                <ArrowRight className="w-4 h-4" />
-              </button>
-              <a
-                href="#how-it-works"
-                className="px-6 py-3.5 bg-black/40 backdrop-blur-xl hover:bg-black/30 backdrop-blur-md text-white border border-white/10 rounded-xl font-bold text-sm shadow-[0_0_10px_rgba(79,70,229,0.1)] transition hover:border-slate-300"
-              >
-                Learn More
-              </a>
-            </div>
-          </div>
-
-          {/* Right Column: Hero Graphic */}
-          <div className="lg:col-span-7 relative flex items-center justify-center lg:justify-end">
-            <div className="relative w-full max-w-2xl lg:max-w-none bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-4 sm:p-6 shadow-[0_8px_30px_rgb(0,0,0,0.12)]">
-              <img
-                src="/illustrations/hero-mountain.png"
-                alt="Adaptive learning path to mastery"
-                className="w-full h-auto object-contain select-none pointer-events-none rounded-xl"
-                onError={(e) => {
-                  e.target.src = '/illustrations/media_1787759050661.jpg';
-                }}
-              />
-            </div>
-          </div>
-        </div>
-      </section>
-
-
-
-      {/* 4. The 4-Step Adaptive Loop Section */}
-      <section id="how-it-works" className="w-full border-t border-white/10 bg-black/40 backdrop-blur-xl py-16 md:py-24">
-        <div className="container mx-auto px-6 md:px-12 max-w-7xl">
-          <div className="text-center max-w-2xl mx-auto mb-16">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-900/40 backdrop-blur-sm text-indigo-400 text-xs font-semibold mb-3">
-            <RefreshCw className="w-3.5 h-3.5" />
-            The Competency Engine
-          </div>
-          <h2 className="font-display text-3xl font-extrabold text-white">
-            How Amplified.AI Adapts To You
-          </h2>
-          <p className="text-slate-300 text-sm mt-3 leading-relaxed">
-            Most platforms measure progress by what you click. We measure progress by what you can prove, adjusting your roadmap in real-time.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {/* Step 1 */}
-          <div className="bg-black/20 backdrop-blur-md border border-white/10 rounded-2xl p-6 shadow-[0_0_10px_rgba(79,70,229,0.1)] hover:shadow-[0_0_15px_rgba(79,70,229,0.2)] transition">
-            <div className="w-12 h-12 rounded-xl bg-indigo-900/40 backdrop-blur-sm text-indigo-400 flex items-center justify-center font-bold text-lg mb-4">
-              <Target className="w-6 h-6" />
-            </div>
-            <span className="text-xs font-bold text-indigo-400 uppercase tracking-wider">Step 01</span>
-            <h3 className="text-base font-bold text-white mt-1 mb-2">Define Goal & Bond Avatar</h3>
-            <p className="text-xs text-slate-300 leading-relaxed">
-              State your target role and pair with a 3D cognitive AI companion tailored to your learning style.
-            </p>
-          </div>
-
-          {/* Step 2 */}
-          <div className="bg-black/20 backdrop-blur-md border border-white/10 rounded-2xl p-6 shadow-[0_0_10px_rgba(79,70,229,0.1)] hover:shadow-[0_0_15px_rgba(79,70,229,0.2)] transition">
-            <div className="w-12 h-12 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold text-lg mb-4">
-              <ClipboardList className="w-6 h-6" />
-            </div>
-            <span className="text-xs font-bold text-indigo-600 uppercase tracking-wider">Step 02</span>
-            <h3 className="text-base font-bold text-white mt-1 mb-2">Baseline Diagnostic</h3>
-            <p className="text-xs text-slate-300 leading-relaxed">
-              Identify existing strengths and gaps so you never waste time re-learning concepts you already know.
-            </p>
-          </div>
-
-          {/* Step 3 */}
-          <div className="bg-black/20 backdrop-blur-md border border-white/10 rounded-2xl p-6 shadow-[0_0_10px_rgba(79,70,229,0.1)] hover:shadow-[0_0_15px_rgba(79,70,229,0.2)] transition">
-            <div className="w-12 h-12 rounded-xl bg-indigo-900/40 backdrop-blur-sm text-indigo-400 flex items-center justify-center font-bold text-lg mb-4">
-              <Star className="w-6 h-6" />
-            </div>
-            <span className="text-xs font-bold text-indigo-400 uppercase tracking-wider">Step 03</span>
-            <h3 className="text-base font-bold text-white mt-1 mb-2">Prove Understanding</h3>
-            <p className="text-xs text-slate-300 leading-relaxed">
-              Engage with best-of-web curated resources, then unlock the next node by passing quizzes or applied projects.
-            </p>
-          </div>
-
-          {/* Step 4 */}
-          <div className="bg-black/20 backdrop-blur-md border border-white/10 rounded-2xl p-6 shadow-[0_0_10px_rgba(79,70,229,0.1)] hover:shadow-[0_0_15px_rgba(79,70,229,0.2)] transition">
-            <div className="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold text-lg mb-4">
-              <GraduationCap className="w-6 h-6" />
-            </div>
-            <span className="text-xs font-bold text-emerald-600 uppercase tracking-wider">Step 04</span>
-            <h3 className="text-base font-bold text-white mt-1 mb-2">Verified Mastery</h3>
-            <p className="text-xs text-slate-300 leading-relaxed">
-              Every milestone achieved is backed by immutable evidence, building a portfolio of proven competence.
-            </p>
-          </div>
-        </div>
-        </div>
-      </section>
-
-      {/* 5. Product Principles / Features Section */}
-      <section id="features" className="max-w-7xl mx-auto px-4 sm:px-8 py-20 bg-black/30 backdrop-blur-md rounded-3xl border border-white/10 my-10">
-        <div className="max-w-3xl mx-auto text-center mb-16">
-          <h2 className="font-display text-3xl font-extrabold text-white">
-            Why Amplified.AI Is Different
-          </h2>
-          <p className="text-slate-300 text-sm mt-3">
-            Built on strict pedagogical principles: expert curation, evidence over self-report, and continuous path adaptation.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className="p-6 bg-black/40 backdrop-blur-xl rounded-2xl border border-white/10 shadow-[0_0_10px_rgba(79,70,229,0.1)] space-y-3">
-            <div className="w-10 h-10 rounded-xl bg-indigo-900/60 backdrop-blur-md text-indigo-400 flex items-center justify-center">
-              <ShieldCheck className="w-5 h-5" />
-            </div>
-            <h3 className="font-bold text-base text-white">Expert Knowledge Graphs</h3>
-            <p className="text-xs text-slate-300 leading-relaxed">
-              Curricula originate from vetted taxonomies and verified prerequisite relationships — never uncontrolled LLM hallucinations.
-            </p>
-          </div>
-
-          <div className="p-6 bg-black/40 backdrop-blur-xl rounded-2xl border border-white/10 shadow-[0_0_10px_rgba(79,70,229,0.1)] space-y-3">
-            <div className="w-10 h-10 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center">
-              <Zap className="w-5 h-5" />
-            </div>
-            <h3 className="font-bold text-base text-white">Adaptive Remediation</h3>
-            <p className="text-xs text-slate-300 leading-relaxed">
-              Struggling on a specific topic? Targeted remediation resources are seamlessly inserted into your path before moving forward.
-            </p>
-          </div>
-
-          <div className="p-6 bg-black/40 backdrop-blur-xl rounded-2xl border border-white/10 shadow-[0_0_10px_rgba(79,70,229,0.1)] space-y-3">
-            <div className="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center">
-              <Award className="w-5 h-5" />
-            </div>
-            <h3 className="font-bold text-base text-white">Transparent Explainability</h3>
-            <p className="text-xs text-slate-300 leading-relaxed">
-              Every concept and resource comes with clear "Why am I learning this?" reasoning tied directly to your career goal.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* 6. Bottom CTA Banner */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-8 py-16 text-center">
-        <div className="bg-black/30 backdrop-blur-md border border-white/10 rounded-3xl p-10 sm:p-14 text-white shadow-[0_0_15px_rgba(79,70,229,0.15)] relative overflow-hidden">
-          <div className="relative z-10 max-w-2xl mx-auto space-y-6">
-            <h2 className="font-display text-3xl sm:text-4xl font-extrabold tracking-tight">
-              Ready to climb your path to mastery?
-            </h2>
-            <button
-              onClick={() => navigate('/signup')}
-              className="px-8 py-4 bg-indigo-600 hover:bg-indigo-700 font-bold rounded-xl text-sm shadow-[0_0_15px_rgba(79,70,229,0.3)] transition transform hover:-translate-y-0.5"
+      <main className="relative z-10">
+        {/* HERO SECTION */}
+        <section className="w-full min-h-[90vh] flex flex-col justify-center py-20">
+          <div className="container mx-auto px-6 md:px-12 max-w-7xl">
+            <motion.div 
+              initial="hidden" 
+              animate="visible" 
+              variants={STAGGER}
+              className="max-w-4xl space-y-8"
             >
-              Start Free Assessment
-            </button>
-          </div>
-        </div>
-      </section>
+              <motion.div variants={FADE_UP} className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-white/10 text-slate-300 text-xs font-semibold tracking-wide uppercase bg-white/5">
+                <span className="w-2 h-2 rounded-full bg-indigo-500 animate-pulse"></span>
+                Evidence-Backed Adaptive Intelligence
+              </motion.div>
 
-      {/* 7. Footer */}
-      <footer className="w-full bg-black/40 backdrop-blur-xl py-8 border-t border-white/10 text-center text-xs text-slate-400">
-        <p>© 2026 Amplified.AI Learning Platform. Built for verified competence.</p>
+              <motion.h1 variants={FADE_UP} className="font-display text-5xl md:text-7xl lg:text-[5.5rem] font-bold text-white tracking-tighter leading-[1.05]">
+                AI that builds your <br className="hidden md:block"/> personalized learning path.
+              </motion.h1>
+
+              <motion.p variants={FADE_UP} className="text-lg md:text-xl text-slate-400 leading-relaxed max-w-2xl font-light">
+                Adaptive learning that focuses on what you can actually do. We measure progress by proven competence, not just clicks.
+              </motion.p>
+
+              <motion.div variants={FADE_UP} className="flex flex-wrap items-center gap-4 pt-4">
+                <button
+                  onClick={() => navigate('/signup')}
+                  className="px-8 py-4 bg-white text-[#050505] rounded-full font-semibold text-sm hover:scale-105 transition-transform flex items-center gap-2"
+                >
+                  <span>Start Your Diagnostic</span>
+                  <ArrowRight className="w-4 h-4" />
+                </button>
+                <a
+                  href="#how-it-works"
+                  className="px-8 py-4 bg-transparent border border-white/20 hover:border-white/40 text-white rounded-full font-semibold text-sm transition-colors"
+                >
+                  Discover How
+                </a>
+              </motion.div>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* HOW IT WORKS SECTION */}
+        <section id="how-it-works" className="w-full py-32">
+          <div className="container mx-auto px-6 md:px-12 max-w-5xl">
+            <motion.div 
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-100px" }}
+              variants={FADE_UP}
+              className="mb-24"
+            >
+              <h2 className="font-display text-4xl md:text-5xl font-bold tracking-tight mb-4">The Competency Engine</h2>
+              <p className="text-slate-400 text-lg max-w-xl">A completely dynamic learning loop adjusting to your proven skills in real-time.</p>
+            </motion.div>
+
+            <div className="space-y-32">
+              {[
+                { step: '01', title: 'Define Goal & Bond', desc: 'State your target role and pair with a 3D cognitive AI companion tailored to your learning style.', icon: Target },
+                { step: '02', title: 'Baseline Diagnostic', desc: 'Identify existing strengths and gaps so you never waste time re-learning concepts you already know.', icon: ClipboardList },
+                { step: '03', title: 'Prove Understanding', desc: 'Engage with best-of-web curated resources, then unlock the next node by passing quizzes or applied projects.', icon: Star },
+                { step: '04', title: 'Verified Mastery', desc: 'Every milestone achieved is backed by immutable evidence, building a portfolio of proven competence.', icon: GraduationCap },
+              ].map((item, i) => (
+                <motion.div 
+                  key={i}
+                  initial={{ opacity: 0, y: 100 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-20%" }}
+                  transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                  className="flex flex-col md:flex-row gap-8 md:gap-16 items-start"
+                >
+                  <div className="text-6xl md:text-8xl font-bold text-white/5 font-display shrink-0 tracking-tighter">
+                    {item.step}
+                  </div>
+                  <div className="space-y-4 pt-2 md:pt-6">
+                    <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-white mb-6">
+                      <item.icon className="w-5 h-5" />
+                    </div>
+                    <h3 className="text-2xl md:text-3xl font-bold tracking-tight">{item.title}</h3>
+                    <p className="text-slate-400 text-lg leading-relaxed max-w-lg">{item.desc}</p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* FEATURES SECTION */}
+        <section id="features" className="w-full py-32">
+          <div className="container mx-auto px-6 md:px-12 max-w-7xl">
+            <motion.div 
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-100px" }}
+              variants={FADE_UP}
+              className="mb-24 md:text-center"
+            >
+              <h2 className="font-display text-4xl md:text-5xl font-bold tracking-tight mb-4">Why Amplified.AI Is Different</h2>
+              <p className="text-slate-400 text-lg md:mx-auto max-w-xl">Built on strict pedagogical principles: expert curation, evidence over self-report, and continuous path adaptation.</p>
+            </motion.div>
+
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-12">
+              <motion.div 
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8 }}
+                className="md:col-span-8 bg-black/40 backdrop-blur-md rounded-3xl p-8 md:p-12 border border-white/5 group hover:border-white/10 transition-colors"
+              >
+                <ShieldCheck className="w-8 h-8 text-white mb-8" />
+                <h3 className="text-3xl font-bold mb-4 tracking-tight">Expert Knowledge Graphs</h3>
+                <p className="text-slate-400 text-lg leading-relaxed max-w-xl">
+                  Curricula originate from vetted taxonomies and verified prerequisite relationships — never uncontrolled LLM hallucinations. Precision learning paths backed by real industry standards.
+                </p>
+              </motion.div>
+
+              <motion.div 
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, delay: 0.1 }}
+                className="md:col-span-4 bg-black/40 backdrop-blur-md rounded-3xl p-8 md:p-12 border border-white/5 group hover:border-white/10 transition-colors flex flex-col justify-between"
+              >
+                <Zap className="w-8 h-8 text-white mb-8" />
+                <div>
+                  <h3 className="text-2xl font-bold mb-4 tracking-tight">Adaptive Remediation</h3>
+                  <p className="text-slate-400 text-base leading-relaxed">
+                    Struggling on a specific topic? Targeted remediation resources are seamlessly inserted into your path before moving forward.
+                  </p>
+                </div>
+              </motion.div>
+
+              <motion.div 
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+                className="md:col-span-12 bg-black/40 backdrop-blur-md rounded-3xl p-8 md:p-16 border border-white/5 group hover:border-white/10 transition-colors flex flex-col md:flex-row gap-8 md:gap-16 items-center"
+              >
+                <div className="shrink-0">
+                  <Award className="w-12 h-12 text-white" />
+                </div>
+                <div>
+                  <h3 className="text-3xl font-bold mb-4 tracking-tight">Transparent Explainability</h3>
+                  <p className="text-slate-400 text-lg leading-relaxed max-w-3xl">
+                    Every concept and resource comes with clear "Why am I learning this?" reasoning tied directly to your career goal. No more blindly following courses; understand the exact utility of what you are mastering.
+                  </p>
+                </div>
+              </motion.div>
+            </div>
+          </div>
+        </section>
+
+        {/* ABOUT SECTION */}
+        <section id="about" className="w-full py-32">
+          <div className="container mx-auto px-6 md:px-12 max-w-4xl text-center">
+            <motion.div 
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 1 }}
+            >
+              <h2 className="font-display text-3xl md:text-5xl font-bold tracking-tight mb-8">
+                We believe learning should be proven, not just watched.
+              </h2>
+              <p className="text-slate-400 text-lg md:text-xl leading-relaxed">
+                Amplified.AI was built to bridge the gap between passive video consumption and active competence. Our mission is to provide the most direct, evidence-backed route to professional mastery.
+              </p>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* FINAL CTA */}
+        <section className="w-full py-32">
+          <div className="container mx-auto px-6 md:px-12 max-w-5xl">
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+              className="bg-black/50 backdrop-blur-xl rounded-[3rem] p-12 md:p-24 border border-white/10 text-center relative overflow-hidden"
+            >
+              <div className="absolute inset-0 bg-gradient-to-b from-white/5 to-transparent pointer-events-none"></div>
+              <div className="relative z-10">
+                <h2 className="font-display text-4xl md:text-6xl font-bold tracking-tight mb-8">
+                  Build your path. <br/> Close your gaps.
+                </h2>
+                <button
+                  onClick={() => navigate('/signup')}
+                  className="px-10 py-5 bg-white text-[#050505] hover:scale-105 transition-transform rounded-full font-bold text-base shadow-2xl shadow-white/10 flex items-center gap-3 mx-auto"
+                >
+                  <span>Start Your Diagnostic</span>
+                  <ArrowRight className="w-5 h-5" />
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        </section>
+      </main>
+
+      {/* Footer */}
+      <footer className="w-full py-12 border-t border-white/5 text-center">
+        <p className="text-slate-500 text-sm">© 2026 Amplified.AI Learning Platform. Built for verified competence.</p>
       </footer>
     </div>
   );
