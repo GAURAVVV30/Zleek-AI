@@ -250,26 +250,26 @@ export default function LandingPage() {
         </section>
 
         {/* FINAL CTA */}
-        <section className="w-full py-32">
-          <div className="container mx-auto px-6 md:px-12 max-w-5xl">
+        <section className="w-full py-24">
+          <div className="container mx-auto px-6 md:px-12 max-w-4xl">
             <motion.div 
               initial={{ opacity: 0, scale: 0.95 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              className="bg-black/50 backdrop-blur-xl rounded-[3rem] p-12 md:p-24 border border-white/10 text-center relative overflow-hidden"
+              className="bg-black/50 backdrop-blur-xl rounded-[2rem] p-10 md:p-16 border border-white/10 text-center relative overflow-hidden"
             >
               <div className="absolute inset-0 bg-gradient-to-b from-white/5 to-transparent pointer-events-none"></div>
               <div className="relative z-10">
-                <h2 className="font-display text-4xl md:text-6xl font-bold tracking-tight mb-8">
+                <h2 className="font-display text-3xl md:text-5xl font-bold tracking-tight mb-6">
                   Build your path. <br/> Close your gaps.
                 </h2>
                 <button
                   onClick={() => navigate('/signup')}
-                  className="px-10 py-5 bg-white text-[#050505] hover:scale-105 transition-transform rounded-full font-bold text-base shadow-2xl shadow-white/10 flex items-center gap-3 mx-auto"
+                  className="px-8 py-4 bg-white text-[#050505] hover:scale-105 transition-transform rounded-full font-bold text-sm shadow-2xl shadow-white/10 flex items-center gap-3 mx-auto"
                 >
                   <span>Start Your Diagnostic</span>
-                  <ArrowRight className="w-5 h-5" />
+                  <ArrowRight className="w-4 h-4" />
                 </button>
               </div>
             </motion.div>
