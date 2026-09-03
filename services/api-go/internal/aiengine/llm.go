@@ -35,14 +35,14 @@ type llmProvider struct {
 }
 
 func detectProvider() llmProvider {
-	nvidiaKey := strings.TrimSpace(os.Getenv("NVIDIA_API_KEY"))
 	groqKey := strings.TrimSpace(os.Getenv("GROQ_API_KEY"))
+	nvidiaKey := strings.TrimSpace(os.Getenv("NVIDIA_API_KEY"))
 	geminiKey := strings.TrimSpace(os.Getenv("GEMINI_API_KEY"))
 	switch {
-	case nvidiaKey != "":
-		return llmProvider{"nvidia_nim", nvidiaKey, "https://integrate.api.nvidia.com/v1", "meta/llama-3.2-11b-vision-instruct"}
 	case groqKey != "":
-		return llmProvider{"groq", groqKey, "https://api.groq.com/openai/v1", "llama-3.3-70b-versatile"}
+		return llmProvider{"groq", groqKey, "https://api.groq.com/openai/v1", "openai/gpt-oss-120b"}
+	case nvidiaKey != "":
+		return llmProvider{"nvidia_nim", nvidiaKey, "https://integrate.api.nvidia.com/v1", "nvidia/llama-3.1-nemotron-70b-instruct"}
 	case geminiKey != "":
 		return llmProvider{"gemini", geminiKey, "https://generativelanguage.googleapis.com/v1beta/openai", "gemini-2.5-flash"}
 	}
@@ -85,13 +85,13 @@ func NewLLMClientForProvider(providerName, modelOverride string) *LLMClient {
 
 	var p llmProvider
 	switch strings.ToLower(providerName) {
-	case "nvidia", "nvidia_nim":
-		if nvidiaKey != "" {
-			p = llmProvider{"nvidia_nim", nvidiaKey, "https://integrate.api.nvidia.com/v1", "meta/llama-3.2-11b-vision-instruct"}
-		}
 	case "groq":
 		if groqKey != "" {
-			p = llmProvider{"groq", groqKey, "https://api.groq.com/openai/v1", "llama-3.3-70b-versatile"}
+			p = llmProvider{"groq", groqKey, "https://api.groq.com/openai/v1", "openai/gpt-oss-120b"}
+		}
+	case "nvidia", "nvidia_nim":
+		if nvidiaKey != "" {
+			p = llmProvider{"nvidia_nim", nvidiaKey, "https://integrate.api.nvidia.com/v1", "nvidia/llama-3.1-nemotron-70b-instruct"}
 		}
 	case "gemini":
 		if geminiKey != "" {

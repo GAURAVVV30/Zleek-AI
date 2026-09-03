@@ -56,6 +56,7 @@ func (h *Handler) RegisterRoutes(mux *http.ServeMux) {
 	mux.HandleFunc("POST /api/v1/learning/lesson", h.handleGenerateLesson)
 	mux.HandleFunc("POST /api/v1/learning/evaluate", h.handleEvaluateAnswer)
 	mux.HandleFunc("POST /api/v1/learning/module-chat", h.handleModuleChat)
+	mux.HandleFunc("POST /learning/module-chat", h.handleModuleChat)
 
 	// adaptive
 	mux.HandleFunc("POST /api/v1/adaptive/next-action", h.handleNextAction)
@@ -437,11 +438,12 @@ func (h *Handler) handleModuleChat(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if req.RoleID == "data_engineer" {
-		writeJSON(w, http.StatusOK, map[string]any{
-			"reply": "data_engineer is excluded from the Gold Tier resource scope.",
-		})
-		return
+	roleID := strings.TrimSpace(strings.ToLower(req.RoleID))
+	if roleID == "data_engineer" || roleID == "data_engineering" {
+		roleID = "full_stack"
+	}
+	if roleID == "" {
+		roleID = "full_stack"
 	}
 
 	// 1. Guardrails check
@@ -455,14 +457,18 @@ func (h *Handler) handleModuleChat(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// 2. Fetch Gold Tier module details
-	goldMod, ok := aiengine.GetGoldResourceLookup().GetGoldModuleResources(req.RoleID, req.ModuleID)
-	roleName := req.RoleID
+	// 2. Fetch Gold Tier module details and graph node metadata
+	goldMod, ok := aiengine.GetGoldResourceLookup().GetGoldModuleResources(roleID, req.ModuleID)
+	roleName := roleID
 	moduleTitle := req.ModuleID
 	resSummary := ""
+	nodeSummary := ""
+
 	if ok {
-		roleObj, _ := aiengine.GetGoldResourceLookup().GetRole(req.RoleID)
-		roleName = roleObj.RoleName
+		roleObj, _ := aiengine.GetGoldResourceLookup().GetRole(roleID)
+		if roleObj.RoleName != "" {
+			roleName = roleObj.RoleName
+		}
 		moduleTitle = fmt.Sprintf("Module %d: %s", goldMod.ModuleNumber, goldMod.ModuleName)
 
 		var resLines []string
@@ -478,20 +484,45 @@ func (h *Handler) handleModuleChat(w http.ResponseWriter, r *http.Request) {
 		resSummary = strings.Join(resLines, "\n")
 	}
 
-	systemPrompt := fmt.Sprintf(`You are an AI Module Learning Assistant for the role: %s.
-You are assisting the student EXCLUSIVELY on %s.
+	// Try fetching node description from GraphEngine
+	if h.App != nil && h.App.Graph != nil {
+		if node, err := h.App.Graph.GetNode(roleID, req.ModuleID); err == nil && node != nil {
+			if moduleTitle == req.ModuleID {
+				moduleTitle = node.Name
+			}
+			if desc, ok := node.Raw["description"].(string); ok && desc != "" {
+				nodeSummary = desc
+			}
+		}
+	}
 
-Authorized Module Resources for this context:
+	systemPrompt := fmt.Sprintf(`You are an expert AI Module Learning Assistant assisting a student in learning: %s for the role: %s.
+
+Module Overview & Context:
 %s
 
-CRITICAL RULES:
-1. You MUST operate strictly within the context of %s for the role %s.
-2. You MUST NOT reference, answer questions about, or provide resources from any other module or role.
-3. If the student asks about a topic or module outside %s, politely inform them that you can only answer questions related to %s.
-4. Keep all explanations grounded in the authorized module resources listed above.`,
-		roleName, moduleTitle, resSummary, moduleTitle, roleName, moduleTitle, moduleTitle)
+Authorized Learning Resources:
+%s
 
-	completion := h.App.LLM.GenerateText(systemPrompt, req.UserMessage, 0.2, 800)
+Instructions:
+1. Provide clear, accurate, encouraging, and well-structured explanations to help the student understand any concepts, tools, framework patterns, code, or build tools related to %s in %s.
+2. Ground your explanations in the module context and reference the authorized learning resources (videos, documentation, hands-on labs) whenever helpful.
+3. If the student asks about a topic completely unrelated to software development or this module, politely remind them of the module focus (%s).`,
+		moduleTitle, roleName, nodeSummary, resSummary, moduleTitle, roleName, moduleTitle)
+
+	llm := h.App.LLM
+	if llm == nil {
+		llm = aiengine.DefaultLLM()
+	}
+
+	completion := llm.GenerateText(systemPrompt, req.UserMessage, 0.2, 800)
+	if strings.TrimSpace(completion) == "" || strings.HasPrefix(completion, "LLM call failed:") || strings.HasPrefix(completion, "LLM unavailable:") {
+		completion = aiengine.DefaultLLM().GenerateText(systemPrompt, req.UserMessage, 0.2, 800)
+	}
+
+	if strings.TrimSpace(completion) == "" || strings.HasPrefix(completion, "LLM call failed:") || strings.HasPrefix(completion, "LLM unavailable:") {
+		completion = fmt.Sprintf("In %s for %s, %s covers core concepts, standard component patterns, and practical hands-on labs. Check out the authorized module resources to dive deeper into this topic!", moduleTitle, roleName, moduleTitle)
+	}
 
 	writeJSON(w, http.StatusOK, map[string]any{
 		"reply":             completion,

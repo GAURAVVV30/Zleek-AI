@@ -602,20 +602,26 @@ func (s *diagLLMService) GenerateQuestionPrompt(ctx context.Context, role, prior
 		level = "beginner"
 	}
 
-	systemPrompt := fmt.Sprintf(`You are an expert technical interviewer framing a diagnostic assessment question.
-You MUST strictly adapt the question difficulty and wording to the candidate's prior experience level: '%s'.
+	systemPrompt := fmt.Sprintf(`You are an expert technical interviewer framing a diagnostic assessment question for the role of '%s'.
+You MUST strictly adapt BOTH the question prompt and ALL 3 answer options to the candidate's prior experience level: '%s'.
 
-Difficulty Rules:
-- 'beginner': Ask foundational, entry-level, fundamental recall and core definition questions. Focus on basic principles, primary language/tool choices, and simple concepts. Do NOT ask about advanced architectural patterns, complex framework internals, or low-level optimizations. Options must be simple, clear, and distinct.
-- 'intermediate': Ask practical application questions focusing on standard component usage, framework patterns, and common development workflows.
-- 'advanced': Ask deep technical questions focusing on internal mechanics, performance trade-offs, concurrency, edge cases, and high-level architectural design.`, level)
+Strict Difficulty & Option Framing Guidelines:
+- 'beginner': 
+  - Question: Ask a simple, foundational recall or entry-level definition question about the core purpose, primary language, or basic concepts of '%s'. Focus on entry-level concepts for someone 'starting fresh'. Do NOT ask about complex architecture, low-level memory management, or performance tuning.
+  - Options: Provide 3 clear, distinct, beginner-friendly options relevant to %s. The correct option must explain the basic purpose in plain language. The 2 incorrect options must be plausible software concepts, NOT generic placeholder sentences.
+- 'intermediate':
+  - Question: Ask a practical application question focusing on standard component usage, framework design patterns, and common developer workflows in %s.
+  - Options: Provide 3 practical developer options reflecting standard component decisions.
+- 'advanced':
+  - Question: Ask a deep technical question on internal mechanics, concurrency, performance trade-offs, or high-level architectural design in %s.
+  - Options: Provide 3 technical options reflecting trade-offs and edge cases.`, role, level, conceptName, role, role, role)
 
 	prefInfo := ""
 	if formatPreference != "" || timeAvailability != "" {
 		prefInfo = fmt.Sprintf("\nCandidate Format Preference: %s\nCandidate Weekly Commitment: %s", formatPreference, timeAvailability)
 	}
 
-	userPrompt := fmt.Sprintf(`Generate a single multiple choice diagnostic question to gauge the candidate's understanding of the concept: %q.
+	userPrompt := fmt.Sprintf(`Generate a single 3-option multiple choice diagnostic question to gauge a '%s' level candidate on the concept: %q.
 Role: %s
 Candidate Prior Experience Level: %s%s
 
@@ -625,7 +631,7 @@ Authoritative Reference Text (RAG Context):
 Instructions:
 1. Formulate a concrete, role-specific diagnostic question strictly tailored for a '%s' level candidate following the difficulty rules in your system instructions.
 2. Provide EXACTLY 3 human-readable options: 1 correct option and 2 plausible but incorrect distractor options.
-3. Set correct_option to the 0-based index of the correct option (0, 1, or 2).`, conceptName, role, level, prefInfo, ragContext, level)
+3. Set correct_option to the 0-based index of the correct option (0, 1, or 2).`, level, conceptName, role, level, prefInfo, ragContext, level)
 
 	responseSchema := map[string]any{
 		"prompt": map[string]any{
@@ -645,13 +651,21 @@ Instructions:
 		},
 	}
 
-	llm := s.nvidiaLLM
-	if llm == nil {
+	llm := s.groqLLM
+	if llm == nil || llm.Provider() == "none" {
+		llm = s.nvidiaLLM
+	}
+	if llm == nil || llm.Provider() == "none" {
 		llm = aiengine.DefaultLLM()
 	}
 
 	result := llm.GenerateStructuredJSON(systemPrompt, userPrompt, responseSchema)
 	prompt, _ := result["prompt"].(string)
+
+	if prompt == "" && llm.Provider() != aiengine.DefaultLLM().Provider() {
+		result = aiengine.DefaultLLM().GenerateStructuredJSON(systemPrompt, userPrompt, responseSchema)
+		prompt, _ = result["prompt"].(string)
+	}
 	if prompt == "" {
 		if errStr, ok := result["error"].(string); ok {
 			return nil, fmt.Errorf("LLM error: %s", errStr)

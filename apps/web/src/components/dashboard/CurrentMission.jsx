@@ -57,18 +57,6 @@ export default function CurrentMission({ roadmap }) {
         </h1>
       </div>
 
-      {/* Vertical Divider */}
-      <div className="hidden md:block w-px h-14 bg-white/10 shrink-0 mx-2"></div>
-
-      {/* Right: Time Remaining */}
-      <div className="shrink-0 flex flex-col justify-center text-center md:text-left">
-        <span className="text-[11px] font-medium text-slate-400 tracking-widest uppercase mb-1.5 block">
-          Time Remaining:
-        </span>
-        <span className="text-xl lg:text-2xl font-bold text-white leading-tight">
-          3 Weeks
-        </span>
-      </div>
     </div>
   );
 }
