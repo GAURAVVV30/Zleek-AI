@@ -93,14 +93,37 @@ func (uc *StartDiagnosticUseCase) Execute(ctx context.Context, learnerID string)
 		}
 
 		if qData == nil || strings.TrimSpace(qData.Prompt) == "" || len(qData.Options) != 3 {
-			qData = &QuestionData{
-				Prompt: fmt.Sprintf("Regarding %s in %s, which statement accurately describes its core implementation?", c.Name, role),
-				Options: []string{
-					fmt.Sprintf("It enforces primary architectural constraints for %s.", c.Name),
-					fmt.Sprintf("It eliminates network overhead for %s.", c.Name),
-					fmt.Sprintf("It acts exclusively as a database index for %s.", c.Name),
-				},
-				CorrectOption: 0,
+			switch strings.ToLower(priorLevel) {
+			case "beginner":
+				qData = &QuestionData{
+					Prompt: fmt.Sprintf("For a beginner in %s, what is the primary role of %s?", role, c.Name),
+					Options: []string{
+						fmt.Sprintf("It provides basic foundational functionality for %s.", c.Name),
+						fmt.Sprintf("It is a hardware component used for low-level memory management."),
+						fmt.Sprintf("It is an obsolete legacy script no longer in use."),
+					},
+					CorrectOption: 0,
+				}
+			case "advanced":
+				qData = &QuestionData{
+					Prompt: fmt.Sprintf("Regarding %s in %s, which statement accurately describes its architectural trade-offs and performance characteristics?", c.Name, role),
+					Options: []string{
+						fmt.Sprintf("It enforces primary architectural constraints for %s.", c.Name),
+						fmt.Sprintf("It eliminates network overhead for %s.", c.Name),
+						fmt.Sprintf("It acts exclusively as a database index for %s.", c.Name),
+					},
+					CorrectOption: 0,
+				}
+			default:
+				qData = &QuestionData{
+					Prompt: fmt.Sprintf("Regarding %s in %s, which statement best describes its standard implementation pattern?", c.Name, role),
+					Options: []string{
+						fmt.Sprintf("It implements standard component patterns for %s.", c.Name),
+						fmt.Sprintf("It handles low-level hardware interrupts for %s.", c.Name),
+						fmt.Sprintf("It serves as a static configuration file."),
+					},
+					CorrectOption: 0,
+				}
 			}
 		}
 
@@ -276,9 +299,12 @@ func (uc *ResultsDiagnosticUseCase) Execute(ctx context.Context, learnerID, sess
 		_ = uc.competency.SaveBaseline(ctx, learnerID, row.ConceptID, compState)
 	}
 
-	priorLevel, err := uc.profile.GetPriorExperience(ctx, learnerID)
-	if err != nil {
-		priorLevel = "Beginner"
+	prefs, err := uc.profile.GetPreferences(ctx, learnerID)
+	priorLevel := "Beginner"
+	if err == nil && prefs != nil && prefs.PriorExperience != "" {
+		priorLevel = prefs.PriorExperience
+	} else if p, pErr := uc.profile.GetPriorExperience(ctx, learnerID); pErr == nil && p != "" {
+		priorLevel = p
 	}
 
 	role, err := uc.profile.GetRole(ctx, learnerID)
