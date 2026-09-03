@@ -2,6 +2,7 @@ package infrastructure
 
 import (
 	"context"
+	"time"
 
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
@@ -94,10 +95,28 @@ func (r *PostgresProgressRepository) RecordEngagement(ctx context.Context, event
 		VALUES ($1, $2, (SELECT pi.id FROM platform.path_items pi
 		                 JOIN platform.paths p ON p.id = pi.path_id
 		                 WHERE p.learner_id = $2 AND p.status = 'active'
-		                   AND pi.concept_id = (SELECT id FROM platform.concepts WHERE node_id = $3 OR node_id LIKE $3 || '_%')
+		                   AND (pi.concept_id = (SELECT id FROM platform.concepts WHERE node_id = $3 OR node_id LIKE $3 || '_%')
+		                        OR pi.concept_id = (SELECT id FROM platform.concepts WHERE id::text = $3))
 		                 ORDER BY pi.inserted_at DESC LIMIT 1), $4, $5)`,
 		event.ID, event.LearnerID, event.ConceptID, event.EventType, event.Timestamp)
-	return err
+	if err != nil {
+		return err
+	}
+
+	if event.EventType == "marked_reviewed" || event.EventType == "completed" {
+		_, _ = r.db.Exec(ctx, `
+			INSERT INTO platform.competency_records (learner_id, concept_id, state, updated_at)
+			VALUES ($1, (SELECT id FROM platform.concepts WHERE node_id = $2 OR node_id LIKE $2 || '_%' OR id::text = $2 LIMIT 1), 'competent', $3)
+			ON CONFLICT (learner_id, concept_id) DO UPDATE SET state = 'competent', updated_at = EXCLUDED.updated_at`,
+			event.LearnerID, event.ConceptID, time.Now().UTC())
+
+		_, _ = r.db.Exec(ctx, `
+			UPDATE platform.path_items SET state = 'competent'
+			WHERE path_id IN (SELECT id FROM platform.paths WHERE learner_id = $1 AND status = 'active')
+			  AND concept_id = (SELECT id FROM platform.concepts WHERE node_id = $2 OR node_id LIKE $2 || '_%' OR id::text = $2 LIMIT 1)`,
+			event.LearnerID, event.ConceptID)
+	}
+	return nil
 }
 
 // Summary computes the dashboard aggregate for a learner's active structure.
@@ -114,7 +133,17 @@ func (r *PostgresProgressRepository) Summary(ctx context.Context, learnerID, str
 	}
 
 	rows, err := r.db.Query(ctx, `
-		SELECT c.node_id, c.name, COALESCE(cr.state, 'not_started'),
+		SELECT c.node_id, c.name,
+		       CASE 
+		         WHEN EXISTS (
+		           SELECT 1 FROM platform.engagement_events ee 
+		           JOIN platform.path_items pi ON pi.id = ee.path_item_id
+		           WHERE ee.learner_id = $1 AND pi.concept_id = c.id 
+		             AND ee.event_type IN ('marked_reviewed', 'completed')
+		         ) THEN 'competent'
+		         WHEN cr.state IS NOT NULL AND cr.state != 'competent' THEN cr.state
+		         ELSE 'not_started'
+		       END AS state,
 		       COALESCE(ev.score::float8, 0)
 		FROM platform.concepts c
 		LEFT JOIN platform.competency_records cr ON cr.concept_id = c.id AND cr.learner_id = $1
@@ -158,6 +187,36 @@ func (r *PostgresProgressRepository) Summary(ctx context.Context, learnerID, str
 		learnerID, structureID).Scan(&payload.Remediations); err != nil {
 		return nil, err
 	}
+
+	actRows, err := r.db.Query(ctx, `
+		SELECT to_char(d.day, 'YYYY-MM-DD') AS act_date,
+		       COALESCE(e.cnt, 0) AS count
+		FROM generate_series(
+		    CURRENT_DATE,
+		    CURRENT_DATE + INTERVAL '364 days',
+		    INTERVAL '1 day'
+		) AS d(day)
+		LEFT JOIN (
+		    SELECT DATE(occurred_at) AS evt_date, COUNT(*) AS cnt
+		    FROM platform.engagement_events
+		    WHERE learner_id = $1 AND event_type IN ('marked_reviewed', 'completed')
+		    GROUP BY DATE(occurred_at)
+		) e ON e.evt_date = DATE(d.day)
+		ORDER BY d.day ASC`, learnerID)
+	if err == nil {
+		defer actRows.Close()
+		var activities []domain.ActivityDay
+		for actRows.Next() {
+			var ad domain.ActivityDay
+			if err := actRows.Scan(&ad.Date, &ad.Count); err == nil {
+				activities = append(activities, ad)
+			}
+		}
+		payload.ActivityData = activities
+	} else {
+		payload.ActivityData = []domain.ActivityDay{}
+	}
+
 	return payload, nil
 }
 

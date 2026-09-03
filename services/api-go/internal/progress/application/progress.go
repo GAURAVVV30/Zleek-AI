@@ -121,6 +121,7 @@ func (uc *GetProgressSummaryUseCase) Execute(ctx context.Context, learnerID stri
 		CompletedConcepts:           payload.Competent,
 		ActiveRemediations:          payload.Remediations,
 		CompetencyBreakdown:         payload.Breakdown,
+		ActivityData:                payload.ActivityData,
 	}, nil
 }
 

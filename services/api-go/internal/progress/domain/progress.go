@@ -35,13 +35,19 @@ type SummaryRow struct {
 	Status     string `json:"status"`
 }
 
+type ActivityDay struct {
+	Date  string `json:"date"`
+	Count int    `json:"count"`
+}
+
 // Summary is the /progress/summary payload.
 type Summary struct {
-	OverallCompletionPercentage int          `json:"overallCompletionPercentage"`
-	TotalConcepts               int          `json:"totalConcepts"`
-	CompletedConcepts           int          `json:"completedConcepts"`
-	ActiveRemediations          int          `json:"activeRemediations"`
-	CompetencyBreakdown         []SummaryRow `json:"competencyBreakdown"`
+	OverallCompletionPercentage int           `json:"overallCompletionPercentage"`
+	TotalConcepts               int           `json:"totalConcepts"`
+	CompletedConcepts           int           `json:"completedConcepts"`
+	ActiveRemediations          int           `json:"activeRemediations"`
+	CompetencyBreakdown         []SummaryRow  `json:"competencyBreakdown"`
+	ActivityData                []ActivityDay `json:"activityData"`
 }
 
 type GoalCompletionSummary struct {

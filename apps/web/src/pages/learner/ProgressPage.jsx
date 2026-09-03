@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { BarChart3, Award, CheckCircle2, AlertTriangle, Clock, ChevronRight } from 'lucide-react';
 import { apiClient } from '../../services/apiClient';
 import { ENDPOINTS } from '../../utils/endpoints';
-import { subDays, format } from 'date-fns';
+import { addDays, format } from 'date-fns';
 import LearningActivityHeatmap from '../../components/ui/learning-activity-heatmap';
 import ProgressSummary from '../../components/dashboard/ProgressSummary';
 
@@ -26,29 +26,22 @@ export default function ProgressPage() {
       .catch(() => setIsLoading(false));
   }, []);
 
-  // Generate 365 days of frontend-ready mock activity data 
-  // since the API does not currently return daily historical matrices.
-  const mockActivityData = React.useMemo(() => {
+  // Use actual 365-day activity matrix returned from the backend API starting from today
+  const activityData = React.useMemo(() => {
+    if (summary?.activityData && summary.activityData.length > 0) {
+      return summary.activityData;
+    }
     const data = [];
     const today = new Date();
-    // 365 days = ~52 weeks * 7 days
-    for (let i = 364; i >= 0; i--) {
-      const date = subDays(today, i);
-      // Randomize count between 0 and 5, skewed heavily towards 0-2 for realism
-      const rand = Math.random();
-      let count = 0;
-      if (rand > 0.95) count = 5;
-      else if (rand > 0.8) count = 3;
-      else if (rand > 0.5) count = 2;
-      else if (rand > 0.3) count = 1;
-
+    for (let i = 0; i < 365; i++) {
+      const date = addDays(today, i);
       data.push({
         date: format(date, 'yyyy-MM-dd'),
-        count
+        count: 0,
       });
     }
     return data;
-  }, []);
+  }, [summary]);
 
   const handleDrillIn = async (conceptId, conceptName) => {
     try {
@@ -176,7 +169,7 @@ export default function ProgressPage() {
           
           {/* Learning Activity Heatmap */}
           <div className="md:col-span-12">
-            <LearningActivityHeatmap data={mockActivityData} />
+            <LearningActivityHeatmap data={activityData} />
           </div>
         </div>
         </>
