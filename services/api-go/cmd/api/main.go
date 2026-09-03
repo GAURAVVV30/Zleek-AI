@@ -555,6 +555,19 @@ func (s *diagProfileService) GetRole(ctx context.Context, learnerID string) (str
 	return role, nil
 }
 
+func (s *diagProfileService) GetPreferences(ctx context.Context, learnerID string) (*diagApp.LearnerPreferences, error) {
+	var priorExperience, formatPreference, timeAvailability string
+	err := s.db.QueryRow(ctx, "SELECT prior_experience, format_preference, time_availability FROM platform.learner_profiles WHERE user_id = $1", learnerID).Scan(&priorExperience, &formatPreference, &timeAvailability)
+	if err != nil {
+		return nil, err
+	}
+	return &diagApp.LearnerPreferences{
+		PriorExperience:  priorExperience,
+		FormatPreference: formatPreference,
+		TimeAvailability: timeAvailability,
+	}, nil
+}
+
 type diagCompetencyService struct {
 	repo *competencyInfra.PostgresCompetencyRepository
 }
@@ -583,20 +596,28 @@ type diagLLMService struct {
 	groqLLM   *aiengine.LLMClient
 }
 
-func (s *diagLLMService) GenerateQuestionPrompt(ctx context.Context, role, priorLevel, conceptName, ragContext string) (*diagApp.QuestionData, error) {
+func (s *diagLLMService) GenerateQuestionPrompt(ctx context.Context, role, priorLevel, formatPreference, timeAvailability, conceptName, ragContext string) (*diagApp.QuestionData, error) {
 	systemPrompt := "You are a professional technical interviewer assessing a candidate."
 	level := strings.ToLower(priorLevel)
+	if level == "" {
+		level = "beginner"
+	}
+
+	prefInfo := ""
+	if formatPreference != "" || timeAvailability != "" {
+		prefInfo = fmt.Sprintf("\nCandidate Format Preference: %s\nCandidate Weekly Commitment: %s", formatPreference, timeAvailability)
+	}
 
 	userPrompt := fmt.Sprintf(`Generate a single multiple choice diagnostic question to gauge the candidate's understanding of the concept: %q.
 Role: %s
-Experience Level: %s
+Experience Level: %s%s
 Authoritative Reference Text (RAG Context):
 %s
 
 Instructions:
-1. Formulate a concrete, role-specific diagnostic question suitable for a %s level candidate based on the reference text.
+1. Formulate a concrete, role-specific diagnostic question suitable for a %s level candidate based on the reference text and candidate preferences.
 2. Provide EXACTLY 3 human-readable options: 1 correct option and 2 plausible but incorrect distractor options.
-3. Set correct_option to the 0-based index of the correct option (0, 1, or 2).`, conceptName, role, level, ragContext, level)
+3. Set correct_option to the 0-based index of the correct option (0, 1, or 2).`, conceptName, role, level, prefInfo, ragContext, level)
 
 	responseSchema := map[string]any{
 		"prompt": map[string]any{

@@ -6,24 +6,35 @@ import { ENDPOINTS } from '../../utils/endpoints';
 import { useToast } from '../../context/ToastContext';
 
 export default function PreferencesPage() {
-  const [weeklyHours, setWeeklyHours] = useState('5_10');
-  const [preferredFormat, setPreferredFormat] = useState(['video', 'article']);
-  const [experienceLevel, setExperienceLevel] = useState('intermediate');
+  const [weeklyHours, setWeeklyHours] = useState('');
+  const [preferredFormat, setPreferredFormat] = useState([]);
+  const [experienceLevel, setExperienceLevel] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
   const { addToast } = useToast();
 
   const toggleFormat = (fmt) => {
     if (preferredFormat.includes(fmt)) {
-      if (preferredFormat.length > 1) {
-        setPreferredFormat(preferredFormat.filter((f) => f !== fmt));
-      }
+      setPreferredFormat(preferredFormat.filter((f) => f !== fmt));
     } else {
       setPreferredFormat([...preferredFormat, fmt]);
     }
   };
 
   const handleContinue = async () => {
+    if (!weeklyHours) {
+      addToast('Please select your weekly time commitment.', 'warning');
+      return;
+    }
+    if (!preferredFormat || preferredFormat.length === 0) {
+      addToast('Please select at least one preferred learning format.', 'warning');
+      return;
+    }
+    if (!experienceLevel) {
+      addToast('Please select your prior experience level.', 'warning');
+      return;
+    }
+
     setIsSubmitting(true);
     try {
       await apiClient.patch(ENDPOINTS.PROFILE.PREFERENCES, {

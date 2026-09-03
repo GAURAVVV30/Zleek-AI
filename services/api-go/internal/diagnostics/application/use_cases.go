@@ -53,9 +53,20 @@ func (uc *StartDiagnosticUseCase) Execute(ctx context.Context, learnerID string)
 		concepts = append(concepts, domain.Concept{NodeID: cleanID, Name: r.Name})
 	}
 
-	priorLevel, err := uc.profile.GetPriorExperience(ctx, learnerID)
-	if err != nil {
-		priorLevel = "Beginner"
+	prefs, err := uc.profile.GetPreferences(ctx, learnerID)
+	priorLevel := "Beginner"
+	formatPreference := ""
+	timeAvailability := ""
+	if err == nil && prefs != nil {
+		if prefs.PriorExperience != "" {
+			priorLevel = prefs.PriorExperience
+		}
+		formatPreference = prefs.FormatPreference
+		timeAvailability = prefs.TimeAvailability
+	} else {
+		if p, pErr := uc.profile.GetPriorExperience(ctx, learnerID); pErr == nil && p != "" {
+			priorLevel = p
+		}
 	}
 
 	role, err := uc.profile.GetRole(ctx, learnerID)
@@ -75,7 +86,7 @@ func (uc *StartDiagnosticUseCase) Execute(ctx context.Context, learnerID string)
 		var qData *QuestionData
 		var genErr error
 		for attempt := 0; attempt < 3; attempt++ {
-			qData, genErr = uc.llm.GenerateQuestionPrompt(ctx, role, priorLevel, c.Name, ragContext)
+			qData, genErr = uc.llm.GenerateQuestionPrompt(ctx, role, priorLevel, formatPreference, timeAvailability, c.Name, ragContext)
 			if genErr == nil && qData != nil && strings.TrimSpace(qData.Prompt) != "" && len(qData.Options) == 3 {
 				break
 			}
