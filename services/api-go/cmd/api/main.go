@@ -185,7 +185,7 @@ func main() {
 	txManager := database.NewTxManager(dbPool)
 	recordEvidenceUseCase := progressApp.NewRecordEvidenceUseCase(txManager, progressRepo, updateCompetencyUseCase)
 	recordEngagementUseCase := progressApp.NewRecordEngagementUseCase(progressRepo)
-	progressGoals := &progressGoalsService{repo: goalRepo}
+	progressGoals := &progressGoalsService{repo: goalRepo, db: dbPool}
 	getSummaryUseCase := progressApp.NewGetProgressSummaryUseCase(progressRepo, progressGoals)
 	getGoalSummaryUseCase := progressApp.NewGetGoalCompletionSummaryUseCase(progressRepo, progressGoals)
 	progressHandler := progressHttp.NewHandler(recordEvidenceUseCase, recordEngagementUseCase, getSummaryUseCase, getGoalSummaryUseCase)
@@ -371,9 +371,24 @@ func (a *goalsKnowledgeAdapter) ResolveStructure(ctx context.Context, ref string
 // GoalService port (scopes the progress dashboard to the active goal).
 type progressGoalsService struct {
 	repo *goalsInfra.PostgresGoalRepository
+	db   *pgxpool.Pool
 }
 
 func (s *progressGoalsService) ActiveStructureMeta(ctx context.Context, learnerID string) (string, string, string, error) {
+	var goalID, goalText, structureID string
+	err := s.db.QueryRow(ctx, `
+		SELECT g.id, g.goal_text, ks.id
+		FROM platform.paths p
+		JOIN platform.goals g ON g.id = p.goal_id
+		JOIN platform.knowledge_structures ks ON ks.id = p.knowledge_structure_id
+		WHERE p.learner_id = $1 AND p.status = 'active'
+		ORDER BY p.created_at DESC
+		LIMIT 1
+	`, learnerID).Scan(&goalID, &goalText, &structureID)
+	if err == nil && structureID != "" {
+		return goalID, goalText, structureID, nil
+	}
+
 	g, err := s.repo.GetActiveByLearnerID(ctx, learnerID)
 	if err != nil {
 		return "", "", "", err

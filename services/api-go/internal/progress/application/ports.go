@@ -29,6 +29,7 @@ type SummaryPayload struct {
 	Weak          int
 	Remediations  int
 	Breakdown     []domain.SummaryRow
+	ActivityData  []domain.ActivityDay
 }
 
 // CompetencyService is the application-level port to update competency state

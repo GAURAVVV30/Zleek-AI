@@ -48,6 +48,7 @@ func (r *PostgresGoalRepository) GetActiveByLearnerID(ctx context.Context, learn
 		SELECT id, learner_id, goal_text, knowledge_structure_id, status, achieved_at, created_at
 		FROM platform.goals
 		WHERE learner_id = $1 AND status = 'active'
+		ORDER BY created_at DESC
 		LIMIT 1
 	`
 	row := r.db.QueryRow(ctx, query, learnerID)

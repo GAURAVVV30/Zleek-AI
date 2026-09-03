@@ -133,7 +133,7 @@ export default function LearningWorkspacePage() {
     }
   }, [moduleData, completedModules]);
 
-  const handleCompleteModule = () => {
+  const handleCompleteModule = async () => {
     if (!moduleData) return;
     const currentId = moduleData.module_id || `${moduleData.module_number}`;
     const nextModules = Array.from(new Set([...completedModules, currentId, `${moduleData.module_number}`]));
@@ -141,6 +141,12 @@ export default function LearningWorkspacePage() {
     setCompletedModules(nextModules);
     setIsCompleted(true);
     localStorage.setItem(`gold_completed_modules_${roleId}`, JSON.stringify(nextModules));
+
+    try {
+      await apiClient.post(ENDPOINTS.CONCEPTS.ENGAGEMENT(currentId), { action: 'marked_reviewed' });
+    } catch (e) {
+      console.warn('Engagement sync error:', e);
+    }
 
     addToast(`Module ${moduleData.module_number} marked as complete! Next module unlocked.`, 'success');
   };
