@@ -36,9 +36,16 @@ type NodeRef struct {
 	Name   string
 }
 
+type LearnerPreferences struct {
+	PriorExperience  string
+	FormatPreference string
+	TimeAvailability string
+}
+
 type ProfileService interface {
 	GetPriorExperience(ctx context.Context, learnerID string) (string, error)
 	GetRole(ctx context.Context, learnerID string) (string, error)
+	GetPreferences(ctx context.Context, learnerID string) (*LearnerPreferences, error)
 }
 
 type QuestionData struct {
@@ -48,7 +55,7 @@ type QuestionData struct {
 }
 
 type LLMService interface {
-	GenerateQuestionPrompt(ctx context.Context, role, priorLevel, conceptName, ragContext string) (*QuestionData, error)
+	GenerateQuestionPrompt(ctx context.Context, role, priorLevel, formatPreference, timeAvailability, conceptName, ragContext string) (*QuestionData, error)
 	GenerateWeakAreasExplanation(ctx context.Context, role, priorLevel string, gaps []string, ragContext string) (string, error)
 }
 

@@ -67,9 +67,16 @@ func (m *mockProfile) GetPriorExperience(ctx context.Context, learnerID string) 
 func (m *mockProfile) GetRole(ctx context.Context, learnerID string) (string, error) {
 	return "machine_learning", nil
 }
+func (m *mockProfile) GetPreferences(ctx context.Context, learnerID string) (*application.LearnerPreferences, error) {
+	return &application.LearnerPreferences{
+		PriorExperience:  "Beginner",
+		FormatPreference: "video,article",
+		TimeAvailability: "5_10",
+	}, nil
+}
 
 type mockLLM struct{}
-func (m *mockLLM) GenerateQuestionPrompt(ctx context.Context, role, priorLevel, conceptName, ragContext string) (*application.QuestionData, error) {
+func (m *mockLLM) GenerateQuestionPrompt(ctx context.Context, role, priorLevel, formatPreference, timeAvailability, conceptName, ragContext string) (*application.QuestionData, error) {
 	return &application.QuestionData{
 		Prompt:        "Mock question prompt for " + conceptName,
 		Options:       []string{
