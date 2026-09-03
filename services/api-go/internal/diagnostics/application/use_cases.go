@@ -93,38 +93,7 @@ func (uc *StartDiagnosticUseCase) Execute(ctx context.Context, learnerID string)
 		}
 
 		if qData == nil || strings.TrimSpace(qData.Prompt) == "" || len(qData.Options) != 3 {
-			switch strings.ToLower(priorLevel) {
-			case "beginner":
-				qData = &QuestionData{
-					Prompt: fmt.Sprintf("For a beginner in %s, what is the primary role of %s?", role, c.Name),
-					Options: []string{
-						fmt.Sprintf("It provides basic foundational functionality for %s.", c.Name),
-						fmt.Sprintf("It is a hardware component used for low-level memory management."),
-						fmt.Sprintf("It is an obsolete legacy script no longer in use."),
-					},
-					CorrectOption: 0,
-				}
-			case "advanced":
-				qData = &QuestionData{
-					Prompt: fmt.Sprintf("Regarding %s in %s, which statement accurately describes its architectural trade-offs and performance characteristics?", c.Name, role),
-					Options: []string{
-						fmt.Sprintf("It enforces primary architectural constraints for %s.", c.Name),
-						fmt.Sprintf("It eliminates network overhead for %s.", c.Name),
-						fmt.Sprintf("It acts exclusively as a database index for %s.", c.Name),
-					},
-					CorrectOption: 0,
-				}
-			default:
-				qData = &QuestionData{
-					Prompt: fmt.Sprintf("Regarding %s in %s, which statement best describes its standard implementation pattern?", c.Name, role),
-					Options: []string{
-						fmt.Sprintf("It implements standard component patterns for %s.", c.Name),
-						fmt.Sprintf("It handles low-level hardware interrupts for %s.", c.Name),
-						fmt.Sprintf("It serves as a static configuration file."),
-					},
-					CorrectOption: 0,
-				}
-			}
+			qData = buildFallbackQuestion(role, priorLevel, c.Name)
 		}
 
 		correctIdx := qData.CorrectOption
@@ -370,4 +339,143 @@ func indexOfConcept(s *domain.Session, nodeID string) int {
 		}
 	}
 	return -1
+}
+
+func buildFallbackQuestion(role, priorLevel, conceptName string) *QuestionData {
+	cleanRole := strings.TrimSpace(strings.ToLower(role))
+	switch strings.ToLower(priorLevel) {
+	case "beginner":
+		switch cleanRole {
+		case "product_manager":
+			return &QuestionData{
+				Prompt: fmt.Sprintf("When starting fresh as a Product Manager, what is the primary focus of %s?", conceptName),
+				Options: []string{
+					"Understanding customer needs, defining product vision, and aligning business goals with user value.",
+					"Writing low-level C++ memory allocation routines for hardware drivers.",
+					"Configuring Kubernetes cluster ingress controllers and network routing.",
+				},
+				CorrectOption: 0,
+			}
+		case "mobile_engineer":
+			return &QuestionData{
+				Prompt: fmt.Sprintf("When starting fresh in Mobile Engineering, what is the core purpose of %s?", conceptName),
+				Options: []string{
+					"Understanding mobile OS lifecycles and choosing primary languages like Kotlin or Swift for app development.",
+					"Managing physical database server racks in a data center.",
+					"Writing server-side SQL stored procedures.",
+				},
+				CorrectOption: 0,
+			}
+		case "frontend_engineer":
+			return &QuestionData{
+				Prompt: fmt.Sprintf("As a beginner Frontend Engineer, what is the primary role of %s?", conceptName),
+				Options: []string{
+					"Building interactive web user interfaces using HTML structure, CSS styling, and JavaScript.",
+					"Designing relational database schemas with primary keys.",
+					"Configuring Linux kernel sysctl network parameters.",
+				},
+				CorrectOption: 0,
+			}
+		case "backend_engineer":
+			return &QuestionData{
+				Prompt: fmt.Sprintf("For a beginner Backend Engineer, what is the core purpose of %s?", conceptName),
+				Options: []string{
+					"Writing clean server-side logic, understanding data structures, and serving API requests.",
+					"Creating CSS grid keyframe animations and responsive web layouts.",
+					"Designing physical PCB circuit board layouts.",
+				},
+				CorrectOption: 0,
+			}
+		case "full_stack":
+			return &QuestionData{
+				Prompt: fmt.Sprintf("For a beginner Full Stack Developer, what is the main goal of %s?", conceptName),
+				Options: []string{
+					"Connecting client-side web frontends with server-side backends and database persistence.",
+					"Assembling desktop computer hardware components.",
+					"Writing GPU shader assembly code.",
+				},
+				CorrectOption: 0,
+			}
+		case "devops_sre":
+			return &QuestionData{
+				Prompt: fmt.Sprintf("As a beginner DevOps / SRE engineer, what is the primary focus of %s?", conceptName),
+				Options: []string{
+					"Automating software delivery, managing Linux environments, and configuring CI/CD pipelines.",
+					"Designing vector graphic logos for marketing.",
+					"Writing client-side React UI components.",
+				},
+				CorrectOption: 0,
+			}
+		case "ai_engineer":
+			return &QuestionData{
+				Prompt: fmt.Sprintf("For a beginner AI Engineer, what is the main purpose of %s?", conceptName),
+				Options: []string{
+					"Using Python libraries to load datasets, build foundational models, and integrate LLM APIs.",
+					"Designing CSS flexbox page layouts.",
+					"Managing physical network switches and cabling.",
+				},
+				CorrectOption: 0,
+			}
+		case "ai_data_scientist":
+			return &QuestionData{
+				Prompt: fmt.Sprintf("As a beginner AI Data Scientist, what is the primary goal of %s?", conceptName),
+				Options: []string{
+					"Analyzing datasets using Python, Pandas, and foundational statistical methods.",
+					"Building Android app UI layouts with Jetpack Compose.",
+					"Configuring Docker container bridge networks.",
+				},
+				CorrectOption: 0,
+			}
+		case "data_analyst":
+			return &QuestionData{
+				Prompt: fmt.Sprintf("For a beginner Data Analyst, what is the primary focus of %s?", conceptName),
+				Options: []string{
+					"Querying data with SQL, exploring metrics in Excel, and building visual reporting dashboards.",
+					"Writing low-level C memory management routines.",
+					"Building iOS apps with Swift.",
+				},
+				CorrectOption: 0,
+			}
+		case "machine_learning":
+			return &QuestionData{
+				Prompt: fmt.Sprintf("As a beginner Machine Learning engineer, what is the core focus of %s?", conceptName),
+				Options: []string{
+					"Using Python and basic math/statistics to collect, preprocess, and analyze training data.",
+					"Designing HTML/CSS marketing web pages.",
+					"Configuring Linux network firewalls.",
+				},
+				CorrectOption: 0,
+			}
+		default:
+			return &QuestionData{
+				Prompt: fmt.Sprintf("When starting fresh in %s, what is the primary foundational goal of %s?", strings.ReplaceAll(cleanRole, "_", " "), conceptName),
+				Options: []string{
+					fmt.Sprintf("Understanding basic component roles, core definitions, and entry-level principles of %s.", conceptName),
+					"Replacing physical motherboard BIOS hardware chips.",
+					"Writing client-side CSS keyframe animations.",
+				},
+				CorrectOption: 0,
+			}
+		}
+	case "advanced":
+		return &QuestionData{
+			Prompt: fmt.Sprintf("In high-scale %s architectures, which statement best characterizes the concurrency, performance trade-offs, and internal mechanics of %s?", strings.ReplaceAll(cleanRole, "_", " "), conceptName),
+			Options: []string{
+				fmt.Sprintf("It governs critical architectural constraints, state synchronization, and execution efficiency for %s.", conceptName),
+				"It eliminates memory allocation overhead by running directly on GPU registers.",
+				"It acts solely as a synchronous CSV export utility.",
+			},
+			CorrectOption: 0,
+		}
+	default:
+		return &QuestionData{
+			Prompt: fmt.Sprintf("In standard %s projects, how is %s typically applied in modern developer workflows?", strings.ReplaceAll(cleanRole, "_", " "), conceptName),
+			Options: []string{
+				fmt.Sprintf("It structures practical application components and standard design patterns for %s.", conceptName),
+				"It bypasses network security protocols completely.",
+				"It is used exclusively for formatting static CSS text styles.",
+			},
+			CorrectOption: 0,
+		}
+	}
 }
