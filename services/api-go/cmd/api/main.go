@@ -597,11 +597,18 @@ type diagLLMService struct {
 }
 
 func (s *diagLLMService) GenerateQuestionPrompt(ctx context.Context, role, priorLevel, formatPreference, timeAvailability, conceptName, ragContext string) (*diagApp.QuestionData, error) {
-	systemPrompt := "You are a professional technical interviewer assessing a candidate."
 	level := strings.ToLower(priorLevel)
 	if level == "" {
 		level = "beginner"
 	}
+
+	systemPrompt := fmt.Sprintf(`You are an expert technical interviewer framing a diagnostic assessment question.
+You MUST strictly adapt the question difficulty and wording to the candidate's prior experience level: '%s'.
+
+Difficulty Rules:
+- 'beginner': Ask foundational, entry-level, fundamental recall and core definition questions. Focus on basic principles, primary language/tool choices, and simple concepts. Do NOT ask about advanced architectural patterns, complex framework internals, or low-level optimizations. Options must be simple, clear, and distinct.
+- 'intermediate': Ask practical application questions focusing on standard component usage, framework patterns, and common development workflows.
+- 'advanced': Ask deep technical questions focusing on internal mechanics, performance trade-offs, concurrency, edge cases, and high-level architectural design.`, level)
 
 	prefInfo := ""
 	if formatPreference != "" || timeAvailability != "" {
@@ -610,12 +617,13 @@ func (s *diagLLMService) GenerateQuestionPrompt(ctx context.Context, role, prior
 
 	userPrompt := fmt.Sprintf(`Generate a single multiple choice diagnostic question to gauge the candidate's understanding of the concept: %q.
 Role: %s
-Experience Level: %s%s
+Candidate Prior Experience Level: %s%s
+
 Authoritative Reference Text (RAG Context):
 %s
 
 Instructions:
-1. Formulate a concrete, role-specific diagnostic question suitable for a %s level candidate based on the reference text and candidate preferences.
+1. Formulate a concrete, role-specific diagnostic question strictly tailored for a '%s' level candidate following the difficulty rules in your system instructions.
 2. Provide EXACTLY 3 human-readable options: 1 correct option and 2 plausible but incorrect distractor options.
 3. Set correct_option to the 0-based index of the correct option (0, 1, or 2).`, conceptName, role, level, prefInfo, ragContext, level)
 
