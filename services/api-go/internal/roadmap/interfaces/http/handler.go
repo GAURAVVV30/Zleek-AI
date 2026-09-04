@@ -15,6 +15,7 @@ type Handler struct {
 	explanationUseCase *application.GetConceptExplanationUseCase
 	getTasksUseCase    *application.GetDailyTasksUseCase
 	toggleTaskUseCase  *application.ToggleDailyTaskUseCase
+	resetUseCase       *application.ResetRoadmapUseCase
 }
 
 func NewHandler(
@@ -23,13 +24,19 @@ func NewHandler(
 	explanation *application.GetConceptExplanationUseCase,
 	getTasks *application.GetDailyTasksUseCase,
 	toggleTask *application.ToggleDailyTaskUseCase,
+	reset ...*application.ResetRoadmapUseCase,
 ) *Handler {
+	var rUC *application.ResetRoadmapUseCase
+	if len(reset) > 0 {
+		rUC = reset[0]
+	}
 	return &Handler{
 		getUseCase:         get,
 		regenerateUseCase:  regenerate,
 		explanationUseCase: explanation,
 		getTasksUseCase:    getTasks,
 		toggleTaskUseCase:  toggleTask,
+		resetUseCase:       rUC,
 	}
 }
 
@@ -135,11 +142,36 @@ func (h *Handler) ToggleDailyTask(w http.ResponseWriter, r *http.Request) {
 	httpx.Envelope(w, http.StatusOK, map[string]string{"status": "ok"})
 }
 
+func (h *Handler) ResetRoadmap(w http.ResponseWriter, r *http.Request) {
+	learnerID := r.Header.Get("X-User-ID")
+	if learnerID == "" {
+		learnerID = r.Header.Get("X-Learner-ID")
+	}
+	if learnerID == "" {
+		httpx.Error(w, http.StatusUnauthorized, "Unauthorized")
+		return
+	}
+	if h.resetUseCase != nil {
+		if err := h.resetUseCase.Execute(r.Context(), learnerID); err != nil {
+			httpx.Error(w, http.StatusInternalServerError, "Failed to reset roadmap progress")
+			return
+		}
+	}
+	httpx.Envelope(w, http.StatusOK, map[string]string{
+		"status":  "ok",
+		"message": "Roadmap progress reset to Module 1",
+	})
+}
+
 func (h *Handler) RegisterRoutes(mux *http.ServeMux) {
 	mux.HandleFunc("GET /roadmap", h.GetActiveRoadmap)
 	mux.HandleFunc("GET /api/v1/roadmap", h.GetActiveRoadmap)
 	mux.HandleFunc("POST /roadmap/regenerate", h.RegenerateRoadmap)
 	mux.HandleFunc("POST /api/v1/roadmap/regenerate", h.RegenerateRoadmap)
+	mux.HandleFunc("POST /roadmap/reset", h.ResetRoadmap)
+	mux.HandleFunc("POST /api/v1/roadmap/reset", h.ResetRoadmap)
+	mux.HandleFunc("POST /concepts/reset", h.ResetRoadmap)
+	mux.HandleFunc("POST /progress/reset", h.ResetRoadmap)
 	mux.HandleFunc("GET /roadmap/concepts/{conceptId}/why", h.GetConceptExplanation)
 	mux.HandleFunc("GET /api/v1/roadmap/concepts/{conceptId}/why", h.GetConceptExplanation)
 	mux.HandleFunc("GET /roadmap/tasks", h.GetDailyTasks)

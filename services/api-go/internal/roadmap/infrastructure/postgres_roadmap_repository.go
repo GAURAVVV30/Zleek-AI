@@ -382,3 +382,41 @@ func (r *PostgresRoadmapRepository) ToggleDailyTask(ctx context.Context, learner
 		WHERE id::text = $2 AND learner_id = $3`, completed, taskID, learnerID)
 	return err
 }
+
+// ResetRoadmapProgress resets the learner's active roadmap progression so Module 1 is available and subsequent modules are locked.
+func (r *PostgresRoadmapRepository) ResetRoadmapProgress(ctx context.Context, learnerID string) error {
+	// 1. Locate the learner's active path
+	var pathID string
+	err := r.db.QueryRow(ctx, `
+		SELECT id FROM platform.paths
+		WHERE (learner_id::text = $1 OR learner_id IN (SELECT id FROM platform.users WHERE id::text = $1))
+		  AND status = 'active'
+		ORDER BY created_at DESC
+		LIMIT 1`, learnerID).Scan(&pathID)
+	if err != nil {
+		return err
+	}
+
+	// 2. Delete engagement events linked to this active path's items
+	_, _ = r.db.Exec(ctx, `
+		DELETE FROM platform.engagement_events
+		WHERE path_item_id IN (SELECT id FROM platform.path_items WHERE path_id = $1::uuid)`, pathID)
+
+	// 3. Reset path_items state: sequence order 1 -> 'available', sequence order > 1 -> 'locked'
+	_, err = r.db.Exec(ctx, `
+		UPDATE platform.path_items
+		SET state = CASE WHEN sequence_order = 1 THEN 'available' ELSE 'locked' END
+		WHERE path_id = $1::uuid`, pathID)
+	if err != nil {
+		return err
+	}
+
+	// 4. Reset competency records for concepts in this path to 'in_progress'
+	_, _ = r.db.Exec(ctx, `
+		UPDATE platform.competency_records
+		SET state = 'in_progress', updated_at = NOW()
+		WHERE (learner_id::text = $1 OR learner_id IN (SELECT id FROM platform.users WHERE id::text = $1))
+		  AND concept_id IN (SELECT concept_id FROM platform.path_items WHERE path_id = $1::uuid)`, learnerID, pathID)
+
+	return nil
+}

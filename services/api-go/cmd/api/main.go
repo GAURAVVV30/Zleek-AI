@@ -226,7 +226,8 @@ func main() {
 	getConceptExplanationUseCase := roadmapApp.NewGetConceptExplanationUseCase(roadmapAILocal)
 	getDailyTasksUseCase := roadmapApp.NewGetDailyTasksUseCase(roadmapRepo)
 	toggleDailyTaskUseCase := roadmapApp.NewToggleDailyTaskUseCase(roadmapRepo)
-	roadmapHandler := roadmapHttp.NewHandler(getActiveRoadmapUseCase, regenerateRoadmapUseCase, getConceptExplanationUseCase, getDailyTasksUseCase, toggleDailyTaskUseCase)
+	resetRoadmapUseCase := roadmapApp.NewResetRoadmapUseCase(roadmapRepo)
+	roadmapHandler := roadmapHttp.NewHandler(getActiveRoadmapUseCase, regenerateRoadmapUseCase, getConceptExplanationUseCase, getDailyTasksUseCase, toggleDailyTaskUseCase, resetRoadmapUseCase)
 
 	// Setup Diagnostics Module (short-lived in-memory onboarding sessions).
 	diagStore := diagInfra.NewInMemorySessionStore()

@@ -27,6 +27,7 @@ export const ENDPOINTS = {
     BASE: '/roadmap',
     WHY_CONCEPT: (id) => `/roadmap/concepts/${id}/why`,
     REGENERATE: '/roadmap/regenerate',
+    RESET: '/roadmap/reset',
     TASKS: '/roadmap/tasks',
     TOGGLE_TASK: (id) => `/roadmap/tasks/${id}/toggle`,
   },

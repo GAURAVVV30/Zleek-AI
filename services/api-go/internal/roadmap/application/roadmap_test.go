@@ -50,6 +50,10 @@ func (m *mockRoadmapRepo) ToggleDailyTask(ctx context.Context, learnerID string,
 	return nil
 }
 
+func (m *mockRoadmapRepo) ResetRoadmapProgress(ctx context.Context, learnerID string) error {
+	return nil
+}
+
 type mockGoalsSvc struct{}
 
 func (m *mockGoalsSvc) GetActiveGoal(ctx context.Context, learnerID string) (application.Goal, error) {
