@@ -12,10 +12,11 @@ import (
 )
 
 type Handler struct {
-	recordEvidence   UseCase
-	recordEngagement *application.RecordEngagementUseCase
-	getSummary       *application.GetProgressSummaryUseCase
-	getGoalSummary   *application.GetGoalCompletionSummaryUseCase
+	recordEvidence     UseCase
+	recordEngagement   *application.RecordEngagementUseCase
+	getSummary         *application.GetProgressSummaryUseCase
+	getGoalSummary     *application.GetGoalCompletionSummaryUseCase
+	getCompletionBadge *application.GetCompletionBadgeUseCase
 }
 
 type UseCase interface {
@@ -27,12 +28,14 @@ func NewHandler(
 	recordEngagement *application.RecordEngagementUseCase,
 	getSummary *application.GetProgressSummaryUseCase,
 	getGoalSummary *application.GetGoalCompletionSummaryUseCase,
+	getCompletionBadge *application.GetCompletionBadgeUseCase,
 ) *Handler {
 	return &Handler{
-		recordEvidence:   recordEvidence,
-		recordEngagement: recordEngagement,
-		getSummary:       getSummary,
-		getGoalSummary:   getGoalSummary,
+		recordEvidence:     recordEvidence,
+		recordEngagement:   recordEngagement,
+		getSummary:         getSummary,
+		getGoalSummary:     getGoalSummary,
+		getCompletionBadge: getCompletionBadge,
 	}
 }
 
@@ -104,8 +107,35 @@ func (h *Handler) GetGoalSummary(w http.ResponseWriter, r *http.Request) {
 	httpx.Envelope(w, http.StatusOK, summary)
 }
 
+func (h *Handler) GetCompletionBadge(w http.ResponseWriter, r *http.Request) {
+	learnerID := r.Header.Get("X-User-ID")
+	if learnerID == "" {
+		httpx.Error(w, http.StatusUnauthorized, "Unauthorized")
+		return
+	}
+	badgeRes, err := h.getCompletionBadge.Execute(r.Context(), learnerID)
+	if err != nil {
+		httpx.Error(w, http.StatusInternalServerError, "Failed to evaluate completion badge eligibility")
+		return
+	}
+
+	if !badgeRes.Eligible {
+		httpx.Envelope(w, http.StatusForbidden, badgeRes)
+		return
+	}
+
+	httpx.Envelope(w, http.StatusOK, badgeRes)
+}
+
 func (h *Handler) RegisterRoutes(mux *http.ServeMux) {
 	mux.HandleFunc("POST /concepts/{conceptId}/engagement", h.RecordEngagement)
 	mux.HandleFunc("GET /progress/summary", h.GetProgressSummary)
 	mux.HandleFunc("GET /progress/goal-summary", h.GetGoalSummary)
+	mux.HandleFunc("GET /goals/current/completion-summary", h.GetGoalSummary)
+	mux.HandleFunc("GET /goals/completion-summary", h.GetGoalSummary)
+	mux.HandleFunc("GET /api/v1/goals/current/completion-summary", h.GetGoalSummary)
+	mux.HandleFunc("GET /api/v1/progress/goal-summary", h.GetGoalSummary)
+	mux.HandleFunc("GET /progress/completion-badge", h.GetCompletionBadge)
+	mux.HandleFunc("GET /api/v1/progress/completion-badge", h.GetCompletionBadge)
+	mux.HandleFunc("GET /completion-badge", h.GetCompletionBadge)
 }

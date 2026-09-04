@@ -19,6 +19,7 @@ type ProgressRepository interface {
 	SyncPathItemState(ctx context.Context, tx pgx.Tx, learnerID, conceptNodeID, state string) error
 	Summary(ctx context.Context, learnerID, structureID string) (*SummaryPayload, error)
 	CompetentConceptNames(ctx context.Context, learnerID, structureID string) ([]string, error)
+	GetCompletionBadgeStatus(ctx context.Context, learnerID, structureID string) (totalModules int, completedModules int, err error)
 }
 
 // SummaryPayload is the raw aggregate the repository computes.

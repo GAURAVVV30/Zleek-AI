@@ -49,6 +49,7 @@ export const ENDPOINTS = {
   },
   PROGRESS: {
     SUMMARY: '/progress/summary',
+    COMPLETION_BADGE: '/progress/completion-badge',
   },
   COMPETENCY: {
     DETAIL: '/competency/detail',
