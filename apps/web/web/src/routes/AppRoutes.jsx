@@ -61,6 +61,7 @@ export default function AppRoutes() {
           <Route path="/project/:conceptId" element={<ProjectSubmissionPage />} />
           <Route path="/progress" element={<ProgressPage />} />
           <Route path="/goal-achieved" element={<GoalAchievedPage />} />
+          <Route path="/completion-badge" element={<GoalAchievedPage />} />
           <Route path="/settings" element={<SettingsPage />} />
         </Route>
       </Route>

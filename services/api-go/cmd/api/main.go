@@ -188,7 +188,8 @@ func main() {
 	progressGoals := &progressGoalsService{repo: goalRepo, db: dbPool}
 	getSummaryUseCase := progressApp.NewGetProgressSummaryUseCase(progressRepo, progressGoals)
 	getGoalSummaryUseCase := progressApp.NewGetGoalCompletionSummaryUseCase(progressRepo, progressGoals)
-	progressHandler := progressHttp.NewHandler(recordEvidenceUseCase, recordEngagementUseCase, getSummaryUseCase, getGoalSummaryUseCase)
+	getCompletionBadgeUseCase := progressApp.NewGetCompletionBadgeUseCase(progressRepo, progressGoals)
+	progressHandler := progressHttp.NewHandler(recordEvidenceUseCase, recordEngagementUseCase, getSummaryUseCase, getGoalSummaryUseCase, getCompletionBadgeUseCase)
 
 	// Setup Resources Module
 	resourcesRepo := resourceInfra.NewPostgresResourceRepository(dbPool)

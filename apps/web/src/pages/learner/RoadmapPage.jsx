@@ -1,10 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {
-  Info,
-  Zap,
-} from 'lucide-react';
-import { addDays, startOfWeek, isSameDay } from 'date-fns';
+import { Info } from 'lucide-react';
 
 import { apiClient } from '../../services/apiClient';
 import { ENDPOINTS } from '../../utils/endpoints';
@@ -12,12 +8,9 @@ import { NODE_STATES } from '../../utils/constants';
 import { useAuth } from '../../context/AuthContext';
 
 import AvatarSelector, { LEARNING_AVATARS } from '../../components/dashboard/AvatarSelector';
-
-// New dashboard components
 import CurrentMission from '../../components/dashboard/CurrentMission';
-import DailyLearningCalendar from '../../components/dashboard/DailyLearningCalendar';
-import DailyTaskList from '../../components/dashboard/DailyTaskList';
 import CompetencyRoadmap from '../../components/dashboard/CompetencyRoadmap';
+
 export default function RoadmapPage() {
   const [roadmap, setRoadmap] = useState(null);
   const [selectedConcept, setSelectedConcept] = useState(null);
@@ -28,16 +21,12 @@ export default function RoadmapPage() {
   const { user } = useAuth();
   const username = user?.fullName?.split(' ')[0] || 'Learner';
 
-  // New Daily Dashboard State
-  const [selectedDate, setSelectedDate] = useState(new Date());
-  const [weekTasks, setWeekTasks] = useState([]);
-
   useEffect(() => {
     apiClient
       .get(ENDPOINTS.ROADMAP.BASE)
       .then((res) => {
         setRoadmap(res.data);
-        const activeNode = res.data.nodes.find((n) => n.state === NODE_STATES.IN_PROGRESS) || res.data.nodes[0];
+        const activeNode = res.data.nodes?.find((n) => n.state === NODE_STATES.IN_PROGRESS) || res.data.nodes?.[0];
         setSelectedConcept(activeNode);
         setIsLoading(false);
       })
@@ -48,60 +37,7 @@ export default function RoadmapPage() {
       const found = LEARNING_AVATARS.find(a => a.id === savedAvatarId);
       if (found) setActiveAvatar(found);
     }
-
-    // Fetch real daily tasks from the backend
-    const fetchTasks = async () => {
-      try {
-        const res = await apiClient.get(ENDPOINTS.ROADMAP.TASKS);
-        if (res?.success && Array.isArray(res.data)) {
-          const mappedWeek = res.data.map((day) => ({
-            date: new Date(day.date || day.Date),
-            tasks: (day.tasks || day.Tasks || []).map((t) => ({
-              id: t.id || t.ID,
-              title: t.title || t.Title,
-              category: t.category || t.Category,
-              duration: t.duration || t.Duration,
-              completed: t.completed || t.Completed,
-            })),
-          }));
-          setWeekTasks(mappedWeek);
-        }
-      } catch (err) {
-        console.error('Failed to fetch tasks:', err);
-      }
-    };
-    fetchTasks();
   }, []);
-
-  const handleToggleTask = async (taskId) => {
-    let currentStatus = false;
-    weekTasks.forEach((day) => {
-      day.tasks.forEach((t) => {
-        if (t.id === taskId) {
-          currentStatus = t.completed;
-        }
-      });
-    });
-
-    try {
-      await apiClient.post(ENDPOINTS.ROADMAP.TOGGLE_TASK(taskId), {
-        completed: !currentStatus,
-      });
-
-      setWeekTasks((prev) =>
-        prev.map((day) => ({
-          ...day,
-          tasks: day.tasks.map((t) =>
-            t.id === taskId ? { ...t, completed: !currentStatus } : t
-          ),
-        }))
-      );
-      addToast('Task status updated!', 'success');
-    } catch (err) {
-      console.error('Failed to toggle task:', err);
-      addToast('Failed to update task status.', 'error');
-    }
-  };
 
   const handleWhyConcept = async (conceptId) => {
     try {
@@ -121,34 +57,14 @@ export default function RoadmapPage() {
     );
   }
 
-  const selectedDayTasks = weekTasks.find(d => isSameDay(d.date, selectedDate))?.tasks || [];
-
   return (
     <>
       <div className="flex flex-col xl:flex-row gap-8 items-start w-full justify-center">
-        
-        {/* Center Column */}
+        {/* Center Column: Mission Header & Competency Module Roadmap */}
         <div className="flex-1 w-full xl:max-w-[1000px] min-w-0 flex flex-col gap-8">
           <CurrentMission roadmap={roadmap} />
-          
-          <div className="w-full">
-            <DailyLearningCalendar 
-              weekData={weekTasks} 
-              selectedDate={selectedDate} 
-              onSelectDate={setSelectedDate} 
-            />
-          </div>
-          
-          <div className="w-full">
-            <DailyTaskList 
-              selectedDate={selectedDate} 
-              tasks={selectedDayTasks} 
-              onToggleTask={handleToggleTask} 
-            />
-          </div>
 
-
-          <div className="w-full pt-4 border-t border-white/5">
+          <div className="w-full">
             <CompetencyRoadmap 
               roadmap={roadmap} 
               selectedConcept={selectedConcept} 

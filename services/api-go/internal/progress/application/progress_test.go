@@ -11,10 +11,12 @@ import (
 )
 
 type mockProgressRepo struct {
-	evidence *domain.Evidence
-	synced   int
-	summary  *application.SummaryPayload
-	names    []string
+	evidence         *domain.Evidence
+	synced           int
+	summary          *application.SummaryPayload
+	names            []string
+	totalModules     int
+	completedModules int
 }
 
 func (m *mockProgressRepo) RecordEvidence(ctx context.Context, tx pgx.Tx, evidence *domain.Evidence) error {
@@ -37,6 +39,10 @@ func (m *mockProgressRepo) Summary(ctx context.Context, learnerID, structureID s
 
 func (m *mockProgressRepo) CompetentConceptNames(ctx context.Context, learnerID, structureID string) ([]string, error) {
 	return m.names, nil
+}
+
+func (m *mockProgressRepo) GetCompletionBadgeStatus(ctx context.Context, learnerID, structureID string) (int, int, error) {
+	return m.totalModules, m.completedModules, nil
 }
 
 type mockCompetencyService struct {
@@ -122,5 +128,95 @@ func TestGetProgressSummaryUseCase(t *testing.T) {
 	}
 	if len(summary.CompetencyBreakdown) != 1 {
 		t.Fatalf("expected 1 breakdown row, got %d", len(summary.CompetencyBreakdown))
+	}
+}
+
+func TestGetCompletionBadgeUseCase(t *testing.T) {
+	tests := []struct {
+		name             string
+		goalTitle        string
+		totalModules     int
+		completedModules int
+		expectedEligible bool
+		expectedRole     string
+	}{
+		{
+			name:             "CASE 1: 0 / N modules completed -> badge forbidden",
+			goalTitle:        "I want to master AI Engineer from the ground up.",
+			totalModules:     7,
+			completedModules: 0,
+			expectedEligible: false,
+			expectedRole:     "AI ENGINEER",
+		},
+		{
+			name:             "CASE 2: 1 / N completed -> badge forbidden",
+			goalTitle:        "Become a Data Analyst",
+			totalModules:     7,
+			completedModules: 1,
+			expectedEligible: false,
+			expectedRole:     "DATA ANALYST",
+		},
+		{
+			name:             "CASE 3: N-1 / N completed -> badge forbidden",
+			goalTitle:        "Master Backend Engineer Track",
+			totalModules:     7,
+			completedModules: 6,
+			expectedEligible: false,
+			expectedRole:     "BACKEND ENGINEER",
+		},
+		{
+			name:             "CASE 4: N / N completed -> badge allowed",
+			goalTitle:        "I want to master AI Engineer from the ground up.",
+			totalModules:     7,
+			completedModules: 7,
+			expectedEligible: true,
+			expectedRole:     "AI ENGINEER",
+		},
+		{
+			name:             "CASE 10 & 11: Dynamic Runtime Role Formatting for Mobile Engineer",
+			goalTitle:        "Become a Mobile Engineer",
+			totalModules:     5,
+			completedModules: 5,
+			expectedEligible: true,
+			expectedRole:     "MOBILE ENGINEER",
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			repo := &mockProgressRepo{
+				totalModules:     tt.totalModules,
+				completedModules: tt.completedModules,
+			}
+			goals := &mockGoalService{
+				goalID:    "g-1",
+				title:     tt.goalTitle,
+				structure: "s-1",
+			}
+
+			useCase := application.NewGetCompletionBadgeUseCase(repo, goals)
+			res, err := useCase.Execute(context.Background(), "learner-uuid-123")
+			if err != nil {
+				t.Fatalf("unexpected error: %v", err)
+			}
+
+			if res.Eligible != tt.expectedEligible {
+				t.Errorf("expected eligible=%v, got=%v", tt.expectedEligible, res.Eligible)
+			}
+
+			if res.Role != tt.expectedRole {
+				t.Errorf("expected role=%q, got=%q", tt.expectedRole, res.Role)
+			}
+
+			if tt.expectedEligible {
+				if res.Badge == nil || res.Badge.Title != tt.expectedRole || res.Badge.Status != "verified" {
+					t.Errorf("expected verified badge details for role %q, got %+v", tt.expectedRole, res.Badge)
+				}
+			} else {
+				if res.Message == "" {
+					t.Errorf("expected explanatory rejection message when incomplete")
+				}
+			}
+		})
 	}
 }

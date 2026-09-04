@@ -57,3 +57,17 @@ type GoalCompletionSummary struct {
 	TotalSkillsVerified int      `json:"totalSkillsVerified"`
 	MasteryProofList    []string `json:"masteryProofList"`
 }
+
+type BadgeDetails struct {
+	Title  string `json:"title"`
+	Status string `json:"status"`
+}
+
+type CompletionBadgeResponse struct {
+	Eligible         bool          `json:"eligible"`
+	Role             string        `json:"role"`
+	CompletedModules int           `json:"completedModules"`
+	TotalModules     int           `json:"totalModules"`
+	Badge            *BadgeDetails `json:"badge,omitempty"`
+	Message          string        `json:"message,omitempty"`
+}

@@ -418,7 +418,9 @@ func (r *PostgresProgressRepository) CompetentConceptNames(ctx context.Context, 
 	rows, err := r.db.Query(ctx, `
 		SELECT c.name FROM platform.competency_records cr
 		JOIN platform.concepts c ON c.id = cr.concept_id
-		WHERE cr.learner_id = $1 AND c.knowledge_structure_id = $2 AND cr.state = 'competent'
+		WHERE (cr.learner_id::text = $1 OR cr.learner_id IN (SELECT id FROM platform.users WHERE id::text = $1))
+		  AND (c.knowledge_structure_id::text = $2 OR c.knowledge_structure_id = $2::uuid)
+		  AND cr.state = 'competent'
 		ORDER BY c.created_at, c.node_id`, learnerID, structureID)
 	if err != nil {
 		return nil, err
@@ -433,6 +435,29 @@ func (r *PostgresProgressRepository) CompetentConceptNames(ctx context.Context, 
 		names = append(names, n)
 	}
 	return names, rows.Err()
+}
+
+func (r *PostgresProgressRepository) GetCompletionBadgeStatus(ctx context.Context, learnerID, structureID string) (totalModules int, completedModules int, err error) {
+	err = r.db.QueryRow(ctx, `
+		WITH active_learner_path AS (
+			SELECT id FROM platform.paths
+			WHERE (learner_id::text = $1 OR learner_id IN (SELECT id FROM platform.users WHERE id::text = $1))
+			  AND status = 'active'
+			  AND (knowledge_structure_id::text = $2 OR knowledge_structure_id = $2::uuid)
+			ORDER BY created_at DESC
+			LIMIT 1
+		)
+		SELECT 
+			COUNT(pi.id) AS total_count,
+			COUNT(CASE WHEN pi.state = 'competent' THEN 1 END) AS completed_count
+		FROM platform.path_items pi
+		WHERE pi.path_id = (SELECT id FROM active_learner_path)`,
+		learnerID, structureID).Scan(&totalModules, &completedModules)
+
+	if err != nil {
+		return 0, 0, nil
+	}
+	return totalModules, completedModules, nil
 }
 
 func percentageFor(state string, score float64) int {
