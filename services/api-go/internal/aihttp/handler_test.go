@@ -212,7 +212,7 @@ func TestLessonGeneration(t *testing.T) {
 
 func TestRoadmapEndpoints(t *testing.T) {
 	h := newTestRouter(t)
-	rr := doJSON(t, h, http.MethodGet, "/api/v1/roadmap?domain=ml_engineer", "")
+	rr := doJSON(t, h, http.MethodGet, "/api/v1/roadmap/domain-template?domain=ml_engineer", "")
 	if rr.Code != http.StatusOK {
 		t.Fatalf("get status %d", rr.Code)
 	}
@@ -225,7 +225,7 @@ func TestRoadmapEndpoints(t *testing.T) {
 		t.Fatalf("list status %d", rr.Code)
 	}
 
-	rr = doJSON(t, h, http.MethodPost, "/api/v1/roadmap",
+	rr = doJSON(t, h, http.MethodPost, "/api/v1/roadmap/template",
 		`{"domain":"my_domain","nodes":[{"id":"a","label":"A"}],"edges":[{"source":"a","target":"b"}]}`)
 	if rr.Code != http.StatusOK {
 		t.Fatalf("post status %d body %s", rr.Code, rr.Body.String())

@@ -16,6 +16,7 @@ type RoadmapRepository interface {
 	GetDailyTasks(ctx context.Context, learnerID string, start, end time.Time) ([]domain.DailyTaskDay, error)
 	SaveDailyTasks(ctx context.Context, learnerID string, tasks []domain.DailyTaskDay) error
 	ToggleDailyTask(ctx context.Context, learnerID string, taskID string, completed bool) error
+	ResetRoadmapProgress(ctx context.Context, learnerID string) error
 }
 
 type GoalsService interface {

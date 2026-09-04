@@ -12,6 +12,7 @@ import {
   BookOpen,
   Lock,
   Layers,
+  RotateCcw,
 } from 'lucide-react';
 import { apiClient } from '../../services/apiClient';
 import { ENDPOINTS } from '../../utils/endpoints';
@@ -184,6 +185,23 @@ export default function LearningWorkspacePage() {
     navigate(`/learn?role=${roleId}&module=${nextNum}`);
   };
 
+  const handleResetProgress = async () => {
+    if (!window.confirm('Are you sure you want to reset your roadmap progress and start learning over from Module 1?')) {
+      return;
+    }
+    try {
+      await apiClient.post(ENDPOINTS.ROADMAP.RESET, { role: roleId });
+      setCompletedModules([]);
+      setIsCompleted(false);
+      localStorage.removeItem(`gold_completed_modules_${roleId}`);
+      addToast('Roadmap progress reset! You can now start learning from Module 1.', 'success');
+      navigate(`/learn?role=${encodeURIComponent(roleId)}&module=1`);
+    } catch (err) {
+      console.error('Failed to reset progress:', err);
+      addToast('Failed to reset progress. Please try again.', 'error');
+    }
+  };
+
   if (isLoading) {
     return (
       <div className="py-20 text-center">
@@ -203,12 +221,21 @@ export default function LearningWorkspacePage() {
         <p className="text-sm text-slate-300 bg-black/40 border border-white/10 p-4 rounded-xl">
           {moduleData.message || 'Complete the previous module before accessing this module.'}
         </p>
-        <button
-          onClick={() => navigate('/roadmap')}
-          className="px-6 py-3 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold rounded-xl transition"
-        >
-          Return to Roadmap
-        </button>
+        <div className="flex items-center justify-center gap-3">
+          <button
+            onClick={() => navigate('/roadmap')}
+            className="px-6 py-3 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold rounded-xl transition"
+          >
+            Return to Roadmap
+          </button>
+          <button
+            onClick={handleResetProgress}
+            className="px-6 py-3 bg-slate-900 border border-slate-700 hover:border-rose-500/40 text-slate-300 hover:text-rose-300 text-xs font-bold rounded-xl transition flex items-center gap-1.5"
+          >
+            <RotateCcw className="w-3.5 h-3.5 text-rose-400" />
+            Reset to Module 1
+          </button>
+        </div>
       </div>
     );
   }
@@ -237,7 +264,15 @@ export default function LearningWorkspacePage() {
         </div>
 
         <div className="flex items-center gap-2">
-          <span className="px-3 py-1 bg-indigo-950/60 border border-indigo-500/30 text-indigo-300 font-mono text-[11px] rounded-full flex items-center gap-1.5">
+          <button
+            onClick={handleResetProgress}
+            className="px-3.5 py-1.5 bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/30 text-rose-300 font-sans text-[11px] font-bold rounded-full flex items-center gap-1.5 transition shadow-sm"
+            title="Reset progress and start over from Module 1"
+          >
+            <RotateCcw className="w-3.5 h-3.5 text-rose-400" />
+            Revert Progress
+          </button>
+          <span className="px-3 py-1.5 bg-indigo-950/60 border border-indigo-500/30 text-indigo-300 font-mono text-[11px] rounded-full flex items-center gap-1.5">
             <Sparkles className="w-3.5 h-3.5 text-indigo-400" />
             Gold Tier Dataset
           </span>
@@ -380,6 +415,15 @@ export default function LearningWorkspacePage() {
             >
               <CheckCircle className="w-4 h-4" />
               <span>{isCompleted ? 'Module Completed' : 'Complete Module'}</span>
+            </button>
+
+            <button
+              onClick={handleResetProgress}
+              className="w-full sm:w-auto px-5 py-3.5 bg-rose-500/10 border border-rose-500/30 hover:bg-rose-500/20 text-rose-300 font-bold text-xs rounded-2xl transition flex items-center justify-center gap-2"
+              title="Reset progress and start over from Module 1"
+            >
+              <RotateCcw className="w-4 h-4 text-rose-400" />
+              <span>Revert Progress</span>
             </button>
 
             <button
