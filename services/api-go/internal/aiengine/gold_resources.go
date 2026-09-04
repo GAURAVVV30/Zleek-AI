@@ -1,11 +1,14 @@
 package aiengine
 
 import (
+	"context"
 	_ "embed"
 	"encoding/json"
 	"fmt"
 	"strings"
 	"sync"
+
+	"github.com/jackc/pgx/v5/pgxpool"
 )
 
 //go:embed data/gold_tier_resources.json
@@ -318,9 +321,155 @@ func tokenizeQuery(text string) map[string]bool {
 	words := make(map[string]bool)
 	for _, w := range strings.Fields(strings.ToLower(text)) {
 		w = strings.Trim(w, ",.()[]{}!?:;\"'")
-		if len(w) > 2 && w != "and" && w != "the" && w != "for" && w != "with" && w != "from" && w != "into" {
+		if w != "" {
 			words[w] = true
 		}
 	}
 	return words
+}
+
+// ResolveAllConceptCandidates performs bidirectional resolution between gold module IDs,
+// graph node IDs, module numbers, and human-readable concept names.
+func ResolveAllConceptCandidates(query string) []string {
+	queryLower := strings.TrimSpace(strings.ToLower(query))
+	if queryLower == "" {
+		return nil
+	}
+
+	candidateMap := make(map[string]bool)
+	candidateMap[query] = true
+	candidateMap[queryLower] = true
+
+	// 1. Direct and Reverse NodeAliasMap Lookup
+	if val, ok := nodeAliasMap[queryLower]; ok {
+		candidateMap[val] = true
+	}
+	for graphNodeID, goldModuleID := range nodeAliasMap {
+		if strings.EqualFold(goldModuleID, queryLower) || strings.EqualFold(graphNodeID, queryLower) {
+			candidateMap[graphNodeID] = true
+			candidateMap[goldModuleID] = true
+		}
+	}
+
+	// 2. Gold Module Resources Search across all roles
+	lookup := GetGoldResourceLookup()
+	for roleKey, role := range lookup.Roles {
+		if mod, ok := lookup.GetGoldModuleResources(roleKey, queryLower); ok {
+			candidateMap[mod.ModuleID] = true
+			candidateMap[mod.ModuleName] = true
+
+			for graphNodeID, goldModuleID := range nodeAliasMap {
+				if strings.EqualFold(goldModuleID, mod.ModuleID) {
+					candidateMap[graphNodeID] = true
+				}
+			}
+		}
+		for _, mod := range role.Modules {
+			if strings.EqualFold(mod.ModuleID, queryLower) || strings.EqualFold(mod.ModuleName, queryLower) {
+				candidateMap[mod.ModuleID] = true
+				candidateMap[mod.ModuleName] = true
+				for graphNodeID, goldModuleID := range nodeAliasMap {
+					if strings.EqualFold(goldModuleID, mod.ModuleID) {
+						candidateMap[graphNodeID] = true
+					}
+				}
+			}
+		}
+	}
+
+	// 3. String Conversions (Underscores to Spaces, Prefix Conversions)
+	for cand := range candidateMap {
+		if strings.Contains(cand, "_") {
+			candidateMap[strings.ReplaceAll(cand, "_", " ")] = true
+		}
+		if strings.Contains(cand, " ") {
+			candidateMap[strings.ReplaceAll(cand, " ", "_")] = true
+		}
+		// Convert ai_engineer_m06_... -> ai_eng_06_...
+		if strings.HasPrefix(cand, "ai_engineer_m") {
+			candidateMap[strings.Replace(cand, "ai_engineer_m", "ai_eng_", 1)] = true
+		}
+		if strings.HasPrefix(cand, "ai_data_scientist_m") {
+			candidateMap[strings.Replace(cand, "ai_data_scientist_m", "ai_ds_", 1)] = true
+		}
+		if strings.HasPrefix(cand, "machine_learning_m") {
+			candidateMap[strings.Replace(cand, "machine_learning_m", "ml_", 1)] = true
+		}
+	}
+
+	var candidates []string
+	for cand := range candidateMap {
+		if strings.TrimSpace(cand) != "" {
+			candidates = append(candidates, cand)
+		}
+	}
+	return candidates
+}
+
+// ValidateModuleAccess checks if learnerID has unlocked the requested moduleQuery (node_id, module_id, or sequence_order)
+// on their active roadmap path. If sequence order N > 1, sequence N-1 must be completed (competent state or engagement event).
+func ValidateModuleAccess(ctx context.Context, dbPool *pgxpool.Pool, learnerID, roleID, moduleQuery string) (bool, string, error) {
+	if dbPool == nil || learnerID == "" || moduleQuery == "" {
+		return true, "", nil
+	}
+
+	query := `
+		WITH target_path AS (
+			SELECT p.id
+			FROM platform.paths p
+			WHERE (p.learner_id::text = $1 OR p.learner_id IN (SELECT id FROM platform.users WHERE id::text = $1))
+			  AND p.status = 'active'
+			ORDER BY p.created_at DESC
+			LIMIT 1
+		),
+		target_item AS (
+			SELECT pi.id, pi.sequence_order, pi.state
+			FROM platform.path_items pi
+			JOIN platform.concepts c ON c.id = pi.concept_id
+			WHERE pi.path_id = (SELECT id FROM target_path)
+			  AND (
+			    c.node_id = $2
+			    OR LOWER(c.node_id) = LOWER($2)
+			    OR c.id::text = $2
+			    OR LOWER(c.name) = LOWER($2)
+			    OR pi.sequence_order = NULLIF(regexp_replace($2, '\D', '', 'g'), '')::int
+			  )
+			ORDER BY pi.sequence_order ASC
+			LIMIT 1
+		)
+		SELECT 
+			ti.sequence_order,
+			CASE 
+				WHEN ti.sequence_order <= 1 THEN true
+				WHEN EXISTS (
+					SELECT 1 FROM platform.path_items prev
+					WHERE prev.path_id = (SELECT id FROM target_path)
+					  AND prev.sequence_order = ti.sequence_order - 1
+					  AND (
+					      prev.state = 'competent'
+					      OR EXISTS (
+					          SELECT 1 FROM platform.engagement_events ee 
+					          WHERE ee.path_item_id = prev.id 
+					            AND ee.event_type IN ('marked_reviewed', 'completed')
+					      )
+					  )
+				) THEN true
+				ELSE false
+			END AS is_accessible
+		FROM target_item ti;
+	`
+
+	var sequenceOrder int
+	var isAccessible bool
+	err := dbPool.QueryRow(ctx, query, learnerID, moduleQuery).Scan(&sequenceOrder, &isAccessible)
+	if err != nil {
+		// If path item is not found in active path, allow default or proceed
+		return true, "", nil
+	}
+
+	if !isAccessible {
+		return false, "Complete the previous module before accessing this module.", nil
+	}
+
+	return true, "", nil
 }

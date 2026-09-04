@@ -27,9 +27,10 @@ apiClient.interceptors.response.use(
   (error) => {
     if (error.response?.status === 401) {
       const path = window.location.pathname;
-      if (path !== '/login' && path !== '/signup' && path !== '/forgot-password') {
+      const isPublicPath = ['/', '/login', '/signup', '/forgot-password'].includes(path);
+      localStorage.removeItem('access_token');
+      if (!isPublicPath) {
         console.warn('Session expired or unauthorized');
-        localStorage.removeItem('access_token');
         window.location.href = '/login';
       }
     }

@@ -61,7 +61,16 @@ func (r *PostgresRoadmapRepository) GetRoadmap(ctx context.Context, learnerID st
 	}
 
 	rows, err := r.db.Query(ctx, `
-		SELECT c.node_id, c.name, COALESCE(c.description, ''), pi.state,
+		SELECT c.node_id, c.name, COALESCE(c.description, ''),
+		       CASE
+		         WHEN pi.state = 'competent' THEN 'competent'
+		         WHEN EXISTS (
+		           SELECT 1 FROM platform.engagement_events ee
+		           WHERE ee.path_item_id = pi.id
+		             AND ee.event_type IN ('marked_reviewed', 'completed')
+		         ) THEN 'competent'
+		         ELSE 'not_started'
+		       END AS state,
 		       pi.sequence_order, pi.is_remediation,
 		       COALESCE((SELECT res.duration_minutes
 		                 FROM platform.resource_concepts rc
@@ -81,15 +90,31 @@ func (r *PostgresRoadmapRepository) GetRoadmap(ctx context.Context, learnerID st
 	var prevTitle string
 	var inProgress string
 	competent := 0
+	prevCompleted := true
 
 	for rows.Next() {
-		var nodeID, title, desc, state string
+		var nodeID, title, desc, rawState string
 		var order int
 		var isRem bool
 		var minutes int
-		if err := rows.Scan(&nodeID, &title, &desc, &state, &order, &isRem, &minutes); err != nil {
+		if err := rows.Scan(&nodeID, &title, &desc, &rawState, &order, &isRem, &minutes); err != nil {
 			return nil, err
 		}
+
+		// Enforce strict 1-by-1 sequential progression
+		state := "locked"
+		if prevCompleted && (rawState == "competent") {
+			state = "competent"
+			competent++
+			prevCompleted = true
+		} else if prevCompleted {
+			state = "available"
+			prevCompleted = false
+		} else {
+			state = "locked"
+			prevCompleted = false
+		}
+
 		node := domain.RoadmapNode{
 			ID:               nodeID,
 			Title:            title,
@@ -104,11 +129,8 @@ func (r *PostgresRoadmapRepository) GetRoadmap(ctx context.Context, learnerID st
 		if state == "locked" && prevTitle != "" {
 			node.UnlockRequirement = "Unlocks after: " + prevTitle
 		}
-		if state == "in_progress" && inProgress == "" {
+		if state == "available" && inProgress == "" {
 			inProgress = nodeID
-		}
-		if state == "competent" {
-			competent++
 		}
 		prevTitle = title
 		nodes = append(nodes, node)

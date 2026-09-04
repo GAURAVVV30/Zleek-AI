@@ -103,7 +103,7 @@ export default function ProgressPage() {
 
       {activeTab === 'progress' ? (
         <>
-          <ProgressSummary progress={summary.overallCompletionPercentage} />
+          <ProgressSummary progress={summary.overallCompletionPercentage} summary={summary} />
           
           {/* Progress Tab: Radial Chart & Mastery Breakdowns */}
           <div className="grid grid-cols-1 md:grid-cols-12 gap-6">

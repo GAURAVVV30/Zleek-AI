@@ -5,6 +5,8 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/jackc/pgx/v5/pgxpool"
+
 	"github.com/hcl-backend/services/api-go/internal/aiengine"
 	"github.com/hcl-backend/services/api-go/internal/resources/application"
 )
@@ -16,6 +18,7 @@ type Handler struct {
 	feedbackSignalsUseCase *application.GetFeedbackSignalsUseCase
 	alternateUseCase       *application.GetAlternateResourcesUseCase
 	explainUseCase         *application.ExplainResourceRelevanceUseCase
+	dbPool                 *pgxpool.Pool
 }
 
 func NewHandler(
@@ -25,7 +28,12 @@ func NewHandler(
 	feedbackSignals *application.GetFeedbackSignalsUseCase,
 	alternate *application.GetAlternateResourcesUseCase,
 	explain *application.ExplainResourceRelevanceUseCase,
+	dbPool ...*pgxpool.Pool,
 ) *Handler {
+	var pool *pgxpool.Pool
+	if len(dbPool) > 0 {
+		pool = dbPool[0]
+	}
 	return &Handler{
 		createUseCase:          create,
 		updateUseCase:          update,
@@ -33,6 +41,7 @@ func NewHandler(
 		feedbackSignalsUseCase: feedbackSignals,
 		alternateUseCase:       alternate,
 		explainUseCase:         explain,
+		dbPool:                 pool,
 	}
 }
 
@@ -204,6 +213,11 @@ func (h *Handler) ExplainResourceRelevance(w http.ResponseWriter, r *http.Reques
 }
 
 func (h *Handler) GetGoldResources(w http.ResponseWriter, r *http.Request) {
+	learnerID := r.Header.Get("X-User-ID")
+	if learnerID == "" {
+		learnerID = r.Header.Get("X-Learner-ID")
+	}
+
 	role := strings.TrimSpace(r.URL.Query().Get("role"))
 	moduleQuery := strings.TrimSpace(r.URL.Query().Get("module"))
 	if moduleQuery == "" {
@@ -225,6 +239,19 @@ func (h *Handler) GetGoldResources(w http.ResponseWriter, r *http.Request) {
 			},
 		})
 		return
+	}
+
+	// BACKEND MODULE ACCESS GATING: Refuse resource retrieval for locked modules
+	if learnerID != "" && h.dbPool != nil {
+		accessible, msg, err := aiengine.ValidateModuleAccess(r.Context(), h.dbPool, learnerID, role, moduleQuery)
+		if err == nil && !accessible {
+			w.WriteHeader(http.StatusForbidden)
+			json.NewEncoder(w).Encode(map[string]any{
+				"status":  "locked",
+				"message": msg,
+			})
+			return
+		}
 	}
 
 	goldMod, ok := aiengine.GetGoldResourceLookup().GetGoldModuleResources(role, moduleQuery)

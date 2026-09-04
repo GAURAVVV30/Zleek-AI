@@ -36,10 +36,17 @@ func NewHandler(
 func (h *Handler) GetActiveRoadmap(w http.ResponseWriter, r *http.Request) {
 	learnerID := r.Header.Get("X-User-ID")
 	if learnerID == "" {
+		learnerID = r.Header.Get("X-Learner-ID")
+	}
+	if learnerID == "" {
 		httpx.Error(w, http.StatusUnauthorized, "Unauthorized")
 		return
 	}
 	roadmap, err := h.getUseCase.Execute(r.Context(), learnerID)
+	if err != nil {
+		// Auto-generate active roadmap from active goal if missing
+		roadmap, err = h.regenerateUseCase.Execute(r.Context(), learnerID)
+	}
 	if err != nil {
 		httpx.Error(w, http.StatusNotFound, "No active roadmap")
 		return
@@ -49,6 +56,9 @@ func (h *Handler) GetActiveRoadmap(w http.ResponseWriter, r *http.Request) {
 
 func (h *Handler) RegenerateRoadmap(w http.ResponseWriter, r *http.Request) {
 	learnerID := r.Header.Get("X-User-ID")
+	if learnerID == "" {
+		learnerID = r.Header.Get("X-Learner-ID")
+	}
 	if learnerID == "" {
 		httpx.Error(w, http.StatusUnauthorized, "Unauthorized")
 		return
@@ -82,6 +92,9 @@ func (h *Handler) GetConceptExplanation(w http.ResponseWriter, r *http.Request) 
 func (h *Handler) GetDailyTasks(w http.ResponseWriter, r *http.Request) {
 	learnerID := r.Header.Get("X-User-ID")
 	if learnerID == "" {
+		learnerID = r.Header.Get("X-Learner-ID")
+	}
+	if learnerID == "" {
 		httpx.Error(w, http.StatusUnauthorized, "Unauthorized")
 		return
 	}
@@ -95,6 +108,9 @@ func (h *Handler) GetDailyTasks(w http.ResponseWriter, r *http.Request) {
 
 func (h *Handler) ToggleDailyTask(w http.ResponseWriter, r *http.Request) {
 	learnerID := r.Header.Get("X-User-ID")
+	if learnerID == "" {
+		learnerID = r.Header.Get("X-Learner-ID")
+	}
 	if learnerID == "" {
 		httpx.Error(w, http.StatusUnauthorized, "Unauthorized")
 		return
@@ -121,8 +137,13 @@ func (h *Handler) ToggleDailyTask(w http.ResponseWriter, r *http.Request) {
 
 func (h *Handler) RegisterRoutes(mux *http.ServeMux) {
 	mux.HandleFunc("GET /roadmap", h.GetActiveRoadmap)
+	mux.HandleFunc("GET /api/v1/roadmap", h.GetActiveRoadmap)
 	mux.HandleFunc("POST /roadmap/regenerate", h.RegenerateRoadmap)
+	mux.HandleFunc("POST /api/v1/roadmap/regenerate", h.RegenerateRoadmap)
 	mux.HandleFunc("GET /roadmap/concepts/{conceptId}/why", h.GetConceptExplanation)
+	mux.HandleFunc("GET /api/v1/roadmap/concepts/{conceptId}/why", h.GetConceptExplanation)
 	mux.HandleFunc("GET /roadmap/tasks", h.GetDailyTasks)
+	mux.HandleFunc("GET /api/v1/roadmap/tasks", h.GetDailyTasks)
 	mux.HandleFunc("POST /roadmap/tasks/{taskId}/toggle", h.ToggleDailyTask)
+	mux.HandleFunc("POST /api/v1/roadmap/tasks/{taskId}/toggle", h.ToggleDailyTask)
 }

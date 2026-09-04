@@ -30,11 +30,18 @@ export default function CompetencyRoadmap({ roadmap, selectedConcept, onSelectCo
   const navigate = useNavigate();
   if (!roadmap || !roadmap.nodes) return null;
 
+  const rawRole = roadmap?.domain || roadmap?.domain_id || selectedConcept?.domain || localStorage.getItem('userActiveRole');
+  let activeRole = normalizeRoleSlug(rawRole);
+  if (!activeRole) activeRole = 'full_stack';
+
+  let savedCompleted = [];
+  try {
+    const raw = localStorage.getItem(`gold_completed_modules_${activeRole}`);
+    if (raw) savedCompleted = JSON.parse(raw);
+  } catch (e) {}
+
   const handleModuleClick = (node, index) => {
     if (onSelectConcept) onSelectConcept(node);
-    const rawRole = roadmap?.domain || roadmap?.domain_id || node?.domain || node?.domain_id || localStorage.getItem('userActiveRole');
-    let activeRole = normalizeRoleSlug(rawRole);
-    if (!activeRole) activeRole = 'full_stack';
     const moduleQuery = node?.id || `${index + 1}`;
     navigate(`/learn?role=${encodeURIComponent(activeRole)}&module=${encodeURIComponent(moduleQuery)}`);
   };
@@ -52,10 +59,21 @@ export default function CompetencyRoadmap({ roadmap, selectedConcept, onSelectCo
       <div className="relative grid grid-cols-5 gap-4 lg:gap-6 w-full items-stretch min-w-[600px] overflow-x-auto pb-4 [&::-webkit-scrollbar]:hidden">
         {roadmap.nodes.map((node, index) => {
           const isSelected = selectedConcept?.id === node.id;
-          const config = NODE_CONFIG[node.state] || NODE_CONFIG[NODE_STATES.NOT_STARTED];
+          const moduleQuery = node?.id || `${index + 1}`;
+
+          let effectiveState = node.state || NODE_STATES.NOT_STARTED;
+          if (effectiveState === 'competent') {
+            effectiveState = NODE_STATES.COMPETENT;
+          } else if (effectiveState === 'available') {
+            effectiveState = NODE_STATES.AVAILABLE;
+          } else if (effectiveState === 'locked') {
+            effectiveState = NODE_STATES.NOT_STARTED;
+          }
+
+          const config = NODE_CONFIG[effectiveState] || NODE_CONFIG[NODE_STATES.NOT_STARTED];
 
           return (
-            <div key={node.id} className="relative w-full">
+            <div key={node.id || index} className="relative w-full">
               {/* Connector Line to Next Node */}
               {index < roadmap.nodes.length - 1 && (
                 <div className="absolute top-[36px] left-[36px] w-[calc(100%+16px)] lg:w-[calc(100%+24px)] h-[3px] bg-slate-600/50 z-0" />
@@ -74,19 +92,19 @@ export default function CompetencyRoadmap({ roadmap, selectedConcept, onSelectCo
                   <div className="flex items-start justify-between w-full">
                     <div
                       className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${
-                        node.state === NODE_STATES.COMPETENT
+                        effectiveState === NODE_STATES.COMPETENT
                           ? 'bg-emerald-500 text-white'
-                          : node.state === NODE_STATES.IN_PROGRESS
+                          : effectiveState === NODE_STATES.IN_PROGRESS
                           ? 'bg-indigo-600 text-white ring-4 ring-indigo-500/30'
-                          : node.state === NODE_STATES.WEAK_EVIDENCE
+                          : effectiveState === NODE_STATES.WEAK_EVIDENCE
                           ? 'bg-amber-500 text-white'
                           : 'bg-slate-800 text-slate-400 border border-slate-600'
                       }`}
                     >
-                      {node.state === NODE_STATES.COMPETENT && <CheckCircle2 className="w-5 h-5" />}
-                      {node.state === NODE_STATES.IN_PROGRESS && <PlayCircle className="w-5 h-5" />}
-                      {node.state === NODE_STATES.WEAK_EVIDENCE && <AlertTriangle className="w-5 h-5" />}
-                      {node.state === NODE_STATES.NOT_STARTED && <Lock className="w-4 h-4" />}
+                      {effectiveState === NODE_STATES.COMPETENT && <CheckCircle2 className="w-5 h-5" />}
+                      {effectiveState === NODE_STATES.IN_PROGRESS && <PlayCircle className="w-5 h-5" />}
+                      {effectiveState === NODE_STATES.WEAK_EVIDENCE && <AlertTriangle className="w-5 h-5" />}
+                      {effectiveState === NODE_STATES.NOT_STARTED && <Lock className="w-4 h-4" />}
                     </div>
                     <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border shrink-0 ${config.badgeClass}`}>
                       {config.label}

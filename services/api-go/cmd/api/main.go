@@ -199,7 +199,7 @@ func main() {
 	getFeedbackSignalsUseCase := resourceApp.NewGetFeedbackSignalsUseCase(resourcesRepo)
 	getAlternateUseCase := resourceApp.NewGetAlternateResourcesUseCase(resourcesRepo, aiClient)
 	explainUseCase := resourceApp.NewExplainResourceRelevanceUseCase(aiClient)
-	resourcesHandler := resourceHttp.NewHandler(createResourceUseCase, updateResourceUseCase, listResourcesUseCase, getFeedbackSignalsUseCase, getAlternateUseCase, explainUseCase)
+	resourcesHandler := resourceHttp.NewHandler(createResourceUseCase, updateResourceUseCase, listResourcesUseCase, getFeedbackSignalsUseCase, getAlternateUseCase, explainUseCase, dbPool)
 
 	// Setup Assessment Module (deterministic quiz generation + the real
 	// evidence pipeline for competency transitions).
@@ -295,7 +295,7 @@ func main() {
 	})
 
 	// Ported FastAPI intelligence service routers (exact /api/v1 paths).
-	aiHandler := &aihttp.Handler{App: aiApp}
+	aiHandler := &aihttp.Handler{App: aiApp, DbPool: dbPool}
 	aiHandler.RegisterRoutes(mux)
 
 	mux.HandleFunc("GET /ready", func(w http.ResponseWriter, r *http.Request) {

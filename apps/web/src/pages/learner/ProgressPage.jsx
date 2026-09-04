@@ -17,16 +17,80 @@ export default function ProgressPage() {
     Promise.all([
       apiClient.get(ENDPOINTS.PROGRESS.SUMMARY),
       apiClient.get(ENDPOINTS.COMPETENCY.DETAIL),
+      apiClient.get(ENDPOINTS.ROADMAP.BASE).catch(() => ({ data: null })),
     ])
-      .then(([sumRes, compRes]) => {
-        setSummary(sumRes.data);
-        setCompetencyDetail(compRes.data);
+      .then(([sumRes, compRes, roadmapRes]) => {
+        const rawSum = sumRes?.data || sumRes;
+        const sumData = rawSum?.data || rawSum;
+        const rawComp = compRes?.data || compRes;
+        const compData = rawComp?.data || rawComp;
+
+        const rawRoadmap = roadmapRes?.data || roadmapRes;
+        const roadmapData = rawRoadmap?.data || rawRoadmap;
+
+        let finalSummary = sumData;
+
+        // If roadmap is available and has nodes, sync progress breakdown directly with active roadmap milestones
+        if (roadmapData && Array.isArray(roadmapData.nodes) && roadmapData.nodes.length > 0) {
+          const rawRole = roadmapData?.domain || roadmapData?.domain_id || localStorage.getItem('userActiveRole');
+          let activeRole = rawRole ? rawRole.trim().toLowerCase() : 'full_stack';
+
+          let savedCompleted = [];
+          try {
+            const raw = localStorage.getItem(`gold_completed_modules_${activeRole}`);
+            if (raw) savedCompleted = JSON.parse(raw);
+          } catch (e) {}
+
+          const totalConcepts = roadmapData.nodes.length;
+          let completedConcepts = 0;
+          let prevAllCompleted = true;
+
+          const competencyBreakdown = roadmapData.nodes.map((node, index) => {
+            let isCompleted = false;
+            if (prevAllCompleted) {
+              isCompleted = 
+                node.state === 'competent' || 
+                savedCompleted.includes(node.id) ||
+                savedCompleted.includes(`${index + 1}`) ||
+                savedCompleted.some(saved => 
+                  typeof saved === 'string' && node.title && 
+                  (saved.toLowerCase().includes(node.title.toLowerCase()) || node.title.toLowerCase().includes(saved.toLowerCase()))
+                );
+            }
+
+            if (isCompleted) {
+              completedConcepts++;
+              prevAllCompleted = true;
+            } else {
+              prevAllCompleted = false;
+            }
+
+            return {
+              domain: node.title,
+              percentage: isCompleted ? 100 : 0,
+              status: isCompleted ? 'Competent' : (index > 0 && !prevAllCompleted && index === completedConcepts ? 'Available' : 'Not Started'),
+            };
+          });
+
+          const calculatedPercentage = Math.round((completedConcepts / totalConcepts) * 100);
+
+          finalSummary = {
+            ...sumData,
+            totalConcepts,
+            completedConcepts,
+            overallCompletionPercentage: calculatedPercentage,
+            competencyBreakdown,
+          };
+        }
+
+        setSummary(finalSummary);
+        setCompetencyDetail(Array.isArray(compData) ? compData : []);
         setIsLoading(false);
       })
       .catch(() => setIsLoading(false));
   }, []);
 
-  // Use actual 365-day activity matrix returned from the backend API starting from today
+  // Use actual 365-day activity matrix returned from the backend API (past 365 days leading up to today)
   const activityData = React.useMemo(() => {
     if (summary?.activityData && summary.activityData.length > 0) {
       return summary.activityData;
@@ -34,7 +98,7 @@ export default function ProgressPage() {
     const data = [];
     const today = new Date();
     for (let i = 0; i < 365; i++) {
-      const date = addDays(today, i);
+      const date = addDays(today, -364 + i);
       data.push({
         date: format(date, 'yyyy-MM-dd'),
         count: 0,
@@ -96,7 +160,7 @@ export default function ProgressPage() {
 
       {activeTab === 'progress' ? (
         <>
-          <ProgressSummary progress={summary.overallCompletionPercentage} />
+          <ProgressSummary progress={summary.overallCompletionPercentage} summary={summary} />
           
           {/* Progress Tab: Radial Chart & Mastery Breakdowns */}
           <div className="grid grid-cols-1 md:grid-cols-12 gap-6">

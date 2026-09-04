@@ -3,6 +3,7 @@ package http
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"net/http"
 
 	"github.com/hcl-backend/services/api-go/internal/platform/httpx"
@@ -55,6 +56,10 @@ func (h *Handler) RecordEngagement(w http.ResponseWriter, r *http.Request) {
 		conceptID = body.ConceptID
 	}
 	if err := h.recordEngagement.RecordEngagement(r.Context(), learnerID, conceptID, body.Action); err != nil {
+		if errors.Is(err, domain.ErrPrerequisiteNotMet) {
+			httpx.Error(w, http.StatusConflict, "Previous module must be completed first")
+			return
+		}
 		httpx.Error(w, http.StatusUnprocessableEntity, "Invalid engagement event")
 		return
 	}
