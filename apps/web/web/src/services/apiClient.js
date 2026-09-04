@@ -26,8 +26,13 @@ apiClient.interceptors.response.use(
   (response) => response.data,
   (error) => {
     if (error.response?.status === 401) {
-      // Optional auto-logout or redirect
-      console.warn('Session expired or unauthorized');
+      const path = window.location.pathname;
+      const isPublicPath = ['/', '/login', '/signup', '/forgot-password'].includes(path);
+      localStorage.removeItem('access_token');
+      if (!isPublicPath) {
+        console.warn('Session expired or unauthorized');
+        window.location.href = '/login';
+      }
     }
     return Promise.reject(error.response?.data || error);
   }

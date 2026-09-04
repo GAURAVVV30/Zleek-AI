@@ -1,11 +1,31 @@
 import React from 'react';
 
-export default function ProgressSummary({ progress = 64 }) {
+export default function ProgressSummary({ progress, summary }) {
+  const overallProgress = summary?.overallCompletionPercentage ?? (progress !== undefined ? Number(progress) : 0);
+  
+  const skillsMastered = summary?.completedConcepts ?? summary?.skillsMastered ?? (
+    overallProgress > 0 
+      ? Math.round((overallProgress / 100) * (summary?.totalConcepts || 15)) 
+      : 0
+  );
+
+  const learningHours = summary?.learningHours ?? summary?.hoursSpent ?? (
+    skillsMastered > 0 
+      ? Math.max(1, Math.round(skillsMastered * 1.5)) 
+      : 0
+  );
+
+  const projectsCompleted = summary?.projectsCompleted ?? summary?.completedProjects ?? (
+    skillsMastered > 0 
+      ? Math.floor(skillsMastered / 3) 
+      : 0
+  );
+
   const stats = [
-    { value: `${progress}%`, label: 'Mission Progress' },
-    { value: '12', label: 'Skills Mastered' },
-    { value: '8', label: 'Learning Hours' },
-    { value: '4', label: 'Projects Completed' },
+    { value: `${overallProgress}%`, label: 'Mission Progress' },
+    { value: `${skillsMastered}`, label: 'Skills Mastered' },
+    { value: `${learningHours}`, label: 'Learning Hours' },
+    { value: `${projectsCompleted}`, label: 'Projects Completed' },
   ];
 
   return (

@@ -12,13 +12,16 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/jackc/pgx/v5/pgxpool"
+
 	"github.com/hcl-backend/services/api-go/internal/aiengine"
 )
 
 const serviceVersion = "3.0"
 
 type Handler struct {
-	App *aiengine.App
+	App    *aiengine.App
+	DbPool *pgxpool.Pool
 }
 
 func NewHandler() (*Handler, error) {
@@ -38,9 +41,9 @@ func (h *Handler) RegisterRoutes(mux *http.ServeMux) {
 	mux.HandleFunc("POST /api/v1/goal/analyze", h.handleGoalAnalyze)
 
 	// roadmap (router mounted at /api/v1)
-	mux.HandleFunc("GET /api/v1/roadmap", h.handleGetRoadmap)
+	mux.HandleFunc("GET /api/v1/roadmap/domain-template", h.handleGetRoadmap)
 	mux.HandleFunc("GET /api/v1/roadmap/list", h.handleListRoadmaps)
-	mux.HandleFunc("POST /api/v1/roadmap", h.handlePostRoadmap)
+	mux.HandleFunc("POST /api/v1/roadmap/template", h.handlePostRoadmap)
 
 	// resource
 	mux.HandleFunc("GET /api/v1/resource", h.handleGetResource)
@@ -218,6 +221,11 @@ func (h *Handler) handleGetResource(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *Handler) handleGetGoldResources(w http.ResponseWriter, r *http.Request) {
+	learnerID := r.Header.Get("X-User-ID")
+	if learnerID == "" {
+		learnerID = r.Header.Get("X-Learner-ID")
+	}
+
 	role := strings.TrimSpace(r.URL.Query().Get("role"))
 	moduleQuery := strings.TrimSpace(r.URL.Query().Get("module"))
 	if moduleQuery == "" {
@@ -236,6 +244,20 @@ func (h *Handler) handleGetGoldResources(w http.ResponseWriter, r *http.Request)
 			},
 		})
 		return
+	}
+
+	// BACKEND MODULE ACCESS GATING: Refuse resource retrieval for locked modules
+	if learnerID != "" && h.DbPool != nil {
+		accessible, msg, err := aiengine.ValidateModuleAccess(r.Context(), h.DbPool, learnerID, role, moduleQuery)
+		if err == nil && !accessible {
+			w.Header().Set("Content-Type", "application/json")
+			w.WriteHeader(http.StatusForbidden)
+			json.NewEncoder(w).Encode(map[string]any{
+				"status":  "locked",
+				"message": msg,
+			})
+			return
+		}
 	}
 
 	goldMod, ok := aiengine.GetGoldResourceLookup().GetGoldModuleResources(role, moduleQuery)

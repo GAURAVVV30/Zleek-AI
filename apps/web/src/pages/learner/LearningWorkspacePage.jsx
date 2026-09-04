@@ -86,7 +86,14 @@ export default function LearningWorkspacePage() {
 
       try {
         const res = await apiClient.get(ENDPOINTS.CONCEPTS.GOLD(activeRole, mQuery));
-        if (res?.data && res.data.status === 'success') {
+        if (res?.status === 'locked' || res?.data?.status === 'locked') {
+          setModuleData({
+            status: 'locked',
+            message: res?.message || res?.data?.message || 'Complete the previous module before accessing this module.',
+            role_id: activeRole,
+            module_id: mQuery,
+          });
+        } else if (res?.data && res.data.status === 'success') {
           setModuleData(res.data);
         } else if (res?.status === 'success') {
           setModuleData(res);
@@ -101,14 +108,23 @@ export default function LearningWorkspacePage() {
           });
         }
       } catch (err) {
-        setModuleData({
-          status: 'unavailable',
-          role_id: activeRole,
-          module_id: mQuery,
-          module_number: 1,
-          module_name: 'Module Context',
-          resources: { documentation: [], video: [], hands_on: [] },
-        });
+        if (err?.response?.status === 403 || err?.response?.data?.status === 'locked') {
+          setModuleData({
+            status: 'locked',
+            message: err?.response?.data?.message || 'Complete the previous module before accessing this module.',
+            role_id: activeRole,
+            module_id: mQuery,
+          });
+        } else {
+          setModuleData({
+            status: 'unavailable',
+            role_id: activeRole,
+            module_id: mQuery,
+            module_number: 1,
+            module_name: 'Module Context',
+            resources: { documentation: [], video: [], hands_on: [] },
+          });
+        }
       } finally {
         setIsLoading(false);
       }
@@ -136,19 +152,30 @@ export default function LearningWorkspacePage() {
   const handleCompleteModule = async () => {
     if (!moduleData) return;
     const currentId = moduleData.module_id || `${moduleData.module_number}`;
-    const nextModules = Array.from(new Set([...completedModules, currentId, `${moduleData.module_number}`]));
-    
-    setCompletedModules(nextModules);
-    setIsCompleted(true);
-    localStorage.setItem(`gold_completed_modules_${roleId}`, JSON.stringify(nextModules));
+    const modNum = `${moduleData.module_number}`;
+    const modName = moduleData.module_name || '';
+    const aliasGraphId = currentId
+      .replace('ai_engineer_m', 'ai_eng_')
+      .replace('ai_data_scientist_m', 'ai_ds_')
+      .replace('machine_learning_m', 'ml_');
 
     try {
       await apiClient.post(ENDPOINTS.CONCEPTS.ENGAGEMENT(currentId), { action: 'marked_reviewed' });
+
+      const nextModules = Array.from(
+        new Set([...completedModules, currentId, modNum, modName, aliasGraphId].filter(Boolean))
+      );
+
+      setCompletedModules(nextModules);
+      setIsCompleted(true);
+      localStorage.setItem(`gold_completed_modules_${roleId}`, JSON.stringify(nextModules));
+
+      addToast(`Module ${moduleData.module_number} marked as complete! Next module unlocked.`, 'success');
     } catch (e) {
       console.warn('Engagement sync error:', e);
+      const errorMsg = e?.error?.message || e?.message || 'Previous module must be completed first';
+      addToast(errorMsg, 'error');
     }
-
-    addToast(`Module ${moduleData.module_number} marked as complete! Next module unlocked.`, 'success');
   };
 
   const handleNextModule = () => {
@@ -162,6 +189,26 @@ export default function LearningWorkspacePage() {
       <div className="py-20 text-center">
         <div className="w-8 h-8 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
         <p className="text-xs text-slate-400">Loading Gold Tier learning module...</p>
+      </div>
+    );
+  }
+
+  if (moduleData?.status === 'locked') {
+    return (
+      <div className="py-20 text-center space-y-6 max-w-md mx-auto">
+        <div className="w-16 h-16 bg-rose-500/10 border border-rose-500/30 rounded-2xl flex items-center justify-center mx-auto text-rose-400">
+          <Lock className="w-8 h-8" />
+        </div>
+        <h2 className="text-xl font-bold text-white">Module Access Restricted</h2>
+        <p className="text-sm text-slate-300 bg-black/40 border border-white/10 p-4 rounded-xl">
+          {moduleData.message || 'Complete the previous module before accessing this module.'}
+        </p>
+        <button
+          onClick={() => navigate('/roadmap')}
+          className="px-6 py-3 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold rounded-xl transition"
+        >
+          Return to Roadmap
+        </button>
       </div>
     );
   }
