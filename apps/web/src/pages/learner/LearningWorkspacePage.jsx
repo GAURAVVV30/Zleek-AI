@@ -275,8 +275,8 @@ export default function LearningWorkspacePage() {
         </div>
       </div>
 
-      {/* Main Grid: Left = Module & Resources, Right = Gemini Chatbot */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      {/* Main Grid: Left = Module & Resources (Existing dimensions preserved), Right = Tia-AI Assistant (Expanded flexible panel) */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
         {/* Left Column (8 cols) */}
         <div className="lg:col-span-7 xl:col-span-8 space-y-6">
           {/* Dedicated Module Header Card */}
@@ -437,8 +437,8 @@ export default function LearningWorkspacePage() {
           </div>
         </div>
 
-        {/* Right Column (5 cols) — Scoped Gemini Chatbot */}
-        <div className="lg:col-span-5 xl:col-span-4 sticky top-24">
+        {/* Right Column (Expanded Tia-AI Assistant flexible panel) */}
+        <div className="lg:col-span-5 xl:col-span-4 flex flex-col h-full">
           <ModuleGeminiChatbot
             roleId={roleId}
             roleName={roleId.replace('_', ' ')}
