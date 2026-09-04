@@ -17,6 +17,7 @@ import {
 import { apiClient } from '../../services/apiClient';
 import { ENDPOINTS } from '../../utils/endpoints';
 import { useToast } from '../../context/ToastContext';
+import { addNotification } from '../../services/notificationService';
 import ModuleGeminiChatbot from '../../components/learner/ModuleGeminiChatbot';
 
 const DOMAIN_UUID_MAP = {
@@ -172,6 +173,11 @@ export default function LearningWorkspacePage() {
       localStorage.setItem(`gold_completed_modules_${roleId}`, JSON.stringify(nextModules));
 
       addToast(`Module ${moduleData.module_number} marked as complete! Next module unlocked.`, 'success');
+      addNotification(
+        'Module Completed',
+        `Module "${moduleData.module_name || `Module ${moduleData.module_number}`}" marked as completed! Next module unlocked.`,
+        'success'
+      );
     } catch (e) {
       console.warn('Engagement sync error:', e);
       const errorMsg = e?.error?.message || e?.message || 'Previous module must be completed first';
@@ -195,6 +201,11 @@ export default function LearningWorkspacePage() {
       setIsCompleted(false);
       localStorage.removeItem(`gold_completed_modules_${roleId}`);
       addToast('Roadmap progress reset! You can now start learning from Module 1.', 'success');
+      addNotification(
+        'Roadmap Progress Reset',
+        `Roadmap progress reset to Module 1 for ${roleId ? roleId.replace(/_/g, ' ').toUpperCase() : 'your active role'}.`,
+        'warning'
+      );
       navigate(`/learn?role=${encodeURIComponent(roleId)}&module=1`);
     } catch (err) {
       console.error('Failed to reset progress:', err);
@@ -261,21 +272,6 @@ export default function LearningWorkspacePage() {
           <span className="text-indigo-400 font-bold uppercase tracking-wider">{roleId.replace('_', ' ')}</span>
           <span>/</span>
           <span className="text-white">Module {moduleData?.module_number || 1}</span>
-        </div>
-
-        <div className="flex items-center gap-2">
-          <button
-            onClick={handleResetProgress}
-            className="px-3.5 py-1.5 bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/30 text-rose-300 font-sans text-[11px] font-bold rounded-full flex items-center gap-1.5 transition shadow-sm"
-            title="Reset progress and start over from Module 1"
-          >
-            <RotateCcw className="w-3.5 h-3.5 text-rose-400" />
-            Revert Progress
-          </button>
-          <span className="px-3 py-1.5 bg-indigo-950/60 border border-indigo-500/30 text-indigo-300 font-mono text-[11px] rounded-full flex items-center gap-1.5">
-            <Sparkles className="w-3.5 h-3.5 text-indigo-400" />
-            Gold Tier Dataset
-          </span>
         </div>
       </div>
 
