@@ -1,19 +1,71 @@
-# 🚀 Amplified.AI — AI-Driven Adaptive Learning Platform
-
-> **Jury & Evaluator Setup Guide**  
-> Complete local setup and evaluation instructions for running the Amplified.AI platform using pre-built Docker Hub containers or source code.
+<div align="center">
+  <img src="https://raw.githubusercontent.com/lucide-icons/lucide/main/icons/compass.svg" width="60" alt="Zleek AI Logo">
+  <h1>Zleek AI (Amplified.AI)</h1>
+  <p><strong>An AI-Driven Adaptive Learning Platform that builds your personalized learning path based on proven competence.</strong></p>
+</div>
 
 ---
 
-## 📌 Prerequisites
+## 🎯 What it has (Key Features)
 
-Before running the application, ensure your system has:
+Zleek AI shifts the focus from passive content consumption to **active, proven competence**. 
+
+- **12 Career Role Tracks:** Pick your domain, ranging from Software Architect, Machine Learning Engineer, and Data Scientist to Product Manager.
+- **Adaptive Baseline Diagnostic:** A dynamic RAG + LLM powered quiz that establishes your exact starting point. You never waste time re-learning what you already know.
+- **Dynamic Personalized Roadmaps:** Milestone-based learning paths are generated specifically based on your current experience level and diagnostic results.
+- **Tia AI Agent:** An embedded AI assistant available in every module to instantly clear your doubts and explain complex concepts.
+- **Custom Badges:** Earn unique custom badges upon successfully completing modules to showcase your verified skills.
+- **Targeted Remediation:** Struggling with a specific concept? The platform automatically inserts targeted remediation resources before moving you forward.
+- **Transparent Explainability:** Every node in your learning path tells you *why* you are learning it in relation to your end goal.
+- **Evidence-Based Mastery:** Learning paths are continuously updated, and every piece of progress is meticulously noted by verifying skills, not just marking videos as complete.
+
+---
+
+## 🛠 What it has used (Tech Stack)
+
+Zleek AI is built using a modern, scalable, and AI-native stack:
+
+### Frontend
+- **Framework:** React 18 & Vite
+- **Styling:** TailwindCSS & Vanilla CSS
+- **Animations:** Framer Motion
+- **Deployment:** Nginx
+
+### Backend API
+- **Language:** Go (1.24+)
+- **Architecture:** Clean Architecture principles
+- **Authentication:** JWT Auth
+- **Database Driver:** PGX
+
+### AI & Data Engine
+- **AI Pipeline:** In-Process Go AI Engine utilizing Gemini LLMs and Embeddings
+- **Vector Search / RAG:** ChromaDB (for fast vector retrieval)
+- **Primary Database:** PostgreSQL (with `pgvector` for semantic querying)
+- **Caching & Pub/Sub:** Redis 7
+
+---
+
+## ⚙️ How it works (Architecture Flow)
+
+1. **Goal & Onboarding:** The user selects 1 of the 12 distinct tech career roles and chooses an initial experience level (Beginner/Intermediate/Advanced).
+2. **Diagnostic Evaluation (RAG + LLM):** The backend queries ChromaDB for relevant domain knowledge and context, passing this into an LLM to generate 5 highly specific, custom diagnostic questions.
+3. **Roadmap Generation:** Based on the user's exact level and diagnostic performance, the system maps out a tailored learning roadmap. Known concepts are bypassed, and weak spots are prioritized.
+4. **Learning & Assessment Loop:** 
+   - The user engages with curated web resources (articles, docs, tutorials).
+   - The **Tia AI Agent** is available at every step to answer questions and clear doubts instantly.
+   - To unlock the next milestone, the user must pass an assessment (proving competence).
+   - If the user struggles, the **Adaptive Remediation Engine** injects supplementary modules into the path on the fly.
+5. **Progress & Rewards:** The user's learning path is dynamically updated as progress is continuously noted. Successful completions are rewarded with **Custom Badges** and logged in PostgreSQL as "Evidence", building a verified portfolio of skills.
+
+---
+
+## 🚀 How to use it (Quick Start Guide)
+
+You can launch the entire ecosystem locally in under 3 minutes using Docker.
+
+### 📌 Prerequisites
 - **Docker Desktop** (or Docker Engine + Docker Compose) installed and running.
-- Port availability: `5173` (Frontend), `8080` (Go Backend), `5432` (PostgreSQL), `6379` (Redis), `8001` (ChromaDB).
-
----
-
-## ⚡ Method 1: Instant Jury Setup via GitHub Repository (Recommended)
+- Ensure the following ports are free: `5173` (Frontend), `8080` (Go Backend), `5432` (Postgres), `6379` (Redis), `8001` (ChromaDB).
 
 ### Step 1: Clone the Repository
 ```bash
@@ -21,166 +73,22 @@ git clone https://github.com/darshanar190607/Ai_Amplified_Challenge.git
 cd Ai_Amplified_Challenge
 ```
 
-### Step 2: (Optional) Set API Key for Live LLM Features
-Copy the example environment file:
+### Step 2: Configure Environment Variables
+Copy the example environment file to set up your keys.
 ```bash
 cp .env.example .env
 ```
-*(Optional: Add your `GEMINI_API_KEY` or `GROQ_API_KEY` to `.env` for live LLM generation).*
+*(Important: Open `.env` and add your `GEMINI_API_KEY` for live LLM generation to function correctly).*
 
 ### Step 3: Launch with Docker Compose
+Pull the pre-built images and spin up the containers:
 ```bash
+docker compose pull
 docker compose up -d
 ```
 
-### Step 4: Open in Browser
-Open your browser and navigate to:
+### Step 4: Access the Platform
+Once all containers show as healthy, open your browser and navigate to:
 👉 **[http://localhost:5173](http://localhost:5173)**
 
----
-
-## 🐳 Method 2: Instant Setup via Docker Hub Images
-
-If you do not want to clone the full repository code, create a `docker-compose.yml` file in any folder with the following content:
-
-```yaml
-services:
-  db:
-    image: ankane/pgvector:latest
-    container_name: amplified_db
-    restart: always
-    environment:
-      POSTGRES_USER: ${POSTGRES_USER:-postgres}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
-      POSTGRES_DB: ${POSTGRES_DB:-platform}
-    ports:
-      - "5432:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-platform}"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
-
-  redis:
-    image: redis:7-alpine
-    container_name: amplified_redis
-    restart: always
-    ports:
-      - "6379:6379"
-    volumes:
-      - redis_data:/data
-    command: redis-server --appendonly yes
-    healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
-
-  chroma:
-    image: chromadb/chroma:latest
-    container_name: amplified_chroma
-    restart: always
-    ports:
-      - "8001:8000"
-    volumes:
-      - chroma_data:/chroma/chroma_data
-    environment:
-      - IS_PERSISTENT=TRUE
-      - PERSIST_DIRECTORY=/chroma/chroma_data
-
-  api-go:
-    image: wtfwizz30/amplified-api-go:latest
-    container_name: amplified_api_go
-    restart: always
-    ports:
-      - "8080:8080"
-    environment:
-      - DB_HOST=db
-      - DB_PORT=5432
-      - DB_USER=${POSTGRES_USER:-postgres}
-      - DB_PASSWORD=${POSTGRES_PASSWORD:-postgres}
-      - DB_NAME=${POSTGRES_DB:-platform}
-      - REDIS_HOST=redis
-      - REDIS_PORT=6379
-      - CHROMA_HOST=chroma
-      - CHROMA_PORT=8000
-      - GEMINI_API_KEY=${GEMINI_API_KEY}
-      - GROQ_API_KEY=${GROQ_API_KEY}
-      - NVIDIA_API_KEY=${NVIDIA_API_KEY}
-      - OPENAI_API_KEY=${OPENAI_API_KEY}
-    depends_on:
-      db:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
-      chroma:
-        condition: service_started
-
-  web:
-    image: wtfwizz30/amplified-web:latest
-    container_name: amplified_web
-    restart: always
-    ports:
-      - "5173:80"
-      - "80:80"
-    depends_on:
-      - api-go
-
-volumes:
-  postgres_data:
-  redis_data:
-  chroma_data:
-```
-
-### Launch Commands:
-```bash
-# Pull images from Docker Hub
-docker compose pull
-
-# Start containers
-docker compose up -d
-```
-Access the application at: 👉 **[http://localhost:5173](http://localhost:5173)**
-
----
-
-## 🎯 Jury Evaluation Walkthrough & Feature Verification
-
-### 1️⃣ Authentication & Onboarding
-1. Go to `http://localhost:5173`.
-2. Click **Sign Up** or **Get Started** to create a test user.
-3. Upon registration, you will land on `/onboarding/goal`.
-
-### 2️⃣ 12 Career Role Selection
-- Verify that **all 12 Career Roles** are exposed as interactive domain cards:
-  - Software Architect
-  - Machine Learning Engineer
-  - Data Scientist
-  - AI Engineer
-  - Full Stack Developer
-  - Backend Engineer (Go/Node)
-  - Frontend Engineer
-  - Data Analyst
-  - Data Engineer
-  - DevOps / SRE
-  - Mobile Engineer
-  - Product Manager
-
-### 3️⃣ Adaptive Diagnostic Quiz (RAG + LLM Powered)
-- Choose your target role and prior experience level (*Beginner*, *Intermediate*, or *Advanced*).
-- System dynamically fetches authoritative RAG context for the selected domain and generates 5 custom prerequisite questions.
-
-### 4️⃣ Diagnostic Results & Personalised Roadmap
-- Submit answers to view calculated competency scoring, accuracy, and identified weak concepts.
-- Continue to `/roadmap` to see your AI-generated milestone learning graph tailored strictly to your target career role.
-
----
-
-## 🛠 Tech Stack Architecture
-
-- **Frontend**: React 18, Vite, TailwindCSS, Framer Motion, Nginx
-- **Backend API**: Go (1.24+), Clean Architecture, PGX, JWT Auth
-- **AI / RAG Pipeline**: In-Process Go AI Engine, Gemini Embeddings, RAG Retriever
-- **Database & Storage**: PostgreSQL (with `pgvector`), Redis 7, ChromaDB
+*Sign up for a new account, pick your career track, and take your first diagnostic to see the engine in action!*
