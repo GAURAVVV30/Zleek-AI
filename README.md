@@ -69,8 +69,8 @@ You can launch the entire ecosystem locally in under 3 minutes using Docker.
 
 ### Step 1: Clone the Repository
 ```bash
-git clone https://github.com/darshanar190607/Ai_Amplified_Challenge.git
-cd Ai_Amplified_Challenge
+git clone https://github.com/GAURAVVV30/Zleek-AI.git
+cd Zleek-AI/
 ```
 
 ### Step 2: Configure Environment Variables
@@ -79,6 +79,9 @@ Copy the example environment file to set up your keys.
 cp .env.example .env
 ```
 *(Important: Open `.env` and add your `GEMINI_API_KEY` for live LLM generation to function correctly).*
+*(Important: Open `.env` and add your `NVIDIA_API_KEY` for live LLM generation to function correctly).*
+*(Important: Open `.env` and add your `GROQ_API_KEY` for live LLM generation to function correctly).*
+*(Important: Open `.env` and add your `OPENAI_API_KEY` for live LLM generation to function correctly).*
 
 ### Step 3: Launch with Docker Compose
 Pull the pre-built images and spin up the containers:
