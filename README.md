@@ -89,7 +89,10 @@ Pull the pre-built images and spin up the containers:
 docker compose pull
 docker compose up -d
 ```
-
+or 
+```bash
+make dev
+```
 ### Step 4: Access the Platform
 Once all containers show as healthy, open your browser and navigate to:
 👉 **[http://localhost:5173](http://localhost:5173)**
