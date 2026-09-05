@@ -19,11 +19,11 @@ export default function AuthLayout() {
 
       <div className="sm:mx-auto sm:w-full sm:max-w-md text-center mb-6">
         <NavLink to="/" className="inline-flex items-center gap-2.5 relative z-20">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-white font-bold shadow-[0_0_15px_rgba(79,70,229,0.2)] shadow-blue-500/20">
-            <Compass className="w-6 h-6" />
+          <div className="w-12 h-12 flex items-center justify-center overflow-hidden mix-blend-screen">
+            <img src="/logo-icon.png" alt="Zleek AI Logo" className="w-full h-full object-contain" />
           </div>
           <span className="font-display font-bold text-2xl text-white tracking-tight">
-            Amplified<span className="text-indigo-400">.AI</span>
+            Zleek<span className="text-indigo-400"> AI</span>
           </span>
         </NavLink>
       </div>

@@ -16,11 +16,11 @@ export default function Header() {
       <header className="sticky top-0 z-30 h-16 bg-black/40 backdrop-blur-xl/80 backdrop-blur-md border-b border-white/10 px-4 sm:px-8 flex items-center justify-between">
         {/* Left: Branding */}
         <div className="flex items-center gap-3 cursor-pointer" onClick={() => navigate('/roadmap')}>
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-white font-bold shadow-[0_0_15px_rgba(79,70,229,0.2)] shadow-blue-500/20">
-            <Compass className="w-5 h-5" />
+          <div className="w-10 h-10 flex items-center justify-center overflow-hidden mix-blend-screen">
+            <img src="/logo-icon.png" alt="Zleek AI Logo" className="w-full h-full object-contain" />
           </div>
-          <span className="font-display font-bold text-lg text-white tracking-tight">
-            Amplified<span className="text-indigo-400">.AI</span>
+          <span className="font-display font-bold text-xl text-white tracking-tight">
+            Zleek<span className="text-indigo-400"> AI</span>
           </span>
         </div>
 

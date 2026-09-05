@@ -29,7 +29,7 @@ export default function LandingPage() {
               <Compass className="w-5 h-5" />
             </div>
             <span className="font-display font-bold text-xl tracking-tight text-white">
-              Amplified<span className="text-indigo-400">.AI</span>
+              Zleek<span className="text-indigo-400"> AI</span>
             </span>
           </div>
 
@@ -69,10 +69,7 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
           {/* Left Column: Heading & CTAs */}
           <div className="lg:col-span-5 z-20 space-y-6 pt-4 lg:pt-0">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-indigo-900/60 backdrop-blur-md/60 border border-blue-200/80 text-indigo-300 text-xs font-semibold">
-              <Sparkles className="w-3.5 h-3.5 text-indigo-400" />
-              Evidence-Backed Adaptive Intelligence
-            </div>
+
 
             <h1 className="font-display text-4xl sm:text-5xl lg:text-[3.5rem] font-extrabold text-white tracking-tight leading-[1.1]">
               Your path to <br />
@@ -131,7 +128,7 @@ export default function LandingPage() {
             The Competency Engine
           </div>
           <h2 className="font-display text-3xl font-extrabold text-white">
-            How Amplified.AI Adapts To You
+            How Zleek AI Adapts To You
           </h2>
           <p className="text-slate-300 text-sm mt-3 leading-relaxed">
             Most platforms measure progress by what you click. We measure progress by what you can prove, adjusting your roadmap in real-time.
@@ -193,7 +190,7 @@ export default function LandingPage() {
       <section id="features" className="max-w-7xl mx-auto px-4 sm:px-8 py-20 bg-black/30 backdrop-blur-md rounded-3xl border border-white/10 my-10">
         <div className="max-w-3xl mx-auto text-center mb-16">
           <h2 className="font-display text-3xl font-extrabold text-white">
-            Why Amplified.AI Is Different
+            Why Zleek AI Is Different
           </h2>
           <p className="text-slate-300 text-sm mt-3">
             Built on strict pedagogical principles: expert curation, evidence over self-report, and continuous path adaptation.
@@ -255,7 +252,7 @@ export default function LandingPage() {
 
       {/* 7. Footer */}
       <footer className="w-full bg-black/40 backdrop-blur-xl py-8 border-t border-white/10 text-center text-xs text-slate-400">
-        <p>© 2026 Amplified.AI Learning Platform. Built for verified competence.</p>
+        <p>© 2026 Zleek AI Learning Platform. Built for verified competence.</p>
       </footer>
     </div>
   );

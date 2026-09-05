@@ -50,7 +50,7 @@ export default function LandingPage() {
               <Compass className="w-4 h-4" />
             </div>
             <span className="font-display font-bold text-lg tracking-tight text-white">
-              Amplified<span className="text-indigo-400">.AI</span>
+              Zleek<span className="text-indigo-400"> AI</span>
             </span>
           </div>
 
@@ -87,10 +87,6 @@ export default function LandingPage() {
               variants={STAGGER}
               className="max-w-4xl space-y-8"
             >
-              <motion.div variants={FADE_UP} className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-white/10 text-slate-300 text-xs font-semibold tracking-wide uppercase bg-white/5">
-                <span className="w-2 h-2 rounded-full bg-indigo-500 animate-pulse"></span>
-                Evidence-Backed Adaptive Intelligence
-              </motion.div>
 
               <motion.h1 variants={FADE_UP} className="font-display text-5xl md:text-7xl lg:text-[5.5rem] font-bold text-white tracking-tighter leading-[1.05]">
                 AI that builds your <br className="hidden md:block"/> personalized learning path.
@@ -174,7 +170,7 @@ export default function LandingPage() {
               variants={FADE_UP}
               className="mb-24 md:text-center"
             >
-              <h2 className="font-display text-4xl md:text-5xl font-bold tracking-tight mb-4">Why Amplified.AI Is Different</h2>
+              <h2 className="font-display text-4xl md:text-5xl font-bold tracking-tight mb-4">Why Zleek AI Is Different</h2>
               <p className="text-slate-400 text-lg md:mx-auto max-w-xl">Built on strict pedagogical principles: expert curation, evidence over self-report, and continuous path adaptation.</p>
             </motion.div>
 
@@ -243,7 +239,7 @@ export default function LandingPage() {
                 We believe learning should be proven, not just watched.
               </h2>
               <p className="text-slate-400 text-lg md:text-xl leading-relaxed">
-                Amplified.AI was built to bridge the gap between passive video consumption and active competence. Our mission is to provide the most direct, evidence-backed route to professional mastery.
+                Zleek AI was built to bridge the gap between passive video consumption and active competence. Our mission is to provide the most direct, evidence-backed route to professional mastery.
               </p>
             </motion.div>
           </div>
@@ -279,7 +275,7 @@ export default function LandingPage() {
 
       {/* Footer */}
       <footer className="w-full py-12 border-t border-white/5 text-center">
-        <p className="text-slate-500 text-sm">© 2026 Amplified.AI Learning Platform. Built for verified competence.</p>
+        <p className="text-slate-500 text-sm">© 2026 Zleek AI Learning Platform. Built for verified competence.</p>
       </footer>
     </div>
   );
